@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Credentials
+.env
+
+# Data: nothing checked in except README and schema docs
+data/**
+!data/.gitkeep
+!data/README.md
+!data/schemas/
+!data/schemas/**
+
+# Prolog
+*.pl~
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

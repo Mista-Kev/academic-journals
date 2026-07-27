@@ -1,0 +1,4 @@
+# Pin versions as soon as a package is actually used for the first time
+# (e.g. via `pip freeze | grep <package>` after first use).
+requests
+pandas

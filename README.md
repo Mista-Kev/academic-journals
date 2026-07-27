@@ -28,22 +28,22 @@ flowchart LR
 |---|---|---|
 | Lennart | Logic & events | `logic/` + lead on `fetch/`, `data/` (Data area formally open — confirm at kickoff) |
 | Pierre | Machine Learning / topic_match | `topics/` |
-| Kevin | Probability & statistics / Bayes nets | `nets/`, `stats/` (lead) + support on OpenAlex filtering strategy + ProbLog/DeepProbLog PoC |
+| Kevin | Probability & statistics / Bayes nets | `nets/`, `stats/` (lead) + support on OpenAlex filtering strategy |
+
+ProbLog/DeepProbLog PoC (E7): **unassigned — to be settled at kickoff.** It overlaps the logic area (Lennart, who flagged interest) and the probability layer (Kevin); it runs parallel to the event rules, never instead of them.
 
 ## Repo structure
 
-Folder names are anglicized; mapping to the agreed German names from slide A7:
-
-| Folder | Slide A7 | Content |
-|---|---|---|
-| `data/` | data | prepared tables (gitignored, except schema docs) |
-| `fetch/` | laden | retrieval scripts OpenAlex/DOAJ/ORCID |
-| `logic/` | logik | Prolog/Logtalk rules + Python counting-path parity check |
-| `topics/` | themen | topic_match model (decision tree, Naïve Bayes comparison) |
-| `nets/` | netze | bn-logtalk networks + CPTs |
-| `stats/` | statistik | comparison models, nested-model test |
-| `report/` | bericht | figures, tables, slides |
-| `docs/` | docs | notes, decisions (ADR-light) |
+| Folder | Content |
+|---|---|
+| `data/` | prepared tables (gitignored, except schema docs) |
+| `fetch/` | retrieval scripts OpenAlex/DOAJ/ORCID |
+| `logic/` | Prolog/Logtalk rules + Python counting-path parity check |
+| `topics/` | topic_match model (decision tree, Naïve Bayes comparison) |
+| `nets/` | bn-logtalk networks + CPTs |
+| `stats/` | comparison models, nested-model test |
+| `report/` | figures, tables, slides |
+| `docs/` | notes, decisions (ADR-light), research notes |
 
 **Branches:** one branch per area (`logic/…`, `topics/…`, `nets/…`, `fetch/…`, `stats/…`), merge requests into protected `main`.
 

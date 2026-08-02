@@ -49,7 +49,7 @@ ProbLog/DeepProbLog PoC (E7): **unassigned — to be settled at kickoff.** It ov
 
 **Research notes:** pitfalls and optional upgrades from prior research (beyond the kickoff slides) are collected in [docs/research-notes.md](docs/research-notes.md) — the slides remain the baseline plan.
 
-**How we work:** coordination is asynchronous through issues rather than fixed meetings — decisions are recorded in the repo, in [docs/decisions.md](docs/decisions.md).
+**How we work:** coordination is asynchronous through issues rather than fixed meetings — decisions are recorded in the repo, in [docs/decisions.md](docs/decisions.md). New to git/GitHub? Step-by-step: [docs/github-guide.md](docs/github-guide.md).
 
 ## Milestones
 

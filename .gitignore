@@ -5,6 +5,7 @@ __pycache__/
 .venv/
 venv/
 .ipynb_checkpoints/
+instructions/
 
 # Credentials
 .env
@@ -15,6 +16,10 @@ data/**
 !data/README.md
 !data/schemas/
 !data/schemas/**
+
+# Local databases (regenerable build artifacts — commit the notebook/SQL that builds them instead)
+*.duckdb
+*.duckdb.wal
 
 # Prolog
 *.pl~

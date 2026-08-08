@@ -10,6 +10,9 @@ Template — 5 lines per decision:
 **Consequences:** What follows from it?
 ```
 
+## 2026-08-08: Headline number pre-registered
+**Decision:** The headline result is Q3_ind: outcome split on independent entries, adjusted for T_pre, significance via author-level cluster-bootstrap CI. Every other variant (Q3_all, T_paper adjustments, alternative clusterings) is reported as robustness.
+
 ## 2026-07: Repo structure & tooling adopted as per slides v1
 **Context:** Project start, shared working base needed.
 **Decision:** Folder structure, roles, and toolchain (OpenAlex/DOAJ/ORCID → Prolog/Logtalk → topic_match → bn-logtalk → statistics) as per slides v1; repo language English; research notes adopted as extra input (pitfalls + optional upgrades, see `research-notes.md` — slides remain the baseline).

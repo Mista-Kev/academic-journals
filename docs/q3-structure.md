@@ -14,12 +14,17 @@ flowchart LR
 
 The dotted arrows mark temporal order only, not causation. Causes precede effects, so F, which happens at t, cannot cause C or T. But note the order of the first two: C-events are publications years before t, while T is a property of a paper written shortly before t. On the raw timeline C comes first, so an edge C to T is temporally admissible, and mechanistically plausible: collaborations pull authors into topics.
 
-That leaves two defensible readings of T:
+The resolution is a time split, not a choice between readings:
 
-- (a) T measured from the entering paper: then T is partly a mediator of the co-author influence, and conditioning on it yields the direct effect only.
-- (b) T measured from the author's pre-t publication history: then T predates the opportunity and the pure confounder reading holds.
+- **T_pre**: the author's topic profile built from publications strictly before t. Pre-treatment, so it cannot be caused by the current opportunity: **adjust for it** (confounder).
+- **T_paper**: the topic of the entering paper itself. Downstream of the co-author influence: **do not condition on it** (mediator).
 
-Which reading we implement is an open measurement decision (Pierre + Kevin), tracked as a decision issue.
+Two caveats stay attached to the direct-effect reading:
+
+- (a) it additionally assumes no unmeasured mediator-outcome confounding: conditioning on a mediator can open collider paths through, for example, institution
+- (b) "lower bound" is a heuristic for a ratio metric: risk ratios are non-collapsible, so direct and mediated parts do not decompose exactly; we mark it as heuristic
+
+Implementation of T_pre sits with Pierre + Kevin (#51).
 
 ## 2. Every arrow defended
 
@@ -78,7 +83,11 @@ flowchart LR
 
 Comparing raw entry rates between the with-seed and without-seed groups mixes the backdoor path (C <- T -> F, a fork at T) into the target effect, because the two groups differ in topic composition. Conditioning on T blocks the fork; that is what the do-adjustment does and nothing more.
 
-> **Interpretation:** Q3 as computed is the direct, topic-unmediated effect: a lower bound on total co-author influence, assuming the mediated path is non-negative.
+> **Interpretation:** Q3 as computed is the direct, topic-unmediated effect: heuristically a lower bound on total co-author influence, assuming the mediated path is non-negative (heuristic because ratio metrics are non-collapsible, see section 1).
+
+### The joint-submission split is an outcome split
+
+An entry can happen with a seeding co-author on the entering paper (riding along) or without one (independent following). We split the outcome, not the rows: F = F_independent + F_ride, and Q3_ind = P(F_independent | do(C on)) / P(F | do(C off)). Under do(C off) no seeder exists, so every entry there is independent by definition. Filtering rows by a seed-on-paper flag instead would condition on a post-treatment variable, because whether a seeder ends up on the paper is itself a consequence of C, and that selects the comparison groups after the treatment.
 
 ## 5. Three activities, kept apart
 
@@ -87,6 +96,8 @@ Comparing raw entry rates between the with-seed and without-seed groups mixes th
 | Causal structure specification | domain knowledge, argued edge by edge | only as good as the arguments; every assumption must be stated | this document, sections 1 to 4 |
 | Structure learning | data proposes arrows | Markov equivalence: observational data cannot orient all edges | at most a sanity check on the frozen sample |
 | Parameter learning | counting CPTs, given a fixed structure | meaningless if the structure is wrong | the notebook (nets/q3_example.ipynb); it comes last |
+
+One scope sentence to keep us honest: the synthetic recovery test certifies the **estimator**, not the **graph**. Graph correctness rests on the identification argument above, and on nothing else.
 
 ## 6. What would change our minds
 

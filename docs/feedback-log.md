@@ -11,6 +11,21 @@ What changes: <concrete consequences>
 What stays: <what remains valid>
 ```
 
+## 2026-08-08, second-pass review of the adversarial fixes
+
+Corrections to the first pass:
+1. Mediator handling: the "two readings of T" choice becomes a time split: adjust for T_pre (pre-treatment topic profile), never condition on T_paper (mediator). The direct-effect reading carries two caveats: no unmeasured mediator-outcome confounding assumed, and "lower bound" is heuristic for a ratio metric (non-collapsibility).
+2. The joint-submission split is an outcome split (F = F_independent + F_ride), not a row filter: filtering on a seed-on-paper flag would be post-treatment selection.
+3. Clustering is wider than authors: journal-level and paper-level dependence too; plan two-way clustering (author x journal) or paper-level aggregation; the author-only bootstrap is the floor, not the ceiling.
+
+New findings:
+4. The opportunity set is itself a modeling decision: which journals count per (author, t); at least two definitions compared as sensitivity (decision issue).
+5. Q2 must map publishers at publication time, not current lineage: OA M&A (e.g. Hindawi/Wiley) falls inside 2015-2024.
+6. Q1 measures loyalty to surviving journals only: the frozen 64 exclude died or delisted journals (limitation).
+7. Validation scope: the synthetic recovery test certifies the estimator, not the graph.
+
+Actions: schema PR amended (outcome split), #50 extended (two-way clustering), new opportunity-set decision issue, S4.5 acceptance and S5.4 limitations updated, headline number pre-registered in decisions.md.
+
 ## 2026-08-08, adversarial self-review of the Q3 structure
 
 Findings, one line each:

@@ -8,11 +8,18 @@ The model under argument is Q3 (co-author factor). One row is one opportunity: a
 
 ```mermaid
 flowchart LR
-    T["T topic_match: the paper's topic fits journal J (measured from text)"] -. time .-> C["C coauthor_seed: a co-author published in J strictly before t"]
-    C -. time .-> F["F first_entry: the author publishes in J for the first time at t"]
+    C["C coauthor_seed: a co-author published in J strictly before t (events years before t)"] -. time .-> T["T topic_match: the paper's topic fits journal J (fixed when the paper is written)"]
+    T -. time .-> F["F first_entry: the author publishes in J for the first time at t"]
 ```
 
-The dotted arrows mark temporal order only, not causation. T reflects the research direction that produced the paper, C is fixed by publication history strictly before t, F happens at t. Causes precede effects, so causal arrows may only point rightward. This alone rules out F to C, F to T, and C to T, before looking at any data.
+The dotted arrows mark temporal order only, not causation. Causes precede effects, so F, which happens at t, cannot cause C or T. But note the order of the first two: C-events are publications years before t, while T is a property of a paper written shortly before t. On the raw timeline C comes first, so an edge C to T is temporally admissible, and mechanistically plausible: collaborations pull authors into topics.
+
+That leaves two defensible readings of T:
+
+- (a) T measured from the entering paper: then T is partly a mediator of the co-author influence, and conditioning on it yields the direct effect only.
+- (b) T measured from the author's pre-t publication history: then T predates the opportunity and the pure confounder reading holds.
+
+Which reading we implement is an open measurement decision (Pierre + Kevin), tracked as a decision issue.
 
 ## 2. Every arrow defended
 
@@ -27,9 +34,13 @@ The dotted arrows mark temporal order only, not causation. T reflects the resear
 Deliberately absent from the model:
 
 - author seniority: senior authors have more co-authors and enter more journals, so it could drive both C and F; excluded to keep the net minimal, which assumes seniority acts only through the modeled variables
-- shared institution: colleagues share venues and topics; excluded because institution data in our slice is too noisy to condition on reliably
+- shared institution, and its sharper version, the same lab or PI: lab mates share the PI's journal pipeline, which drives C almost mechanically and F with it; excluded because institution data in our slice is too noisy to condition on reliably
 - journal prestige: could attract authors regardless of topic and correlate with where co-authors publish; excluded here, partly picked up by journal identity in Q1/Q2
 - conference circles: the same community meets and publishes together; not observable in our data
+- institutional APC deals / transformative agreements: the institution makes specific journals free for its authors AND shapes the co-author pool, a money-driven backdoor that bypasses topic entirely; unmeasured in our slice, so a stated limitation
+- special issues / guest editors: a guest editor recruits a whole co-author network into one journal within months, a common cause of C and F that has nothing to do with topic; probed by the lag diagnostic in section 7
+- correlated author-ID error: ID splitting fabricates first entries AND erases seeds, one error source pushing both variables, a node-shaped confounder; the ORCID-only rerun is its probe
+- author venue-trying heterogeneity: some authors habitually try new venues, which drives F and correlates with network size; the Q3 analogue of the productivity margin Q1 fights
 
 Each absence is a strong claim: "this factor does not open a second backdoor between C and F". These are assumptions to be stated in the report, not facts.
 
@@ -67,6 +78,8 @@ flowchart LR
 
 Comparing raw entry rates between the with-seed and without-seed groups mixes the backdoor path (C <- T -> F, a fork at T) into the target effect, because the two groups differ in topic composition. Conditioning on T blocks the fork; that is what the do-adjustment does and nothing more.
 
+> **Interpretation:** Q3 as computed is the direct, topic-unmediated effect: a lower bound on total co-author influence, assuming the mediated path is non-negative.
+
 ## 5. Three activities, kept apart
 
 | Activity | Where arrows come from | Hard limits | Role in this project |
@@ -80,3 +93,8 @@ Comparing raw entry rates between the with-seed and without-seed groups mixes th
 - If F is independent of C given T in the data, the C -> F edge goes, and Q3 close to 1 is the finding, not a failure.
 - If a strong unmodeled confounder is demonstrated, the limitations section grows, or the graph gains a node and the adjustment set changes.
 - If topic_match proves too noisy, the adjustment is incomplete and Q3 gets reported as an upper bound, not a point estimate.
+
+## 7. Robustness diagnostics
+
+- Seed-to-entry lag: histogram of (t_entry - t_seed) over all first entries with a seed. Genuine following spreads out over years; tight clustering around short lags indicates special-issue recruiting or joint-submission waves. One afternoon of work once the event table exists.
+- Year-stratified CPT stability: estimate the CPTs per period (year is already a stratum in the schema) and check that Q3 does not drift across eras; pooling 2015 to 2024 into one table assumes it does not.

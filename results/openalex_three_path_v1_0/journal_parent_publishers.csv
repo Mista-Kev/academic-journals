@@ -1,0 +1,65 @@
+journal_id,journal_name,immediate_publisher_id,immediate_publisher_name,parent_publisher_id,parent_publisher_name,lineage_ids_json,lineage_names_json,is_unresolved
+S101949793,Sensors,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S107516304,BMC Medical Informatics and Decision Making,P4310320256,BioMed Central,P4310319965,Springer Nature,"[""P4310320256"", ""P4310319965""]","[""BioMed Central"", ""Springer Nature""]",False
+S125501549,Applied Artificial Intelligence,P4310320547,Taylor & Francis,P4310320547,Taylor & Francis,"[""P4310320547""]","[""Taylor & Francis""]",False
+S127898559,Bayesian Analysis,P4310321640,International Society for Bayesian Analysis,P4310321640,International Society for Bayesian Analysis,"[""P4310321640""]","[""International Society for Bayesian Analysis""]",False
+S137468011,Journal of Vision,P4310315919,Association for Research in Vision and Ophthalmology,P4310315919,Association for Research in Vision and Ophthalmology,"[""P4310315919""]","[""Association for Research in Vision and Ophthalmology""]",False
+S139930977,Journal of Artificial Intelligence Research,P4310315760,AI Access Foundation,P4310315760,AI Access Foundation,"[""P4310315760""]","[""AI Access Foundation""]",False
+S149016011,Electronics Letters,P4310311714,Institution of Engineering and Technology,P4310311714,Institution of Engineering and Technology,"[""P4310311714""]","[""Institution of Engineering and Technology""]",False
+S155526855,Computational Linguistics,P4310320244,Association for Computational Linguistics,P4310320244,Association for Computational Linguistics,"[""P4310320244""]","[""Association for Computational Linguistics""]",False
+S167961193,Journal of Statistical Software,P4310315759,Foundation for Open Access Statistics,P4310315759,Foundation for Open Access Statistics,"[""P4310315759""]","[""Foundation for Open Access Statistics""]",False
+S17147534,Journal of Medical Internet Research,P4310320608,JMIR Publications,P4310320608,JMIR Publications,"[""P4310320608""]","[""JMIR Publications""]",False
+S178776955,Optics Express,P4310315679,Optica Publishing Group,P4310315679,Optica Publishing Group,"[""P4310315679""]","[""Optica Publishing Group""]",False
+S19032547,BMC Bioinformatics,P4310320256,BioMed Central,P4310319965,Springer Nature,"[""P4310320256"", ""P4310319965""]","[""BioMed Central"", ""Springer Nature""]",False
+S190629608,Algorithms,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S190680769,International Journal of Computational Intelligence Systems,P4310319965,Springer Nature,P4310319965,Springer Nature,"[""P4310319965""]","[""Springer Nature""]",False
+S195231649,Entropy,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S196734849,Scientific Reports,P4310319908,Nature Portfolio,P4310319965,Springer Nature,"[""P4310319908"", ""P4310319965""]","[""Nature Portfolio"", ""Springer Nature""]",False
+S198098182,Energies,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S20211220,Journal of Web Semantics,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S202381698,PLoS ONE,P4310315706,Public Library of Science,P4310315706,Public Library of Science,"[""P4310315706""]","[""Public Library of Science""]",False
+S207319443,Complexity,P4310319869,Hindawi Publishing Corporation,P4310319869,Hindawi Publishing Corporation,"[""P4310319869""]","[""Hindawi Publishing Corporation""]",False
+S2485537415,IEEE Access,P4310319808,Institute of Electrical and Electronics Engineers,P4310319808,Institute of Electrical and Electronics Engineers,"[""P4310319808""]","[""Institute of Electrical and Electronics Engineers""]",False
+S24978797,Tsinghua Science & Technology,P4310311901,Tsinghua University Press,P4310311901,Tsinghua University Press,"[""P4310311901""]","[""Tsinghua University Press""]",False
+S2595095599,Frontiers in Robotics and AI,P4310320527,Frontiers Media,P4310320527,Frontiers Media,"[""P4310320527""]","[""Frontiers Media""]",False
+S2596394214,Frontiers in Oncology,P4310320527,Frontiers Media,P4310320527,Frontiers Media,"[""P4310320527""]","[""Frontiers Media""]",False
+S2729999759,Transactions of the Association for Computational Linguistics,P4310320244,Association for Computational Linguistics,P4310320244,Association for Computational Linguistics,"[""P4310320244""]","[""Association for Computational Linguistics""]",False
+S2737955091,Journal Of Big Data,P4310319900,Springer Science+Business Media,P4310319965,Springer Nature,"[""P4310319900"", ""P4310319965""]","[""Springer Science+Business Media"", ""Springer Nature""]",False
+S2738286576,Jurnal Teknik ITS,P4310315238,Lembaga Penelitian dan Pengabdian kepada Masyarakat (LP2M),P4310315238,Lembaga Penelitian dan Pengabdian kepada Masyarakat (LP2M),"[""P4310315238""]","[""Lembaga Penelitian dan Pengabdian kepada Masyarakat (LP2M)""]",False
+S2764413287,Alexandria Engineering Journal,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S2764650051,JMIR Medical Informatics,P4310320608,JMIR Publications,P4310320608,JMIR Publications,"[""P4310320608""]","[""JMIR Publications""]",False
+S2764846071,Journal of Intelligent Systems,P4310315148,IlmuKomputer.Com,P4310315148,IlmuKomputer.Com,"[""P4310315148""]","[""IlmuKomputer.Com""]",False
+S2764955546,Journal of King Saud University - Computer and Information Sciences,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S2765015152,International Journal of Computing and Digital Systems,,,,,[],[],True
+S2898612692,Heliyon,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S3035462843,Complex & Intelligent Systems,P4310319900,Springer Science+Business Media,P4310319965,Springer Nature,"[""P4310319900"", ""P4310319965""]","[""Springer Science+Business Media"", ""Springer Nature""]",False
+S30889260,IET Signal Processing,P4310311714,Institution of Engineering and Technology,P4310311714,Institution of Engineering and Technology,"[""P4310311714""]","[""Institution of Engineering and Technology""]",False
+S32837994,TURKISH JOURNAL OF ELECTRICAL ENGINEERING & COMPUTER SCIENCES,P4310318422,Scientific and Technological Research Council of Turkey (TUBITAK),P4310318422,Scientific and Technological Research Council of Turkey (TUBITAK),"[""P4310318422""]","[""Scientific and Technological Research Council of Turkey (TUBITAK)""]",False
+S34838331,Future Internet,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S3569471,IET Radar Sonar & Navigation,P4310311714,Institution of Engineering and Technology,P4310311714,Institution of Engineering and Technology,"[""P4310311714""]","[""Institution of Engineering and Technology""]",False
+S4210172076,Diagnostics,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210173132,Axioms,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210177785,Journal of Pathology Informatics,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S4210178049,PeerJ Computer Science,P4310320104,"PeerJ, Inc.",P4310320104,"PeerJ, Inc.","[""P4310320104""]","[""PeerJ, Inc.""]",False
+S4210192031,Mathematics,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210195431,npj Digital Medicine,P4310319908,Nature Portfolio,P4310319965,Springer Nature,"[""P4310319908"", ""P4310319965""]","[""Nature Portfolio"", ""Springer Nature""]",False
+S4210196574,Jurnal Teknologi Informasi dan Ilmu Komputer,P4310314997,Brawijaya University,P4310314997,Brawijaya University,"[""P4310314997""]","[""Brawijaya University""]",False
+S4210197006,Frontiers in Artificial Intelligence,P4310320527,Frontiers Media,P4310320527,Frontiers Media,"[""P4310320527""]","[""Frontiers Media""]",False
+S4210200687,Machine Learning Science and Technology,P4310320083,IOP Publishing,P4310311669,Institute of Physics,"[""P4310320083"", ""P4310311669""]","[""IOP Publishing"", ""Institute of Physics""]",False
+S4210201048,Machine Learning with Applications,P4310320990,Elsevier BV,P4310320990,Elsevier BV,"[""P4310320990""]","[""Elsevier BV""]",False
+S4210205812,Applied Sciences,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210206423,Biomimetics,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210213891,Machine Learning and Knowledge Extraction,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210214273,The Journal of Open Source Software,P4310315853,Open Journals,P4310315853,Open Journals,"[""P4310315853""]","[""Open Journals""]",False
+S4210216316,Electronic Proceedings in Theoretical Computer Science,P4310318029,Open Publishing Association,P4310318029,Open Publishing Association,"[""P4310318029""]","[""Open Publishing Association""]",False
+S4210219776,Information,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210228075,Computers,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4210228265,The Scientific Issues of Ternopil Volodymyr Hnatiuk National Pedagogical University Series pedagogy,P4310322067,Ternopil Volodymyr Hnatiuk National Pedagogical University,P4310322067,Ternopil Volodymyr Hnatiuk National Pedagogical University,"[""P4310322067""]","[""Ternopil Volodymyr Hnatiuk National Pedagogical University""]",False
+S4210238752,Big Data and Cognitive Computing,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S43295729,Remote Sensing,P4310310987,Multidisciplinary Digital Publishing Institute,P4310310987,Multidisciplinary Digital Publishing Institute,"[""P4310310987""]","[""Multidisciplinary Digital Publishing Institute""]",False
+S4511983,Journal of Advanced Computational Intelligence and Intelligent Informatics,P4324309662,Fuji Technology Press Ltd.,P4324309662,Fuji Technology Press Ltd.,"[""P4324309662""]","[""Fuji Technology Press Ltd.""]",False
+S52395412,Bioinformatics,P4310311648,Oxford University Press,P4310311647,University of Oxford,"[""P4310311648"", ""P4310311647""]","[""Oxford University Press"", ""University of Oxford""]",False
+S64187185,Nature Communications,P4310319908,Nature Portfolio,P4310319965,Springer Nature,"[""P4310319908"", ""P4310319965""]","[""Nature Portfolio"", ""Springer Nature""]",False
+S83215360,IET Image Processing,P4310311714,Institution of Engineering and Technology,P4310311714,Institution of Engineering and Technology,"[""P4310311714""]","[""Institution of Engineering and Technology""]",False
+S9692511,Frontiers in Psychology,P4310320527,Frontiers Media,P4310320527,Frontiers Media,"[""P4310320527""]","[""Frontiers Media""]",False
+S997959834,Electronic Journal of Statistics,P4310319881,Institute of Mathematical Statistics,P4310319881,Institute of Mathematical Statistics,"[""P4310319881""]","[""Institute of Mathematical Statistics""]",False

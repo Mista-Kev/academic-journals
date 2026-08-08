@@ -11,6 +11,21 @@ What changes: <concrete consequences>
 What stays: <what remains valid>
 ```
 
+## 2026-08-08, adversarial self-review of the Q3 structure
+
+Findings, one line each:
+1. The timeline argument was backwards: C-events precede T, so C to T is admissible; T is then partly a mediator, and Q3 is the direct effect, a lower bound on total co-author influence.
+2. Joint submissions: C and F can be one single event (first entry with the seeding co-author on the paper); Q3 conflates following with riding along.
+3. Money is missing: institutional APC deals / transformative agreements drive journal preference and correlate with the co-author pool, bypassing topic.
+4. Special issues / guest editors recruit whole networks into one journal: a common cause of C and F outside the model.
+5. Rows are not iid (one paper spawns many rows, authors repeat): the textbook chi-square df 2 overstates significance.
+6. Correlated author-ID error feeds both C and F: a node-shaped confounder; the ORCID-only rerun is its probe.
+7. Smaller: pooling 2015 to 2024 in one CPT, lab/PI structure as the sharper shared-institution, author venue-trying heterogeneity as Q3's productivity margin.
+
+What changes, cost-ordered: seed_on_entry column added to the event-table schema before freeze (Q3 reported twice: all vs independent entries); q3-structure.md reworked (timeline corrected, direct-effect interpretation, three new named threats, lag + year-stability diagnostics); author-level resampling replaces the naked chi-square in S5.2; T-measurement (entering paper vs pre-t history) opened as a decision issue.
+
+What stays: the adjustment machinery, the do-queries, and the synthetic validation. Q3's meaning is sharpened to "direct, topic-unmediated effect", not discarded.
+
 ## 2026-08-04, week-2 check-in: supervisor feedback on the Q3 approach
 
 Points:

@@ -1,0 +1,1 @@
+"""OpenAlex temporal pathway logic."""

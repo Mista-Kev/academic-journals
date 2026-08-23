@@ -20,7 +20,7 @@ here is cross checked by it yet."""
 # never before.
 # entering_work_id is the earliest such paper of that year, ties going to the lowest work id as a string.
 
-# first_entry_ride is 1 on an entry that carries a qualifying seed co author on the entering paper.
+# first_entry_ride is 1 when the same co author who qualifies the seed is also on the entering paper.
 # first_entry_independent is its complement on entry rows, so it is 1 for the entries with no seed at all
 # and it only ever means not a ride. the contrast to report is ride against independent within C = 1.
 

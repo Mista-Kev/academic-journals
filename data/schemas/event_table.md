@@ -13,6 +13,11 @@ The current table uses years rather than exact dates:
 - all history used for `C`, `T`, and prior-paper counts is strictly before `t`;
 - the pair stops producing rows after its first entry year.
 
+Years rather than dates is deliberate: OpenAlex fills missing day and month with
+January 1 (28.6% of the corpus), and non-entry rows have no event date of their
+own, so only a common year-level reference point keeps the exposure window
+independent of the outcome.
+
 ## Columns
 
 | Column | Type | Meaning |
@@ -36,6 +41,12 @@ The current table uses years rather than exact dates:
 ## Reading the entry flags
 
 - `F = first_entry_independent OR first_entry_ride`.
+- The split is an outcome split, not a row filter: whether a seeder ends up on
+  the entering paper is itself a consequence of `C`, so filtering rows on such a
+  flag would be post-treatment selection.
+- Q3 is reported twice: Q3_all uses `F`; Q3_ind uses
+  `P(F_ind | do(C on)) / P(F | do(C off))`. Under `do(C off)` no seeder exists,
+  so every entry there is independent by definition.
 - The two entry flags are mutually exclusive.
 - A ride requires one matching collaborator across all three facts: earlier
   collaboration, earlier publication in the target journal, and presence on
@@ -92,3 +103,10 @@ inside seeded pairs unless a common anchor for `C = 0` is defined.
   for row. The final topic input still needs the threshold-free rerun.
 - The Python event table is available for the Q3 analysis. Parity with the new
   Prolog event table is still pending.
+
+## Opportunity set
+
+Variant A (all 64 journals minus the already-entered ones) is the main table.
+Variant B (journals publishing one of the author's earlier topics in year `t`)
+is a sensitivity variant, not an ex-ante risk set, since it selects journals on
+year-`t` publications.

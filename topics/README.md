@@ -1,6 +1,6 @@
 # topics/ — topic_match
 
-**Purpose:** the topic-fit control T. Papers are embedded with SPECTER2 (title plus abstract), author and journal profiles are rolling centroids over papers from years strictly before t, and `topic_match` is the RBF-kernel similarity between the two profiles, a continuous value in (0, 1]. Empty is never zero: `tm_status` names the reason per cell. Kept continuous, no discretization; the whole-period eligibility threshold of the early runs is slated for removal, the threshold-free rerun is awaiting approval.
+**Purpose:** the topic-fit control T. The current implementation embeds paper titles and abstracts with the SPECTER2 pipeline, builds rolling author and journal profiles from years strictly before `t`, and computes `topic_match` as a continuous RBF-kernel similarity. Empty is never zero: `tm_status` records why a value is unavailable. Removal of the earlier whole-period eligibility threshold and the model-adapter configuration are still under review.
 **Owner:** Pierre
 **Input:** titles/abstracts from the raw OpenAlex data, event table rows from `logic/`
 **Output:** `topic_match` plus diagnostic columns per (author, journal, t)

@@ -1,6 +1,6 @@
 # stats/ — comparison models & significance
 
-**Purpose:** comparison models per metric, nested-model test for Q3 (model with vs. without co-author influence), sensitivity analyses (topic_match threshold).
-**Owner:** all (lead: Kevin)
-**Input:** event table + metrics from `nets/`
-**Output:** significance results and robustness checks for `report/`
+**Purpose:** statistical checks and sensitivity analyses that support the question-level notebooks, including clustered uncertainty, alternative opportunity sets, and the final treatment of unavailable topic-fit values.
+**Owner:** Kevin, with group review of model choices
+**Input:** event table and outputs from `nets/`
+**Output:** uncertainty estimates and robustness checks for `report/`

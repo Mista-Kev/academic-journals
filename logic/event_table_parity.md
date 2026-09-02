@@ -2,7 +2,11 @@
 
 Date: 2026-08-30
 
-Two independent implementations of the Q3 event table were compared row by row.
+Two independent implementations of the Variant A Q3 event table were compared row by row on
+the opportunity keys `(author_id, journal_id, t)` and the three flags `C`, `F` and `ride`. The
+comparison does not reproduce the remaining Python columns (`t_first_seed`, `n_prior_papers`,
+`first_entry_independent`, `entering_work_id`, `publisher_id`, the topic columns);
+`first_entry_independent` is read only to check that the two entry flags agree with `F`.
 
 - Python build: `logic/build_event_table.py`, output `data/event_table_python_v0_oppA.csv`
   sha256 `76f5ed2b37a4f683ac4c754e195417e65352155f3bcc4349f626252e34b6a041`
@@ -10,7 +14,13 @@ Two independent implementations of the Q3 event table were compared row by row.
   output `data/event_table_prolog_v0_oppA.csv`
   sha256 `28d31995d63856001eac8f174f7cf0d7101ccc66d0892e5350c758e091ca1f3d`
 
-Comparison command: `python3 logic/diff_event_table.py`
+Commands, in order
+
+```text
+python3 logic/build_event_table.py
+python3 logic/check_event_table_parity.py
+python3 logic/diff_event_table.py
+```
 
 Result
 

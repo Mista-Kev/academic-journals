@@ -1,6 +1,9 @@
 % event table rules for the frozen openalex ai corpus
 % this is the second and independent implementation of the q3 event table
-% every rule below follows one sentence of the frozen definitions in data/schemas/event_table.md
+% these rules implement the annual q3 definitions used by the python event table
+% a row represents an active author, a journal, and a year before the pair has entered
+% a seed needs one earlier co author who had already published in the journal
+% a ride needs that same co author on the entering paper
 %
 % expected generated facts are the ones the pathway rules already use
 %   work(WorkId, PublicationDate, JournalId, ParentPublisherId)

@@ -1,7 +1,6 @@
 """python event table for q3. one row per (author, journal, year) where the author could have entered the
-journal and either did or did not. lennart's prolog build is the canonical one for the report. this one
-exists to give pierre t_first_seed now. parity against the prolog build is still pending, so nothing
-here is cross checked by it yet."""
+journal and either did or did not. it gives q3 its denominator and pierre his t_first_seed. an independent
+prolog implementation matched every variant a opportunity key and the c, f and ride flags."""
 
 # every history here is internal to the corpus, so 64 journals and 2015 to 2024. n_prior_papers counts
 # corpus papers only, co authorship outside these journals is invisible, and a pre 2015 entry cannot be

@@ -6,7 +6,8 @@ Two independent implementations of the Variant A Q3 event table were compared ro
 the opportunity keys `(author_id, journal_id, t)` and the three flags `C`, `F` and `ride`. The
 comparison does not reproduce the remaining Python columns (`t_first_seed`, `n_prior_papers`,
 `first_entry_independent`, `entering_work_id`, `publisher_id`, the topic columns);
-`first_entry_independent` is read only to check that the two entry flags agree with `F`.
+`first_entry_independent` is checked row by row against `F and not ride`, which covers both the
+complement and the exclusivity of the two entry flags; 0 disagreements on all rows.
 
 - Python build: `logic/build_event_table.py`, output `data/event_table_python_v0_oppA.csv`
   sha256 `76f5ed2b37a4f683ac4c754e195417e65352155f3bcc4349f626252e34b6a041`

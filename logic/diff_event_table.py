@@ -69,11 +69,12 @@ def project_prolog(source: Path, target: Path) -> dict[str, int]:
 def project_python(source: Path, target: Path) -> dict[str, int]:
     """Copy the Python table into the same key/flag lines and count its totals.
 
-    F is read from entering_work_id as specified. The independent/ride pair is
-    read as well, purely to confirm that the two ways of spelling F agree.
+    F is read from entering_work_id as specified. The independent/ride pair is checked
+    row by row against independent = F and not ride, which covers both the complement
+    and the exclusivity of the two entry flags.
     """
     totals = dict.fromkeys(
-        ("rows", "seeded_rows", "entries", "seeded_entries", "rides", "f_disagreements"),
+        ("rows", "seeded_rows", "entries", "seeded_entries", "rides", "outcome_split_disagreements"),
         0,
     )
     with source.open(newline="") as handle, target.open("w") as out:
@@ -86,8 +87,9 @@ def project_python(source: Path, target: Path) -> dict[str, int]:
             ride = as_flag(row["first_entry_ride"], "first_entry_ride")
             independent = as_flag(row["first_entry_independent"], "first_entry_independent")
             entry = "1" if row["entering_work_id"].strip() else "0"
-            if entry != ("1" if independent == "1" or ride == "1" else "0"):
-                totals["f_disagreements"] += 1
+            # the split must be exact, independent is entry without a ride, so both flags can never be 1 at once
+            if independent != ("1" if entry == "1" and ride == "0" else "0"):
+                totals["outcome_split_disagreements"] += 1
             out.write(
                 f"{row['author_id']}\t{row['journal_id']}\t{row['t']}"
                 f"\t{seed}\t{entry}\t{ride}\n"
@@ -192,7 +194,7 @@ def report(prolog_totals, python_totals, result) -> bool:
         and result["only_python"] == 0
         and result["duplicate_keys"] == 0
         and not any(result["flag_mismatches"].values())
-        and python_totals.get("f_disagreements", 0) == 0
+        and python_totals.get("outcome_split_disagreements", 0) == 0
     )
     print("\nVERDICT: " + ("identical" if clean else "MISMATCH"))
     return clean

@@ -6,8 +6,10 @@ sie ist nicht der gesuchte Effekt.
 
 **Verantwortlich:** Pierre
 **Eingang:** `academic_journals.duckdb` (OpenAlex-Ausschnitt), Ereignis-Tabelle des Logic-Layers
-**Ausgang:** `event_table_topicmatch_v5.csv` — dieselbe Tabelle plus fünf gefüllte Spalten.
-**Der Dateiname trägt ab v5 die Fassung**; frühere Läufe schrieben alle auf denselben Pfad.
+**Ausgang:** dieselbe Tabelle plus fünf gefüllte Spalten.
+Das Notebook schreibt nach `event_table_topicmatch.csv`. **Die geteilte Datei wird von Hand
+in `event_table_topicmatch_v5.csv` umbenannt** und über Teams verteilt — jeder Lauf würde
+sonst den vorigen überschreiben, ohne dass man es am Namen sieht.
 
 Der ML-Layer erzeugt **keine** der drei Endkennzahlen. Er füllt eine Spalte.
 
@@ -189,17 +191,23 @@ in Abschnitt 7 auskommentieren). Ergibt das `sig2 ≈ 0,3611`, ist die Abweichun
 
 - **Adapter-Test:** v5 ohne aktiven Adapter laufen lassen, um die Abweichung zu 0,3611 zu erklären
 - **Kevin muss Q3 neu rechnen** — die gefüllte Population ist von 623.510 auf 1.106.356 gewachsen
+- **Versionierung der Ausgabedatei im Notebook nachziehen** — der Dateiname wird derzeit
+  von Hand vergeben, `EVENT_OUT` schreibt weiterhin auf den unversionierten Pfad
 - **Eingefrorene Variante** von `topic_match` zum Zeitpunkt der ersten Wegbereitung —
   konzipiert, nicht gebaut. Muss ohne Schwelle gebaut werden, sonst nicht vergleichbar
 - **Adapter-Vergleich** als Robustheitsprüfung dokumentieren
 - **Themenpassung für Q1 und Q2** — Anfrage aus der Besprechung mit dem Professor.
-  `topic_match_intra` liegt bereits vor (5.307 Autor-Journal-Zeilen, Mittelwert 0,756,
-  Standardabweichung 0,084), ist aber nicht ausgewertet
+  `topic_match_intra` liegt bereits vor (`results_q1_topic_match_v5.csv`, 9.195
+  Autor-Journal-Zeilen, Mittelwert 0,767, Standardabweichung 0,091), ist aber
+  nicht ausgewertet
 
 ---
 
 ## Veraltete Dateien in diesem Ordner
 
+- **`Results/archive/`** — abgelöste Ergebnisdateien mit `MANIFEST.md`, das für jede
+  erklärt, aus welchem Lauf sie stammt und warum sie abgelöst wurde. Bewusst im Repo
+  behalten, damit die Kette nachvollziehbar bleibt. Nicht mehr verwenden.
 - **`README_results.md`** — beschreibt den Stand vor der Ereignis-Tabelle. Enthält
   überholte Anweisungen: Binarisierung von `topic_match` bei 0,85 und Fehlwerte
   „als eigene Gruppe behandeln". Beides wurde später verworfen. Nicht mehr befolgen.

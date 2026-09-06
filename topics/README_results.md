@@ -13,11 +13,12 @@ beiden Layer damit machen. Wie das Notebook arbeitet, steht in `README.md`.
 
 ## Was ihr bekommt
 
-**Eine Datei:** `event_table_topicmatch_v5.csv`
+**Eine Datei:** `event_table_topicmatch_v5.csv`, geteilt über Teams.
 
-> Der Dateiname trägt ab v5 die Fassung. Die frühere `event_table_topicmatch.csv`
-> ist der Stand **mit** Schwelle und wurde von jedem Lauf überschrieben — sie ist
-> nicht mehr zu verwenden.
+> Das Notebook schreibt auf den unversionierten Pfad `event_table_topicmatch.csv`;
+> die geteilte Datei wird **von Hand** umbenannt. Achtet deshalb auf den Namen:
+> eine Datei ohne `_v5` ist der alte Stand **mit** Schwelle und nicht mehr zu verwenden.
+> Im Zweifel die vier Kennwerte unten prüfen — die sind eindeutig.
 
 Das ist die Ereignis-Tabelle des Logic-Layers, unverändert in Zeilenzahl und
 Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spalten.
@@ -32,9 +33,12 @@ Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spal
 
 Verbindung immer über die IDs in Kurzform (`A5060045903`), nie über Namen.
 
-Für Q1 zusätzlich: `results_q1_topic_match.csv` — 5.307 Autor-Journal-Zeilen mit
+Für Q1 zusätzlich: `results_q1_topic_match_v5.csv` — 9.195 Autor-Journal-Zeilen mit
 `topic_match_intra`, der mittleren Themenähnlichkeit der Paper eines Autors
 innerhalb eines Journals.
+
+Abgelöste Fassungen liegen in `Results/archive/` mit einem `MANIFEST.md`, das für
+jede Datei festhält, aus welchem Lauf sie stammt und warum sie abgelöst wurde.
 
 ---
 
@@ -127,8 +131,8 @@ Nachbarschaftsprobe an Ankerpapern:
 | State-of-the-art in artificial neural network applications | Comprehensive Review of ANN Applications to Pattern Recognition | 0,906 |
 | Survey on deep learning with class imbalance | Effective Class-Imbalance Learning Based on SMOTE and CNN | 0,908 |
 
-Mittlere Ähnlichkeit innerhalb eines Journals über 4.366 Autoren: **0,756**
-bei einer Standardabweichung von 0,084.
+Mittlere Ähnlichkeit innerhalb eines Journals über 8.254 Autoren: **0,767**
+bei einer Standardabweichung von 0,091 (v4-Lauf: 0,756 über 4.366 Autoren).
 
 Weil der Datensatz nur KI-Paper enthält, sind die absoluten Werte generell hoch.
 **Gelesen werden Unterschiede, nicht Niveaus.**
@@ -195,7 +199,7 @@ Wenig — die Richtung läuft überwiegend andersherum. Zwei Punkte:
   Journals, vorher nur die der ausgewählten Autoren — die Bedeutung ändert sich,
   der Spaltenname bleibt.
 
-- **`topic_match_intra`** aus `results_q1_topic_match.csv` beantwortet die Frage,
+- **`topic_match_intra`** aus `results_q1_topic_match_v5.csv` beantwortet die Frage,
   ob Journaltreue thematisch getrieben ist. Noch nicht ausgewertet.
 
 ---
@@ -222,6 +226,8 @@ Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 - **Adapter-Test.** v5 ohne aktiven Adapter laufen lassen und prüfen, ob `sig2`
   auf 0,3611 fällt. Damit wäre die Abweichung zu den früheren Läufen erklärt.
 - **Q3 neu rechnen** auf der v5-Spalte. Die Population ist 77 % größer.
+- **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand
+  passieren muss.
 - **Kennzahl für eigenständige Eintritte** rechnen. Das ist die vereinbarte
   Kopfzahl, nicht 6,09.
 - **Bootstrap über Autoren** für das Konfidenzintervall.

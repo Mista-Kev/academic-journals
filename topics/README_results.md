@@ -16,9 +16,10 @@ beiden Layer damit machen. Wie das Notebook arbeitet, steht in `README.md`.
 **Eine Datei:** `event_table_topicmatch_v5.csv`, geteilt über Teams.
 
 > Das Notebook schreibt auf den unversionierten Pfad `event_table_topicmatch.csv`;
-> die geteilte Datei wird **von Hand** umbenannt. Achtet deshalb auf den Namen:
-> eine Datei ohne `_v5` ist der alte Stand **mit** Schwelle und nicht mehr zu verwenden.
-> Im Zweifel die vier Kennwerte unten prüfen — die sind eindeutig.
+> die geteilte Datei wird **von Hand** umbenannt. Der Name allein belegt weder
+> Version noch Schwellenstand: Es existieren auch lokale schwellenfreie Exporte
+> ohne `_v5`. Vier gerundete Kennwerte sind Plausibilitätschecks, kein eindeutiger
+> Dateifingerabdruck. Den offiziellen Export über den unten angegebenen SHA-256 prüfen.
 
 Das ist die Ereignis-Tabelle des Logic-Layers, unverändert in Zeilenzahl und
 Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spalten.
@@ -31,7 +32,9 @@ Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spal
 | `profile_cutoff` | letztes Jahr im Autorenprofil (nicht pauschal t−1) |
 | `tm_status` | Grund, falls `topic_match` leer ist |
 
-Verbindung immer über die IDs in Kurzform (`A5060045903`), nie über Namen.
+Verbindung immer über IDs, nie über Namen. Die Ereignistabelle nutzt Kurz-IDs
+(`A5060045903`); der Intra-Export enthält volle OpenAlex-URLs. Vor einem Vergleich
+auf Kurz-IDs normalisieren.
 
 Für Q1 zusätzlich: `results_q1_topic_match_v5.csv` — 9.195 Autor-Journal-Zeilen mit
 `topic_match_intra`, der mittleren Themenähnlichkeit der Paper eines Autors
@@ -87,11 +90,31 @@ Alle eingebauten Prüfungen bestanden: Journalprofil-Vergleich gegen die DB 0 Ab
 `n_journal_papers` 0 Verstöße, keine 0-Kodierung leerer Werte, `profile_cutoff` immer vor t,
 Zeilenzahl unverändert.
 
-> **v5 reproduziert die Läufe unten nicht.** `sig2` 0,3635 gegen 0,3611, Mittelwert 0,767
-> gegen 0,785574. Die Zahlen 5,69 und 6,09 stammen aus einem lokalen v4-Lauf, der nicht im
-> Repo liegt. Wahrscheinlichste Ursache ist der Adapter — Test ausstehend, siehe `README.md`.
+### Nachprüfung der gelieferten Datei (7. September)
 
-### Ältere Läufe — Kevins Messung
+Die offizielle CSV wurde unabhängig geprüft; der ML-Code und die CSV wurden für
+diese Dokumentationskorrektur nicht geändert.
+
+```text
+SHA-256 event_table_topicmatch_v5.csv
+8a9e8a9257f3f00ce39a71f0dcefd09cd10bc1d8200580426ee94346284b2e37
+```
+
+Dateigröße: 497.765.187 Bytes. Mittelwert aller gefüllten Zeilen:
+**0,7668561703**, Median **0,7651017000**. Alle ursprünglichen Ereignisfelder und
+Schlüssel stimmen mit der Basistabelle überein. Die lokale v5-Regeneration stimmt
+in sämtlichen Nicht-T-Feldern überein; T weicht maximal um **4,72×10⁻⁷** ab.
+Unabhängige Rohkorpuszählung bestätigt 26.962 nutzbare Paper und alle 640
+Journal-Jahr-Profilzählungen. `sig2` und Adapterzustand stammen aus Laufmetadaten;
+sie stehen nicht in der CSV selbst.
+
+**Die frühere Gegenüberstellung 0,785574 → 0,767 mischte Populationen.**
+0,785574 ist der alte schwellenfreie Mittelwert auf 623.510 gemeinsamen Zeilen.
+Auf allen 1.106.356 gefüllten Zeilen lag der alte Mittelwert bei 0,7654884008.
+Gleiche Populationen getrennt von geänderten Messwerten vergleichen. Ein
+Adapter-Ursachenclaim wurde durch diesen Dateivergleich nicht getestet.
+
+### Ältere Läufe — Kevins Messung auf 623.510 gemeinsamen Zeilen
 
 | Größe | mit Schwelle | ohne Schwelle |
 |---|---|---|
@@ -106,7 +129,7 @@ Abweichung **0,013**, maximale **0,325**.
 auf einer Größe, die selbst mit Journaleintritten zusammenhängt, und wirkte
 zusätzlich bis in die Journalprofile durch.
 
-### Warum 90 Prozent leer sind
+### Historischer Min-3-Lauf: warum rund 90 Prozent leer waren
 
 | Status | Zeilen |
 |---|---|
@@ -161,31 +184,58 @@ Weil der Datensatz nur KI-Paper enthält, sind die absoluten Werte generell hoch
               Mittelwert über T von P(F = 1 | C = 0, T)
    ```
 
-5. **Die vereinbarte Kennzahl** nimmt im Zähler nur die eigenständigen Eintritte
-   (`first_entry_independent`), im Nenner alle. Unter C = 0 ist jeder Eintritt
-   ohnehin eigenständig, dort braucht es keine Aufteilung.
+5. **Für die engere Kennzahl das Non-ride-Outcome modellieren:**
+   `Y = first_entry * (1 - first_entry_ride)` auf denselben Gelegenheitszeilen.
+   Für dieses Modell beide Risiken bei C=1 und C=0 vorhersagen und mitteln.
+   Nicht den Zähler aus einem Non-ride-Modell durch den Nenner eines separat
+   gefitteten All-entry-Modells teilen. „Independent“ bedeutet hier non-ride,
+   nicht kausale Unabhängigkeit von Netzwerkeinflüssen.
 
 6. **Aufteilen, nicht filtern.** Zeilen mit gemeinsamem Eintritt
    (`first_entry_ride`) bleiben im Datensatz. Ob der Wegbereiter auf dem
    Eintrittspaper landet, ist selbst eine Folge von C — ein Filter darauf würde
    nach der Behandlung auswählen.
 
-7. **Konfidenzintervall über einen Bootstrap über Autoren**, nicht über Zeilen.
-   623.510 Zeilen sind keine 623.510 unabhängigen Beobachtungen; ein Autor
-   erzeugt viele davon. Rechnet man mit der Zeilenzahl, wird das Intervall zu eng.
+7. **Abhängigkeiten bei der Unsicherheit berücksichtigen.** Autoren erzeugen
+   mehrere Zeilen. Der frühere Plan sah Autoren-Bootstrap vor; der alte Export
+   hat einen 300-Refit-Bootstrap. Die nachstehenden v5-Prüfungen berechneten
+   Autoren-Cluster-Delta-Intervalle, keine neuen v5-Bootstrap-Refits. Diese
+   Abweichung offen benennen. Autoren-Clustering allein sichert gemeinsame
+   Journal-/Paperabhängigkeit nicht vollständig ab; erweiterte Zweiweg-
+   Kovarianzen waren nicht positiv semidefinit. Ein RR-Intervall ist außerdem
+   kein Bootstrap-LR-Test der früher geplanten Nullhypothese.
 
-**Bisheriger Stand:** 5,24 mit Schwelle, 5,69 ohne Schwelle auf denselben Zeilen,
-6,09 ohne Schwelle auf der vollen Population. Die Kennzahl für eigenständige
-Eintritte fehlt noch.
+### Q3 auf dem offiziellen v5-Export: lokal nachgerechnet
 
-**Achtung, diese Zahlen sind zu erneuern.** Der v5-Lauf füllt 1.106.356 Zeilen statt
-623.510 — 77 % mehr. Q3 ist auf der neuen Spalte neu zu rechnen.
+Die folgenden sechs Fits sind unabhängig geprüft und im lokalen Q3-Arbeitsstand
+nachgerechnet; die Veröffentlichung dieses Notebooks bleibt separat in PR #60.
+Dieses Topic-PR liefert die Messung, nicht die vollständige statistische Abgabe.
 
-**Übergabeobjekt ist die CSV, nicht das Notebook.** Der ML-Layer erzeugt
-`event_table_topicmatch.csv`, der Probabilistic-Layer liest sie. Ein Nachrechnen der
-Embeddings auf einer anderen Maschine erzeugt andere Werte, wie der Vergleich oben zeigt.
-Zur Prüfung gibt der Lauf am Ende vier Kennwerte aus — `MIN_PAPERS`, `sig2`, Mittelwert
-und Zeilenzahl. Stimmen die mit der gelieferten Datei überein, ist es dieselbe Spalte.
+| Outcome / Population | C + T | C + T + separate Journal-/Jahreffekte |
+|---|---:|---:|
+| Q3_all, alle 1.106.356 messbaren-T-Zeilen | 6,0929 | — |
+| Non-ride, dieselben 1.106.356 Zeilen | 3,3437 | — |
+| Q3_all, dieselben 1.088.420 Diagnostikzeilen | 6,0058 | 2,2653 |
+| Non-ride, dieselben 1.088.420 Diagnostikzeilen | 3,2967 | 1,1826 |
+
+Die Diagnostik schließt Journal `S4210228265` mit 17.936 messbaren-T-Zeilen und
+keinem Eintritt wegen Separation aus. Das ist ein **am Outcome bestimmter
+Ausschluss**, keine Routinebereinigung. Für den Spezifikationsvergleich deshalb
+die beiden Modelle auf derselben Teilpopulation gegenüberstellen. Separate
+Journal-/Jahreffekte sind keine Journal×Jahr-Interaktionen. Alle Werte sind
+modellbasierte standardisierte Assoziationen, keine identifizierten kausalen Effekte.
+
+Autoren-Delta-Intervalle (95 %) für die volle C+T-Auswertung: Q3_all
+[5,7566; 6,4489], Non-ride [3,1188; 3,5847]. Auswahl vollständiger Fälle,
+Modellspezifikation und Abhängigkeiten bleiben Einschränkungen.
+
+**77 % mehr gefüllte Zeilen** gilt gegenüber dem alten Min-3-Bestand mit 623.510
+Zeilen. Bereits der frühere schwellenfreie RR 6,09 verwendete 1.106.356 Zeilen.
+Der v5-Neulauf und die Non-ride-Kennzahl sind daher keine fehlenden Rechnungen mehr.
+
+**Übergabeobjekt ist die CSV.** Reproduktion anhand von Quelle, Konfiguration,
+Hash und Vergleichen auf denselben Schlüsseln beurteilen. Gleiche gerundete
+Laufkennwerte allein beweisen keine identische Spalte.
 
 ---
 
@@ -199,8 +249,10 @@ Wenig — die Richtung läuft überwiegend andersherum. Zwei Punkte:
   Journals, vorher nur die der ausgewählten Autoren — die Bedeutung ändert sich,
   der Spaltenname bleibt.
 
-- **`topic_match_intra`** aus `results_q1_topic_match_v5.csv` beantwortet die Frage,
-  ob Journaltreue thematisch getrieben ist. Noch nicht ausgewertet.
+- **`topic_match_intra`** aus `results_q1_topic_match_v5.csv` beschreibt die
+  Ähnlichkeit in bereits beobachteten Autor-Journal-Gruppen. Es beantwortet
+  nicht den historischen Rückkehrvergleich gegen alternative Journals und
+  ersetzt keine kontinuierliche T-Adjustierung von Q1/Q2.
 
 ---
 
@@ -212,7 +264,7 @@ Falls ihr danach gearbeitet habt, bitte prüfen:
 | Alt | Warum verworfen |
 |---|---|
 | „Aus dem Thema-Wert ein Ja/Nein machen, Schwelle 0,85" | Willkürliche Grenze, Informationsverlust. T geht stetig ins Modell. |
-| „Leere Werte als eigene Gruppe behandeln" | Per Simulation widerlegt (400.000 Zeilen, drei Fehlmechanismen). Eine Kategorie „fehlt" korreliert mit dem Ergebnis und bringt den Störfaktor zurück ins Modell. Vollständige Fälle gewinnen in allen Szenarien. |
+| „Leere Werte als eigene Gruppe behandeln" | Im untersuchten Simulationsdesign verworfen. Das begründet keine allgemeine Überlegenheit vollständiger Fälle und löst die reale Auswahl durch Profilverfügbarkeit nicht. |
 | „`keys_author_paper.csv` ist die Basis für den Logic-Teil" | Überholt. Zentrales Verbindungsobjekt ist die Ereignis-Tabelle. Q3 braucht die nicht realisierten Kombinationen als Nenner; die Publikationstabelle hat sie nicht. |
 | „An eure Ereignisse dranjoinen über `work_id`" | Entfällt. Der ML-Layer schreibt direkt in die Ereignis-Tabelle, es gibt keinen Join mehr. |
 
@@ -221,16 +273,18 @@ Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 
 ---
 
-## Offen
+## Verbleibend
 
-- **Adapter-Test.** v5 ohne aktiven Adapter laufen lassen und prüfen, ob `sig2`
-  auf 0,3611 fällt. Damit wäre die Abweichung zu den früheren Läufen erklärt.
-- **Q3 neu rechnen** auf der v5-Spalte. Die Population ist 77 % größer.
-- **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand
-  passieren muss.
-- **Kennzahl für eigenständige Eintritte** rechnen. Das ist die vereinbarte
-  Kopfzahl, nicht 6,09.
-- **Bootstrap über Autoren** für das Konfidenzintervall.
-- **Adapter-Vergleich** als Robustheitsprüfung dokumentieren.
-- **Themenpassung für Q1 und Q2** — Anfrage aus der Besprechung mit dem Professor.
-  `topic_match_intra` liegt vor, ist aber nicht ausgewertet.
+- **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand passiert.
+- **Ausführungsnachweis:** Das v5-Notebook im PR enthält keine gespeicherten Outputs;
+  Laufbericht und unabhängiger Exportcheck sind davon zu unterscheiden.
+- **Adapter-Vergleich:** Pierre hat für einen früheren Robustheitsvergleich keinen
+  nennenswerten Einfluss berichtet. Das wird nicht mehr pauschal als ausstehender
+  Test geführt. Für die eindeutige Ursache einer konkreten Laufdifferenz sind
+  unveränderter Paperpool, Konfiguration und Vergleichsoutputs zu dokumentieren;
+  das ist keine Voraussetzung, den geprüften v5-Export zu nutzen.
+- **Unsicherheit und Interpretation** in der Q3-Abgabe konsistent mit den tatsächlich
+  ausgeführten Verfahren beschreiben. Keine neue v5-Bootstrap-Rechnung behaupten.
+- **Historische kontinuierliche Themenpassung für Q1/Q2** bleibt eine weitergehende
+  Analysefrage. Die vorhandenen Jahr/Primärthema-Nullmodelle und der Intra-Export
+  beantworten sie nicht vollständig.

@@ -1,8 +1,9 @@
 # topics/ — topic_match (ML-Layer)
 
 **Zweck:** Misst die thematische Passung zwischen einem Autor und einem Journal zu
-einem Zeitpunkt. Diese Zahl ist der Störfaktor T in Q3 — sie wird herausgerechnet,
-sie ist nicht der gesuchte Effekt.
+einem Zeitpunkt. Diese Zahl wird als kontinuierliche Kovariate T in Q3 verwendet.
+Ob sie ein ausreichender oder kausal zulässiger Kontrollfaktor ist, folgt nicht aus
+der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst haben.
 
 **Verantwortlich:** Pierre
 **Eingang:** `academic_journals.duckdb` (OpenAlex-Ausschnitt), Ereignis-Tabelle des Logic-Layers
@@ -38,9 +39,13 @@ der Schwerpunkt seiner Paper aus den Jahren **strikt vor t**, das **Journalprofi
 der Schwerpunkt der Paper dieses Journals vor t. `topic_match` ist die Ähnlichkeit beider
 Profile.
 
-Formal ist `topic_match = exp(-(1 - cos)/sig2)` bei Vektoren der Länge 1 — also eine streng
-monotone Funktion der Kosinus-Ähnlichkeit. Rangfolgen hängen deshalb nicht von `sig2` ab,
-die Zahlenwerte aber schon.
+Die tatsächliche Jahresrechnung ist
+`topic_match = exp(-||Autorenprofil - Journalprofil||² / (2 * sig2))`.
+Die Paper-Vektoren sind L2-normalisiert; ihre Profilmittelwerte werden **nicht erneut
+normiert**. Nur für zwei Einheitsvektoren vereinfacht sich die Formel zu
+`exp(-(1 - cos)/sig2)`. Diese Kosinus-Vereinfachung gilt daher nicht allgemein für
+die Jahresprofile. Bei festen Profilen verändert ein positives `sig2` den Maßstab,
+nicht die Rangfolge nach euklidischer Distanz.
 
 ---
 
@@ -65,7 +70,7 @@ Zeilenzahl vor und nach dem Lauf ist identisch.
 | `no_author_history` | Autor hat vor t kein eingebettetes Paper |
 | `no_journal_history` | Journal hat vor t kein eingebettetes Paper |
 | `no_author_and_journal_history` | beides fehlt |
-| `below_threshold_unproductive` | Autor unter `MIN_PAPERS` Werken insgesamt |
+| `below_threshold_unproductive` | Historischer Schwellenstatus; im geprüften v5-Export nicht vorhanden |
 | `below_threshold_no_abstract` | genug Werke, aber zu wenige mit Abstract |
 | `author_not_in_db` | Autor-ID nicht in der Rohdatenbasis |
 
@@ -73,25 +78,29 @@ Zeilenzahl vor und nach dem Lauf ist identisch.
 
 ## Regeln für die Weiterverarbeitung
 
-Diese fünf Punkte sind nicht verhandelbar. Vier davon sind aus Fehlern entstanden.
+Diese Punkte beschreiben die Schnittstelle und die aktuelle Auswertung. Statistische
+Arbeitsentscheidungen sind kein Beweis für kausale Identifikation.
 
 1. **Ein leeres `topic_match` ist niemals 0.** Leer heißt „kein Thema bekannt", nicht
    „Thema unähnlich". Eine 0 senkt Mittelwerte und verzerrt die Anpassung. Der Grund
    steht in `tm_status`.
 
 2. **Vollständige Fälle, keine Ersatzkategorie.** In die Regression gehen nur Zeilen mit
-   gültigem T. Eine dritte Kategorie „fehlt" wurde per Simulation getestet (400.000 Zeilen,
-   drei Fehlmechanismen) und verworfen — sie bringt den Störfaktor ins Modell zurück.
+   gültigem T. Das definiert die ausgewertete Teilpopulation, keine allgemeine
+   Unverzerrtheitsgarantie. Die Simulationen zur Fehlwertkategorie prüfen bestimmte
+   Szenarien; sie entscheiden den realen Auswahlmechanismus nicht.
 
 3. **Keine Schwelle auf `topic_match`.** Der Wert geht stetig ins Modell. Eine Binarisierung
    bei 0,85, wie in einer früheren Fassung vorgeschlagen, ist überholt.
 
-4. **Werte aus verschiedenen Läufen nicht mischen.** Zwei Läufe sind nur vergleichbar, wenn
-   `MIN_PAPERS` **und** `sig2` übereinstimmen. Die Korrelation zwischen dem Lauf mit und ohne
-   Schwelle liegt bei 0,951, die maximale Abweichung je Zeile aber bei 0,325.
+4. **Werte aus verschiedenen Läufen nicht mischen.** Quelle, Hash, Profildefinition,
+   Parameter und verglichene Zeilen festhalten. Gleiche `MIN_PAPERS` und `sig2` garantieren
+   keine gleiche Spalte. Unterschiede zwischen Läufen können auf denselben Schlüsseln
+   ausdrücklich verglichen werden; dabei Teilpopulationen nicht verwechseln.
 
 5. **Verbindung über IDs, nie über Namen.** Kurzform (`A5060045903`), nicht die volle URL.
-   Der Konsistenzcheck in Abschnitt 14 prüft das, bevor gerechnet wird.
+   Der Konsistenzcheck in Abschnitt 14 prüft das, bevor gerechnet wird. Der separate
+   Intra-Export enthält volle OpenAlex-URLs; vor einem ID-Vergleich normalisieren.
 
 ---
 
@@ -101,8 +110,10 @@ Der Lauf bricht ab, statt still Falsches zu rechnen:
 
 - **Adapter aktiv** — `model.active_adapters` wird geprüft, nicht angenommen.
   Die Warnung `There are adapters available but none are activated` erscheint beim
-  Modell-Laden **vor** `load_adapter` und ist ein Fehlalarm; maßgeblich ist die Ausgabe
-  von `active_adapters` danach
+  Modell-Laden im lokalen Test vor Aktivierung. Die Warnung allein belegt deshalb
+  keinen inaktiven früheren Lauf; maßgeblich ist der Zustand beim Forward-Pass.
+  Der Code prüft `active_adapters is not None`; `Stack[[PRX]]` ist der berichtete
+  und lokal protokollierte Zustand, keine wörtliche Assert-Bedingung auf diesen Namen
 - **Buchhaltung der Abstracts** — `len(titles) + n_dropped == len(rows)`
 - **GPU vorhanden** — sonst dauert der Lauf Stunden
 - **ID-Überlappung** zwischen Embeddings und Ereignis-Tabelle
@@ -132,7 +143,8 @@ Der Lauf bricht ab, statt still Falsches zu rechnen:
 
 - **`MIN_PAPERS = 1`.** Die Drei-Paper-Schwelle fällt (Entscheidung 6). Sie filterte auf einer
   Größe, die selbst schon mit Journaleintritten zusammenhängt, und schnitt 83,9 % der Zeilen ab.
-  `MIN_PAPERS = 3` reproduziert den alten Lauf und ist nur noch Sensitivitätsvariante.
+  `MIN_PAPERS = 3` kann als Sensitivitätsvariante gesetzt werden, reproduziert in v5
+  wegen des geänderten Journalpools aber nicht automatisch den alten v4-Lauf.
 
 - **Journalprofile von der Schwelle entkoppelt.** Bis v4 lief die Kette
   `MIN_PAPERS → chosen_ids → work_ids → meta → journal_pairs`, das Journalprofil hing also an
@@ -153,7 +165,9 @@ Der Lauf bricht ab, statt still Falsches zu rechnen:
 - **Tote Variable `N_AUTHORS = 150` entfernt.** Sie wurde vom Code ohnehin überschrieben,
   las sich aber wie eine Stichprobenbegrenzung.
 
-- **Outputs geleert.** Der Lauf steht noch aus.
+- **Outputs im Notebook geleert.** Der v5-Export liegt inzwischen vor und wurde
+  unabhängig geprüft. Laufkennwerte stehen in `README_results.md`; das Notebook
+  selbst enthält keinen gespeicherten Ausführungsnachweis.
 
 ---
 
@@ -163,43 +177,46 @@ Der Lauf bricht ab, statt still Falsches zu rechnen:
 |---|---|---|---|---|---|---|---|
 | mit Schwelle | v4 | 3 | 12.236 | 0,3613 | 0,776284 | 623.510 | 5,24 |
 | ohne Schwelle, gleiche Zeilen | v4, lokal | 1 | — | 0,3611 | 0,785574 | 623.510 | 5,69 |
-| ohne Schwelle, volle Population | v4, lokal | 1 | — | 0,3611 | 0,785574 | — | 6,09 |
-| **v5-Lauf** | **v5** | **1** | **26.962** | **0,3635** | **0,767** | **1.106.356** | offen |
+| ohne Schwelle, volle messbare-T-Population | v4, lokal | 1 | — | 0,3611 | 0,765488 | 1.106.356 | 6,09 |
+| **v5-Lauf** | **v5** | **1** | **26.962** | **0,3635** | **0,766856** | **1.106.356** | **6,0929 / non-ride 3,3437 (C+T)** |
 
 Die Ereignis-Tabelle hat 6.422.558 Zeilen.
 
-### Abnahmekriterium: nicht erfüllt
+### Prüfung der gelieferten v5-Datei
 
-Geprüft wurde, ob v5 den schwellenfreien Lauf reproduziert (`sig2 = 0,3611`, Mittelwert
-`0,785574`). **Tut es nicht:** 0,3635 und 0,767, eine Abweichung von 0,7 % beziehungsweise
-2,4 %. Die gefüllte Population liegt zudem 77 % höher.
+Der offizielle Export wurde am 7. September geprüft: 6.422.558 eindeutige
+Ereignisschlüssel, unveränderte ursprüngliche Ereignisfelder, 1.106.356 gefüllte
+T-Werte, keine Cutoff-Verletzung. Der Rohkorpus bestätigt 26.962 nutzbare Paper und
+alle 640 Journal-Jahr-Profilzählungen. Gegenüber der lokalen v5-Regeneration sind
+alle Nicht-T-Felder identisch; die maximale T-Abweichung beträgt 4,72×10⁻⁷.
+Dateihash und Q3-Vergleiche stehen in [README_results.md](README_results.md).
 
-**v5 ist damit nicht die Quelle der Zahlen 5,69 und 6,09.** Diese stammen aus einem lokalen
-Lauf mit v4-Code, der nicht im Repo liegt.
+0,785574 stammt aus den **623.510 gemeinsamen alten Zeilen**; der alte Mittelwert
+auf allen 1.106.356 messbaren-T-Zeilen ist 0,765488. Die 77 % mehr beziehen sich
+auf die Erweiterung von 623.510 auf 1.106.356, nicht auf v5 gegenüber der Population
+hinter dem früheren RR 6,09. Die sechs überprüften Q3-Ratios ändern sich durch die
+Datenversion wenig; die Journal-/Jahr-Spezifikation verändert sie deutlich.
 
-Wahrscheinlichste Ursache: der Proximity-Adapter. v5 belegt mit `active_adapters` = `Stack[[PRX]]`,
-dass er aktiv ist. Für die früheren Läufe ist das offen — dort war die Paketinstallation
-abgebrochen, es lief eine vorinstallierte `adapters`-Version. Andere Vektoren bedeuten anderes
-`sig2` und andere Werte.
-
-**Test:** v5 einmal ohne aktiven Adapter laufen lassen (Zeile `load_adapter` und den `assert`
-in Abschnitt 7 auskommentieren). Ergibt das `sig2 ≈ 0,3611`, ist die Abweichung erklärt.
+Ein Adapter-Ursachenclaim erfordert einen kontrollierten Vergleich bei gleichem
+Paperpool und gleicher Konfiguration. Unterschiedliche Mittelwerte oder eine
+Ladewarnung isolieren diese Ursache nicht.
 
 ---
 
-## Offene Punkte
+## Verbleibende Punkte
 
-- **Adapter-Test:** v5 ohne aktiven Adapter laufen lassen, um die Abweichung zu 0,3611 zu erklären
-- **Kevin muss Q3 neu rechnen** — die gefüllte Population ist von 623.510 auf 1.106.356 gewachsen
-- **Versionierung der Ausgabedatei im Notebook nachziehen** — der Dateiname wird derzeit
-  von Hand vergeben, `EVENT_OUT` schreibt weiterhin auf den unversionierten Pfad
-- **Eingefrorene Variante** von `topic_match` zum Zeitpunkt der ersten Wegbereitung —
-  konzipiert, nicht gebaut. Muss ohne Schwelle gebaut werden, sonst nicht vergleichbar
-- **Adapter-Vergleich** als Robustheitsprüfung dokumentieren
-- **Themenpassung für Q1 und Q2** — Anfrage aus der Besprechung mit dem Professor.
-  `topic_match_intra` liegt bereits vor (`results_q1_topic_match_v5.csv`, 9.195
-  Autor-Journal-Zeilen, Mittelwert 0,767, Standardabweichung 0,091), ist aber
-  nicht ausgewertet
+- **Versionierung der Ausgabedatei im Notebook:** `EVENT_OUT` schreibt weiterhin
+  auf den unversionierten Pfad; die geteilte Datei wird von Hand umbenannt.
+- **Adapter-Vergleich:** Ein früherer Robustheitsvergleich wurde von Pierre als
+  ohne nennenswerten Einfluss berichtet. Eine einzelne Laufdifferenz damit nicht
+  ohne dokumentierten gleichen Paperpool und gleiche Konfiguration kausal erklären.
+- **Eingefrorene Variante** zum Zeitpunkt der ersten Wegbereitung: konzipiert,
+  nicht gebaut; Zeitanker und Vergleichsregel für C=0 gesondert begründen.
+- **Themenpassung für Q1/Q2:** Der Intra-Export beschreibt bereits beobachtete
+  Autor-Journal-Gruppen. Er ersetzt keine historische T-Adjustierung für
+  Rückkehrfälle und alternative Journals. Diese weitergehende Frage bleibt offen.
+- **Analysegrenzen:** vollständige Fälle sind eine ausgewählte Population;
+  Modellabhängigkeit und Unsicherheitsverfahren in der Q3-Auswertung erklären.
 
 ---
 
@@ -208,9 +225,9 @@ in Abschnitt 7 auskommentieren). Ergibt das `sig2 ≈ 0,3611`, ist die Abweichun
 - **`Results/archive/`** — abgelöste Ergebnisdateien mit `MANIFEST.md`, das für jede
   erklärt, aus welchem Lauf sie stammt und warum sie abgelöst wurde. Bewusst im Repo
   behalten, damit die Kette nachvollziehbar bleibt. Nicht mehr verwenden.
-- **`README_results.md`** — beschreibt den Stand vor der Ereignis-Tabelle. Enthält
-  überholte Anweisungen: Binarisierung von `topic_match` bei 0,85 und Fehlwerte
-  „als eigene Gruppe behandeln". Beides wurde später verworfen. Nicht mehr befolgen.
+- **`README_results.md` ist aktuell**, kein Archiv: Ergebnisse, Dateiprüfung und
+  zurückgezogene Anweisungen. Die früheren Anweisungen sind dort ausdrücklich
+  als überholt gekennzeichnet.
 - **`embeddings_colab_slim.ipynb`**, **`embeddings_colab_eventtable.ipynb`** —
   frühere Fassungen, nur zur Nachvollziehbarkeit
 - **`keys_author_paper.csv`** — für Q3 hinfällig, seit die Ereignis-Tabelle das

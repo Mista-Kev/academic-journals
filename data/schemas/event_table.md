@@ -1,5 +1,12 @@
 # Schema: event table (draft for freeze)
 
+> **Historical draft, not the implemented CSV contract.** The current builder
+> [build_event_table.py](../../logic/build_event_table.py) produces annual
+> `(author_id, journal_id, t)` opportunities including non-entries. Here `t` is
+> a year; `topic_match` is a continuous historical-profile similarity, not a
+> calibrated probability. The paper-level fields and thresholding proposal below
+> do not describe that output. A replacement annual schema is tracked separately.
+
 One row per opportunity: an author a, a journal J that a has never published in before, at time t. Produced by the logic layer (Lennart's rules) joined with topic_match (Pierre). This is the single input for all of E4/E5.
 
 | Column | Type | Meaning |

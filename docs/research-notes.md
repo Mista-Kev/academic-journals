@@ -1,5 +1,7 @@
 # Research Notes (beyond the kickoff slides)
 
+> **Historical document.** These were options and cautions collected before implementation. Some items were adopted, replaced, or found infeasible. They are not the current method specification.
+
 The kickoff slides are the agreed baseline plan. These notes are *extra input* from prior research — pitfalls to avoid and optional upgrades. In the issues they are marked "(research)" or "(stretch)"; they never replace the baseline.
 
 - **OpenAlex access (S1.2):** since Feb 2026 the API requires a free API key and is credit-metered (~100k credits/day free; list calls cost 10 credits). For bulk pulls prefer the free monthly snapshot or a one-time filtered pull; use pyalex; cache everything; key via `.env`.

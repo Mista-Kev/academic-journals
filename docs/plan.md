@@ -1,5 +1,7 @@
 # Project plan
 
+> **Historical document.** This was the pre-kickoff scaffold. Several methods, ownership notes, and data assumptions changed during implementation. It is retained to show the original plan, not as the current specification. Use the implemented code, current schemas, reviewed notebooks, and recorded group decisions for the current state.
+
 *Last updated 27 July 2026, before the kickoff. Decisions marked "pending" get filled in from the kickoff and mirrored into `decisions.md`.*
 
 ## What we are measuring

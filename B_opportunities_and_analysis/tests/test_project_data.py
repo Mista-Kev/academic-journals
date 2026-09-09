@@ -104,6 +104,59 @@ class SharedDataTests(unittest.TestCase):
         with self.assertRaises(data.DataError):data.stage(target,'q3',self.root)
         self.assertEqual((target/'data/test.csv').read_bytes(),b'other release')
 
+    def test_complete_release_can_supply_a_fresh_recipient_cache(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = Path(self.temp.name)/'release'
+        data.release_folder(target, self.root)
+        data.release_folder(target, self.root)  # repeat preparation is safe
+        recipient = Path(self.temp.name)/'recipient'
+        recipient.mkdir()
+        (recipient/'data-manifest.json').write_bytes((self.root/'data-manifest.json').read_bytes())
+        data.release_folder(target, recipient, verify_only=True)
+        with mock.patch.dict('os.environ', {}, clear=True):
+            data.configure(target, root=recipient)
+            data.ensure_data('q3', recipient)
+        self.assertEqual((recipient/self.item['path']).read_bytes(), self.payload)
+        expected = set(data.release_metadata(self.manifest)) | {self.item['path']}
+        self.assertEqual({p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file()}, expected)
+
+    def test_release_metadata_conflict_prevents_data_copy(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = Path(self.temp.name)/'release'
+        target.mkdir()
+        (target/'START_HERE.txt').write_text('previous release instructions')
+        with self.assertRaisesRegex(data.DataError, 'missing or different'):
+            data.release_folder(target, self.root)
+        self.assertFalse((target/self.item['path']).exists())
+        self.assertEqual((target/'START_HERE.txt').read_text(), 'previous release instructions')
+
+    def test_release_rejects_private_extras_and_repository_destinations(self):
+        target = Path(self.temp.name)/'release'
+        target.mkdir()
+        (target/'private-notes.txt').write_text('not for upload')
+        with self.assertRaisesRegex(data.DataError, 'Unexpected release content'):
+            data.release_folder(target, self.root)
+        self.assertFalse((target/'START_HERE.txt').exists())
+        for destination in (self.root, self.root/'release', self.root.parent):
+            with self.subTest(destination=destination), self.assertRaises(data.DataError):
+                data.release_folder(destination, self.root)
+
+    def test_release_verification_detects_missing_and_changed_metadata(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = Path(self.temp.name)/'release'
+        data.release_folder(target, self.root)
+        for name, original in data.release_metadata(self.manifest).items():
+            with self.subTest(name=name):
+                path = target/name
+                path.unlink()
+                with self.assertRaises(data.DataError):
+                    data.release_folder(target, self.root, verify_only=True)
+                path.write_bytes(b'wrong metadata')
+                with self.assertRaises(data.DataError):
+                    data.release_folder(target, self.root, verify_only=True)
+                path.write_bytes(original)
+        data.release_folder(target, self.root, verify_only=True)
+
     def test_manifest_cannot_escape_its_root(self):
         for path in ['../private','/tmp/private','data/../../private','data\\private','C:/private']:
             with self.subTest(path=path),self.assertRaises(data.DataError):data.safe_path(self.root,path)

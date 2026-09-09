@@ -50,3 +50,30 @@ from proposed adoption in the joint team report. Current notebook text refers to
 the documented August comparison without asserting verified preregistration.
 The frozen model-results JSON is explicitly external reference evidence, with its
 producer outside this repository. Project documentation contains no agent attribution.
+
+## Local SharePoint release preparation · 9 September
+
+The complete A/B/C delivery was prepared locally from the unchanged frozen files:
+13 data artifacts (2,648,058,868 bytes), plus `START_HERE.txt`, `FILES.md`, the
+manifest and a delivery receipt. `verify-release` checked every data and metadata
+file against the repository definition. No remote folder was changed.
+
+The loader suite now has **18 passing tests**, including complete release → fresh
+recipient cache, repeat preparation, metadata conflicts before data copying,
+unexpected private content, and missing/corrupt metadata. Existing loading tests
+continue to pass. Notebook cells, saved outputs and manifest hashes are unchanged.
+
+A separate temporary code folder started with **none of the manifest data files**.
+It verified and configured the prepared A/B/C release, then ran both complete demos:
+Q1/Q2 in 29.0 s and Q3 in 56.2 s, using the existing project Python environment.
+Q1/Q2 printed 3.09 / 2.22, 2.02 / 1.69 and 1.16 / 1.11; Q3 printed 6.09 / 3.34
+and journal/year sensitivities 2.27 / 1.18. Output comparisons matched the earlier
+logs after excluding loader/timing messages and the previously corrected year caution.
+With the source configuration removed, both data groups passed again from cache.
+The temporary recipient folder was removed after the check.
+
+The local release uses independent APFS copy-on-write copies to conserve disk
+space; no source file is hardlinked or symlinked into it. Ordinary release
+preparation works by copying files and does not require APFS. Actual remote
+upload/readback, recipient-account access and automatic OneDrive synchronization
+remain separate checks after publication; this preparation does not claim them.

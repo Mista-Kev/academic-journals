@@ -33,7 +33,9 @@ the new A/B/C path and otherwise uses that explicit old path. Either copy must
 match the same size and SHA-256; a differing new-path file is rejected rather
 than silently replaced by the old copy.
 
-`stage` writes the new A/B/C layout. The migration mapping is in
+`prepare-release` writes the complete new A/B/C delivery, including instructions
+and metadata; `stage` remains available for data-only or single-group staging.
+The migration mapping is in
 [layout-migration.json](layout-migration.json). This changes file locations,
 not the frozen v5 data release or its checksums. Keep the old release readable
 until the matching code has been published and collaborators have switched.
@@ -138,16 +140,48 @@ For the currently declared files:
 
 ```sh
 python3 project_data.py verify --group all
-python3 project_data.py stage --group all --target /path/to/shared-or-staging-folder
+python3 project_data.py prepare-release --target /path/to/dedicated-release-folder
+python3 project_data.py verify-release --target /path/to/dedicated-release-folder
 ```
 
 Use your actual path. The destination must be the directory that will contain
-the A/B/C data folders. `stage` copies only manifest-listed files and
-writes a delivery receipt; private notes, source checkouts and temporary files
-are never recursively collected. It refuses conflicting destination versions.
+the A/B/C data folders. `prepare-release` copies only the 13 manifest-listed files
+and writes four metadata files: `START_HERE.txt`, `FILES.md`, `data-manifest.json`
+and a deterministic `delivery-*.json` receipt. Instructions name the repository
+commands; the inventory identifies each file's purpose and producer. D remains
+in GitHub because it contains the combined interpretation, not another data copy.
+
+Use a dedicated empty folder outside the repository. Repeating preparation on
+an identical release is safe. A differing existing data or metadata file, or
+unexpected content such as private notes, causes an error before copying files.
+The command never recursively collects the source checkout. A failed or
+interrupted preparation is not a completed delivery: `verify-release` must pass.
+It checks all data **and metadata** against the matching repository version.
+Changing the instructions in code requires preparing new metadata in a new folder;
+the verifier intentionally refuses stale instructions. `stage --group q3` can
+still prepare selected data, but that is not a complete release.
+
 If the target is a OneDrive-synced folder, wait for synchronization and check the
 files on SharePoint before claiming that the upload completed. Otherwise upload
 the prepared directories through SharePoint's folder-upload control.
+
+### Switch after review and code publication
+
+1. Publish the reviewed code with the A–D paths and these release commands.
+2. Upload the **contents** of the prepared release to a new, separately named
+   SharePoint release folder, including all four root metadata files. Preserve
+   the existing `data/`, `results/` and `topics/Results/` release while people switch.
+3. Download the new release into a different local folder, extract it and run
+   `verify-release --target "/path/to/downloaded-release"` from that code version.
+   A successful local preparation does not prove the upload or readback succeeded.
+4. Configure that downloaded or synced release root and run both demos. Ask a
+   recipient to follow `START_HERE.txt` with their own account before declaring
+   recipient access tested. Permissions and OneDrive setup are separate from hashes.
+
+Preparation alone does not change `.shared-data.local.json`, notebook cells,
+SharePoint contents or the team's current reference release. A fresh recipient
+cache can be tested with `--root` pointing to a separate folder containing the
+matching repository manifest. Verification itself requires no data copy.
 
 For a future data release, assign a new release label and review the manifest's
 explicit file list and hashes. Preserve the old release in a separately named

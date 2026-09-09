@@ -2,6 +2,7 @@
 from pathlib import Path, PurePosixPath
 import argparse
 import hashlib
+import io
 import json
 import os
 import re
@@ -225,18 +226,108 @@ def stage(target_root, group='all', root=ROOT):
     receipt = {'release': manifest['release'], 'group': group, 'files': rows}
     raw = (json.dumps(receipt, ensure_ascii=False, indent=2) + '\n').encode()
     name = 'delivery-' + hashlib.sha256(raw).hexdigest()[:16] + '.json'
-    import io
     install(io.BytesIO(raw), safe_path(target_root, name), {'path': name, 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
     print('Delivery receipt:', name)
 
 
+def release_metadata(manifest):
+    """Recipient instructions and inventory derived from the reviewed manifest."""
+    start = f'''APPLIED AI GROUP · GEMEINSAME DATEN
+Release: {manifest['release']} | Layout: {manifest.get('layout', 'unspecified')}
+
+Dieser Ordner enthält Daten, nicht den ausführbaren Projektcode.
+Verwende dazu den Repository-Stand mit A_data_and_rules,
+B_opportunities_and_analysis, C_topic_match und D_results.
+Die data-manifest.json im Repository und hier müssen übereinstimmen.
+
+1. Diesen gesamten Release-Ordner herunterladen und entpacken oder über
+   OneDrive lokal verfügbar machen. Die Unterordner beibehalten.
+2. Im Repository Python 3.12+ und requirements.txt installieren.
+3. Im Repository-Terminal den tatsächlichen Pfad dieses Ordners einsetzen:
+
+   python3 project_data.py verify-release --target "/Pfad/zum/Release-Ordner"
+   python3 project_data.py configure --shared-root "/Pfad/zum/Release-Ordner"
+   python3 demo.py q1-q2
+   python3 demo.py q3
+
+Der Loader kopiert benötigte Dateien in einen lokalen Repository-Cache und
+prüft Größe und SHA-256. Vorhandene passende Dateien werden wiederverwendet.
+Das ist kein direkter Login bei Microsoft und keine automatische Veröffentlichung
+neuer Ergebnisse. Ein Browserdownload bleibt eine feste Kopie. OneDrive muss
+separat eingerichtet sein; jeder benötigt eigenen Zugriff auf den Datenordner.
+Für Daten plus vollständigen Cache werden etwa
+{2 * sum(x['bytes'] for x in manifest['files']) / 1e9:.2f} GB benötigt.
+
+A: Paperdaten, Publikationspfade und unabhängige Prolog-Gegenprüfung.
+B: Jährliche Gelegenheitentabellen und externe Q3-Referenzergebnisse.
+C: Historisches T für Q3 und beschreibende Q1-Intra-Ergebnisse.
+D: Ergebnisinterpretation bleibt im Repository unter D_results.
+FILES.md nennt für jede Datei Zweck und Erzeuger, jeweils relativ zum Repository.
+Q1-Intra ist keine historische T-Adjustierung. Die Min-3-Datei ist nur der
+historische Vergleich für Q3-Schritt 8. Der GPU-/DuckDB-Neuaufbau von C ist
+nicht in diesem Datenpaket enthalten. Siehe die jeweiligen Repository-READMEs.
+
+Ergebnisse lokal erzeugen. Diese Referenzdateien nicht durch Experimente ersetzen.
+Bei anderer Version stoppt die Prüfung; nicht einfach die Prüfsumme ändern.
+'''
+    lines = ['# Dateiverzeichnis', '',
+             f"Release: `{manifest['release']}`. Pfade entsprechen dem Repository.", '',
+             '| Datei | Bytes | Zweck | Erzeuger im Repository oder Herkunft |',
+             '|---|---:|---|---|']
+    for item in manifest['files']:
+        values = [item['path'], str(item['bytes']), item.get('purpose', ''),
+                  item.get('produced_by', '')]
+        lines.append('| ' + ' | '.join(v.replace('|', '\\|').replace('\n', ' ') for v in values) + ' |')
+    receipt = {'release': manifest['release'], 'group': 'all', 'files': manifest['files']}
+    receipt_raw = (json.dumps(receipt, ensure_ascii=False, indent=2) + '\n').encode()
+    return {
+        'START_HERE.txt': start.encode(),
+        'FILES.md': ('\n'.join(lines) + '\n').encode(),
+        'data-manifest.json': (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode(),
+        'delivery-' + hashlib.sha256(receipt_raw).hexdigest()[:16] + '.json': receipt_raw,
+    }
+
+
+def release_folder(target_root, root=ROOT, verify_only=False):
+    """Prepare or check a complete, allowlisted folder without calling a cloud API."""
+    root = Path(root).resolve()
+    target_root = Path(target_root).expanduser().resolve()
+    if target_root == root or target_root.is_relative_to(root) or root.is_relative_to(target_root):
+        raise DataError('Choose a release folder outside the repository, not its parent')
+    manifest = load_manifest(root)
+    metadata = release_metadata(manifest)
+    items = manifest['files'] + [
+        {'path': name, 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()}
+        for name, raw in metadata.items()]
+    allowed = {item['path'] for item in items}
+    allowed_dirs = {str(p) for name in allowed for p in PurePosixPath(name).parents if str(p) != '.'}
+    # A dedicated folder avoids accidentally uploading private files left beside data.
+    for path in target_root.rglob('*'):
+        name = path.relative_to(target_root).as_posix()
+        if path.is_symlink() or (name not in allowed and name not in allowed_dirs):
+            raise DataError('Unexpected release content: ' + name + '. Use a dedicated release folder.')
+    for item in items:
+        target = safe_path(target_root, item['path'])
+        if (verify_only or target.exists()) and not matches(target, item):
+            raise DataError('Release file missing or different: ' + item['path'])
+    if not verify_only:
+        stage(target_root, 'all', root)
+        for item in items[len(manifest['files']):]:
+            install(io.BytesIO(metadata[item['path']]), safe_path(target_root, item['path']), item)
+        release_folder(target_root, root, verify_only=True)
+    else:
+        print('Release verified:', manifest['release'], '|', len(manifest['files']),
+              'data files and', len(metadata), 'metadata files')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['list', 'configure', 'fetch', 'verify', 'stage'])
+    parser.add_argument('action', choices=['list', 'configure', 'fetch', 'verify', 'stage',
+                                         'prepare-release', 'verify-release'])
     parser.add_argument('--group', default='all')
     parser.add_argument('--root', type=Path, default=ROOT, help='Repository/cache root containing data-manifest.json')
     parser.add_argument('--shared-root', type=Path, help='Synced or downloaded SharePoint release root')
-    parser.add_argument('--target', type=Path, help='Destination for stage; may be a synced folder')
+    parser.add_argument('--target', type=Path, help='Staging or release folder; may be a synced folder')
     args = parser.parse_args()
     try:
         if args.action == 'list':
@@ -248,6 +339,10 @@ def main():
             if args.shared_root is None:
                 parser.error('configure requires --shared-root')
             configure(args.shared_root, args.group, args.root)
+        elif args.action in ('prepare-release', 'verify-release'):
+            if args.target is None or args.group != 'all':
+                parser.error('release commands require --target and the complete group all')
+            release_folder(args.target, args.root, args.action == 'verify-release')
         elif args.action == 'stage':
             if args.target is None:
                 parser.error('stage requires --target')

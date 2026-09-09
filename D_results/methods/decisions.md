@@ -52,6 +52,16 @@ Template — 5 lines per decision:
 **Consequences:** What follows from it?
 ```
 
+## 2026-08: Q3 runs on the annual event table as implemented
+Retrospective implementation record, updated after the September v5 delivery.
+Current reporting status is defined by the September entry above.
+
+**Context:** The event table and topic pipeline are implemented. Several details differ from the July plan.
+**Decision:** Q3 uses one row per (author, journal, year) opportunity at year level; opportunity set A is the main table and B a sensitivity; T stays continuous with `tm_status` naming the reason for every missing value.
+**Alternatives:** Day-level rows (a properly aligned daily design is possible; it was not built because non-entry rows have no event date of their own and 28.6% of corpus dates are January 1, so a common annual window was the simpler consistent choice); discretized T (arbitrary threshold, information loss).
+**Consequences:** Q3 is estimated with logistic regression and g-computation rather than the planned bn-logtalk chain. The whole-period eligibility threshold in the topic pipeline was removed in Pierre's v5 export (delivered 2026-09-07, sha256 8a9e8a92), which an independent local regeneration matches on every status and count column, with topic values agreeing to within 4.7e-7. The embedding model's adapter configuration was compared and showed no meaningful effect (2026-09-03), so it is documented as a robustness check.
+**Working positions at the time:** rolling author profile as the main T with the frozen profile only as a side check inside C = 1; complete-case fitting as the current treatment of missing T. Both are carried into the 2026-09-09 entry above as the fixed position for Kevin's part, proposed for the joint report.
+
 ## 2026-08-08: Historical entry — “Headline number pre-registered”
 **Decision:** The headline result is Q3_ind: outcome split on independent entries, adjusted for T_pre, significance via author-level cluster-bootstrap CI. Every other variant (Q3_all, T_paper adjustments, alternative clusterings) is reported as robustness.
 

@@ -1,5 +1,7 @@
 # Decisions (ADR-light)
 
+This file records decisions at the time they were made. Method details that remain under review are not settled merely because they appear in an earlier planning document.
+
 Template — 5 lines per decision:
 
 ```

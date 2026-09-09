@@ -13,7 +13,7 @@ beiden Layer damit machen. Wie das Notebook arbeitet, steht in `README.md`.
 
 ## Was ihr bekommt
 
-**Eine Datei:** `event_table_topicmatch_v5.csv`, geteilt über Teams.
+**Eine Datei:** `event_table_topicmatch_v5.csv`, geteilt über One-Drive hier --> https://drive.google.com/file/d/1dJHe7jd97ZwE747hJ5Q7i4IIQhD-qWQ-/view?usp=drive_link
 
 > Das Notebook schreibt auf den unversionierten Pfad `event_table_topicmatch.csv`;
 > die geteilte Datei wird **von Hand** umbenannt. Der Name allein belegt weder
@@ -38,7 +38,7 @@ auf Kurz-IDs normalisieren.
 
 Für Q1 zusätzlich: `results_q1_topic_match_v5.csv` — 9.195 Autor-Journal-Zeilen mit
 `topic_match_intra`, der mittleren Themenähnlichkeit der Paper eines Autors
-innerhalb eines Journals.
+innerhalb eines Journals. --> Diese Datei ist im archive - Ordner zu finden
 
 Abgelöste Fassungen liegen in `Results/archive/` mit einem `MANIFEST.md`, das für
 jede Datei festhält, aus welchem Lauf sie stammt und warum sie abgelöst wurde.
@@ -162,48 +162,6 @@ Weil der Datensatz nur KI-Paper enthält, sind die absoluten Werte generell hoch
 
 ---
 
-## Was der Probabilistic-Layer damit macht
-
-1. **`event_table_topicmatch_v5.csv` laden.** C und F stehen schon drin, T ist die
-   Spalte `topic_match`. Kein Join nötig, es ist dieselbe Tabelle.
-
-2. **`topic_match` stetig verwenden.** Keine Schwelle, keine Binarisierung.
-   Der Wert geht als reelle Zahl ins Modell.
-
-3. **Nur Zeilen mit gültigem T.** Vollständige Fälle. Zeilen mit leerem
-   `topic_match` fallen aus der Regression heraus — sie werden nicht ersetzt und
-   nicht als eigene Kategorie geführt.
-
-4. **Modell `F ~ C + T` schätzen**, dann zweimal auf **dieselben** Zeilen anwenden:
-   einmal mit C = 1, einmal mit C = 0, bei jeweils unverändertem realen T. Die
-   beiden gemittelten Risiken teilen.
-
-   ```
-              Mittelwert über T von P(F = 1 | C = 1, T)
-   RR   =   ---------------------------------------------
-              Mittelwert über T von P(F = 1 | C = 0, T)
-   ```
-
-5. **Für die engere Kennzahl das Non-ride-Outcome modellieren:**
-   `Y = first_entry * (1 - first_entry_ride)` auf denselben Gelegenheitszeilen.
-   Für dieses Modell beide Risiken bei C=1 und C=0 vorhersagen und mitteln.
-   Nicht den Zähler aus einem Non-ride-Modell durch den Nenner eines separat
-   gefitteten All-entry-Modells teilen. „Independent“ bedeutet hier non-ride,
-   nicht kausale Unabhängigkeit von Netzwerkeinflüssen.
-
-6. **Aufteilen, nicht filtern.** Zeilen mit gemeinsamem Eintritt
-   (`first_entry_ride`) bleiben im Datensatz. Ob der Wegbereiter auf dem
-   Eintrittspaper landet, ist selbst eine Folge von C — ein Filter darauf würde
-   nach der Behandlung auswählen.
-
-7. **Abhängigkeiten bei der Unsicherheit berücksichtigen.** Autoren erzeugen
-   mehrere Zeilen. Der frühere Plan sah Autoren-Bootstrap vor; der alte Export
-   hat einen 300-Refit-Bootstrap. Die nachstehenden v5-Prüfungen berechneten
-   Autoren-Cluster-Delta-Intervalle, keine neuen v5-Bootstrap-Refits. Diese
-   Abweichung offen benennen. Autoren-Clustering allein sichert gemeinsame
-   Journal-/Paperabhängigkeit nicht vollständig ab; erweiterte Zweiweg-
-   Kovarianzen waren nicht positiv semidefinit. Ein RR-Intervall ist außerdem
-   kein Bootstrap-LR-Test der früher geplanten Nullhypothese.
 
 ### Q3 auf dem offiziellen v5-Export: lokal nachgerechnet
 
@@ -271,20 +229,5 @@ Falls ihr danach gearbeitet habt, bitte prüfen:
 Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 **leere Werte niemals als 0 behandeln.**
 
----
 
-## Verbleibend
 
-- **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand passiert.
-- **Ausführungsnachweis:** Das v5-Notebook im PR enthält keine gespeicherten Outputs;
-  Laufbericht und unabhängiger Exportcheck sind davon zu unterscheiden.
-- **Adapter-Vergleich:** Pierre hat für einen früheren Robustheitsvergleich keinen
-  nennenswerten Einfluss berichtet. Das wird nicht mehr pauschal als ausstehender
-  Test geführt. Für die eindeutige Ursache einer konkreten Laufdifferenz sind
-  unveränderter Paperpool, Konfiguration und Vergleichsoutputs zu dokumentieren;
-  das ist keine Voraussetzung, den geprüften v5-Export zu nutzen.
-- **Unsicherheit und Interpretation** in der Q3-Abgabe konsistent mit den tatsächlich
-  ausgeführten Verfahren beschreiben. Keine neue v5-Bootstrap-Rechnung behaupten.
-- **Historische kontinuierliche Themenpassung für Q1/Q2** bleibt eine weitergehende
-  Analysefrage. Die vorhandenen Jahr/Primärthema-Nullmodelle und der Intra-Export
-  beantworten sie nicht vollständig.

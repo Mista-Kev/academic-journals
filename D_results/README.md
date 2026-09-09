@@ -22,13 +22,17 @@ keine Journal×Jahr-Interaktionen. Ein Journal ohne Eintritte wurde dort mit
 17.936 Zeilen ausgeschlossen, um Separation zu behandeln. Das ist eine am
 Outcome orientierte Einschränkung, keine neutrale Datenbereinigung.
 
-**Noch zu bestätigen:** C+T für Q3_ind als Berichts-Hauptmodell mit Sensitivität
-unmittelbar daneben; Umgang mit fehlendem T. Die Tabellen zeigen bewusst beide
-Spezifikationen. Ein Rerun ersetzt diese methodische Entscheidung nicht.
+**Festgelegter Abschluss für Kevins Teil (9. September):** Q3_ind mit C+T ist
+der ursprüngliche Hauptvergleich; Journal-/Jahressensitivität wird unmittelbar
+daneben berichtet und bestimmt die vorsichtige Gesamtaussage mit. Die Zielpopulation
+der adjustierten Modelle sind die Gelegenheiten mit messbarem T. Fehlendes T wird
+nicht ersetzt. Das sind feste lokale Berichtsentscheidungen, keine Behauptung
+früherer Team- oder Felix-Zustimmung. [Begründungen](methods/decisions.md).
 
-Q1/Q2 erhalten keine neue historische T-Adjustierung durch Pierres Intra-Datei.
-Mit den vorhandenen Auswertungen können wir die beschreibenden Fragen abschließen,
-sofern wir diesen Umfang gemeinsam festhalten. Thematisch unabhängige Treue wäre
-eine zusätzliche Fragestellung mit einer neuen Rückkehr-/Alternativen-Tabelle.
+Q1/Q2 werden als beschreibende Vergleiche abgeschlossen. Pierres Intra-Datei
+ist eine eigene Ergänzung; eine historische kontinuierliche T-Adjustierung der
+Rückkehr wird nicht behauptet. Thematisch unabhängige Treue bleibt eine stärkere,
+hier nicht beantwortete Frage. Bekannte Grenzen sind Teil des Ergebnisses und
+werden nicht als noch ausstehende Berechnungen ausgegeben.
 
 [Demo](DEMO.md) · [Vorgehensweise und Entscheidungen](methods/README.md) · [Start](../README.md)

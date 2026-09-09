@@ -21,8 +21,10 @@ jeweiligen Vergleichsmodell, keine nachgewiesene themenunabhängige Bindung.
 
 Q3 berichtet sowohl C+T als auch die deutlich kleinere Journal-/Jahressensitivität.
 Fehlendes T bleibt fehlend. Die vollständigen Fälle sind eine ausgewählte Population;
-die Koeffizienten begründen keine kausale Aussage. Die endgültige Gewichtung der
-Spezifikationen und der Umgang mit fehlendem T müssen im Team bestätigt werden.
+die Koeffizienten begründen keine kausale Aussage. Der lokale Abschluss legt
+C+T als ursprünglichen Hauptvergleich mit verpflichtender Journal-/Jahressensitivität
+fest. Complete Cases sind die explizite Analysepopulation; fehlendes T wird nicht
+ersetzt. Begründungen stehen im [Entscheidungslog](../D_results/methods/decisions.md).
 
 Start im Repo: `python3 demo.py q1-q2` bzw. `python3 demo.py q3`.
 Alternativ Notebooks mit diesem Ordner als Arbeitsverzeichnis ausführen.

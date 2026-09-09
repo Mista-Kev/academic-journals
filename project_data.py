@@ -43,6 +43,8 @@ def load_manifest(root=ROOT):
     for item in manifest['files']:
         name = item['path']
         safe_path(root, name)
+        if 'shared_path' in item:
+            safe_path(root, item['shared_path'])
         if name in seen or not re.fullmatch(r'[0-9a-f]{64}', item['sha256']):
             raise DataError('Invalid or duplicate manifest entry')
         if type(item['bytes']) is not int or item['bytes'] < 0:
@@ -127,6 +129,13 @@ def configuration(root):
     return config
 
 
+def shared_file(source, item):
+    current = safe_path(source, item['path'])
+    if current.exists():
+        return current
+    return safe_path(source, item.get('shared_path', item['path']))
+
+
 def configure(shared_root, group='all', root=ROOT):
     """Verify the selected shared inputs before saving this machine's source."""
     root = Path(root).resolve()
@@ -137,8 +146,8 @@ def configure(shared_root, group='all', root=ROOT):
     if override and Path(override).expanduser().resolve() != source:
         raise DataError('ACADEMIC_JOURNALS_SHARED_ROOT points elsewhere. Unset it or select that same folder before configuring.')
     for item in selected(load_manifest(root), group):
-        if not matches(safe_path(source, item['path']), item):
-            raise DataError('Shared file missing or different: ' + item['path'] + '. Select the folder containing data/ and results/ for this release.')
+        if not matches(shared_file(source, item), item):
+            raise DataError('Shared file missing or different: ' + item['path'] + '. Select the shared release root, in the existing or A/B/C layout.')
     path = root / '.shared-data.local.json'
     config = json.loads(path.read_text(encoding='utf8')) if path.exists() else {}
     config['shared_root'] = str(source)
@@ -173,13 +182,13 @@ def ensure_data(group, root=ROOT, shared_root=None, verify_only=False):
             raise DataError('Missing local file: ' + item['path'])
         try:
             if source:
-                origin = safe_path(source, item['path'])
+                origin = shared_file(source, item)
                 with origin.open('rb') as stream:
                     install(stream, target, item)
             else:
                 url = config.get('urls', {}).get(item['path'])
                 if not url:
-                    raise DataError('Missing ' + item['path'] + '. Configure shared_root or its direct link in .shared-data.local.json; see docs/shared-data.md.')
+                    raise DataError('Missing ' + item['path'] + '. Configure shared_root or its direct link in .shared-data.local.json; see D_results/methods/shared-data.md.')
                 with download(url) as stream:
                     install(stream, target, item)
         except DataError:
@@ -226,7 +235,7 @@ def main():
     parser.add_argument('action', choices=['list', 'configure', 'fetch', 'verify', 'stage'])
     parser.add_argument('--group', default='all')
     parser.add_argument('--root', type=Path, default=ROOT, help='Repository/cache root containing data-manifest.json')
-    parser.add_argument('--shared-root', type=Path, help='Synced SharePoint folder containing data/ and results/')
+    parser.add_argument('--shared-root', type=Path, help='Synced or downloaded SharePoint release root')
     parser.add_argument('--target', type=Path, help='Destination for stage; may be a synced folder')
     args = parser.parse_args()
     try:

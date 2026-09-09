@@ -23,7 +23,8 @@ prolog implementation matched every variant a opportunity key and the c, f and r
 # first_entry_independent is its complement on entry rows, so it is 1 for the entries with no seed at all
 # and it only ever means not a ride. the contrast to report is ride against independent within C = 1.
 
-# opportunity set is decision 52 and still open. both get built and neither is preferred. variant a is all
+# the local 2026-09-09 reporting decision fixes variant a as main and b as sensitivity; both get built.
+# see D_results/methods/decisions.md. variant a is all
 # 64 journals minus the ones already entered. variant b keeps the journals that published one of the
 # author's earlier primary topics in year t and falls back to a when the author has no earlier paper.
 # 81.9% of author years fall back on this corpus, so b restricts much less than the rule sounds like. b
@@ -31,7 +32,7 @@ prolog implementation matched every variant a opportunity key and the c, f and r
 # entries and 6 active author years outright. treat it as a sensitivity variant rather than a neutral one.
 
 # the corpus starts in 2015, so no J paper in an earlier year means none since 2015 and the first years
-# hold entries that cannot carry a seed. the T anchor and the seed window variant stay open elsewhere.
+# hold entries that cannot carry a seed. rolling T and strict pre-year seed history define the current analysis.
 
 # two csvs into data/, gitignored. booleans as 1 and 0, topic_match left empty for pierre. stdlib only.
 

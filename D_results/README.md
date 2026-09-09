@@ -26,8 +26,9 @@ Outcome orientierte Einschränkung, keine neutrale Datenbereinigung.
 der ursprüngliche Hauptvergleich; Journal-/Jahressensitivität wird unmittelbar
 daneben berichtet und bestimmt die vorsichtige Gesamtaussage mit. Die Zielpopulation
 der adjustierten Modelle sind die Gelegenheiten mit messbarem T. Fehlendes T wird
-nicht ersetzt. Das sind feste lokale Berichtsentscheidungen, keine Behauptung
-früherer Team- oder Felix-Zustimmung. [Begründungen](methods/decisions.md).
+nicht ersetzt. Das ist Kevins feste lokale Berichtsposition; für den gemeinsamen Bericht
+bleibt sie ein Vorschlag bis zur Teamabstimmung. Frühere Team- oder Felix-Zustimmung
+wird nicht behauptet. [Begründungen](methods/decisions.md).
 
 Q1/Q2 werden als beschreibende Vergleiche abgeschlossen. Pierres Intra-Datei
 ist eine eigene Ergänzung; eine historische kontinuierliche T-Adjustierung der

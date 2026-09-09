@@ -30,3 +30,23 @@ validate access as another recipient, automatic OneDrive synchronization, the C
 GPU/DuckDB reconstruction, or a causal interpretation. The new remote A/B/C folder
 layout has not been published or moved; the compatibility mapping keeps the
 existing cloud release usable. No branch was pushed as part of this migration.
+
+## Review follow-up · 9 September
+
+Both notebooks were executed again in fresh Jupyter kernels using the project
+virtual environment, and their outputs are now saved in the notebook files:
+Q1/Q2, eight code cells, 31.5 s; Q3, nine code cells, 54.5 s. The kernel runner
+verified that execution did not modify cell sources and validated notebook format.
+
+The calculation syntax trees are unchanged after accounting for two corrected
+strings: the singular-design diagnostic and the false pre-2021 single-digit
+caution. All Q3 printed results match the previous executed version after removing
+loader status messages and normalizing that caution. The 14 loader and 12 rule
+tests pass, all Markdown file links resolve, and all 13 manifest file identities
+(path, bytes, SHA-256) are unchanged.
+
+The decision record now distinguishes Kevin’s fixed local reporting position
+from proposed adoption in the joint team report. Current notebook text refers to
+the documented August comparison without asserting verified preregistration.
+The frozen model-results JSON is explicitly external reference evidence, with its
+producer outside this repository. Project documentation contains no agent attribution.

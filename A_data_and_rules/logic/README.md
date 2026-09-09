@@ -1,6 +1,15 @@
-# logic/ — event layer
+# A · Regeln und unabhängige Gegenprüfung
 
-**Purpose:** derive the events behind the three questions. The pathway layer (`openalex_three_path_rules.pl` plus its Python wrapper) is day-level and has one row per published author-paper pair. The Q3 event table is year-level and has one row per `(author, journal, year)` opportunity, including opportunities without an entry. Independent implementations are used to check the key pathway and Q3 flags.
-**Owner:** Lennart (rules), Kevin (Python counterparts)
-**Input:** the semiclean corpus from `data/`, generated pathway facts in `results/`
-**Output:** pathway flags in `results/`, event table CSVs in `data/` (gitignored)
+**Verantwortlich:** Lennart (Prolog-Regeln); Kevin (Python-Gegenstücke).
+Die Eingabe ist der Korpus in `../data/`. Der Wrapper
+`openalex_three_path_prolog.py` und `openalex_three_path_rules.pl` erzeugen die
+Publikationspfade pro Autor-Paper-Paar mit strikt früheren Datumsangaben.
+Die Ergebnisse und Fakten liegen bei Verwendung der Demo-Befehle unter
+`../results/openalex_three_path_v1_0/`.
+
+`check_event_table_parity.py` und `event_table_rules.pl` erzeugen unabhängig
+jährliche Autor-Journal-Gelegenheiten einschließlich Nicht-Eintritten. Die Ausgabe
+liegt in `../data/event_table_prolog_v0_oppA.csv`. Der Python-Builder und der
+Vollvergleich stehen in `../../B_opportunities_and_analysis/`.
+
+[Ausführen und prüfen](../../D_results/DEMO.md) · [Aktuelle Jahresdefinitionen](../../B_opportunities_and_analysis/schemas/event_table.md)

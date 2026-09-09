@@ -14,6 +14,5 @@ Die Repo-Umstellung ändert weder diese Implementierung noch den zugesagten Umfa
 
 Der aktuelle Jahresvertrag mit 15 Spalten steht unter
 [B/schemas/event_table.md](../../B_opportunities_and_analysis/schemas/event_table.md).
-Er wurde aus dem lokalen Schema-Stand `40be940` übernommen und gegen die
-v5-Eingabedatei geprüft. Der frühere paperbezogene Entwurf wird nicht parallel
+Die 15 Spalten sind gegen die offizielle v5-Eingabedatei geprüft. Der frühere paperbezogene Entwurf wird nicht parallel
 als aktueller Vertrag geführt.

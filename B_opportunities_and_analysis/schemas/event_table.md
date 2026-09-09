@@ -121,6 +121,3 @@ seeded pairs unless a common anchor for `C = 0` is defined.
 - An independent Prolog implementation matched all 6,422,558 Variant A
   opportunity keys and the `C`, `F`, and ride flags; review of those rules is a
   separate validation step.
-
-Schema source: local branch `docs/event-table-schema-current`, `40be940`.
-Integrated here at the new B path; the separate schema branch has not been published.

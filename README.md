@@ -10,6 +10,14 @@ This project studies publication patterns in a frozen OpenAlex corpus of 27,400 
 
 Q1 and Q2 are implemented in `nets/q1_q2_baselines.ipynb`. Q3 uses an annual opportunity table with one row per `(author, journal, year)`. Its topic-adjusted results remain provisional while the topic pipeline and missing-value treatment are under review.
 
+## Shared data
+
+Large inputs and checked outputs are stored separately from GitHub. See
+[shared-data setup](docs/shared-data.md) for the mirrored SharePoint layout,
+file versions and one-time access setup. The Q1/Q2 and Q3 notebooks can fetch
+missing, checksum-verified inputs through `project_data.py`. This loader is a
+local integration change until this branch is published.
+
 ## Folders
 
 | Folder | Contents |

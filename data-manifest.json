@@ -1,0 +1,157 @@
+{
+  "format": 1,
+  "release": "official-v5-2026-09-07",
+  "description": "Frozen research data and checked outputs. Paths mirror the repository. Access configured separately; no credentials or signed URLs.",
+  "files": [
+    {
+      "path": "data/openalex_ai_raw_v1_0.jsonl",
+      "bytes": 559613306,
+      "sha256": "fd1f362f4f7e301d4f3b20e4a2b9a165722a1b16d802a521cedcb78a1cf69605",
+      "groups": [
+        "corpus"
+      ],
+      "owner": "Lennart",
+      "purpose": "Frozen OpenAlex objects, text and publisher lineage",
+      "produced_by": "fetch/"
+    },
+    {
+      "path": "data/openalex_ai_semiclean_v1_0.csv",
+      "bytes": 148781707,
+      "sha256": "9b2119cdad51e1dfba5a918aef1907ede64550e2373ee044d134308ace1d9eb4",
+      "groups": [
+        "corpus",
+        "logic",
+        "q1-q2"
+      ],
+      "owner": "Lennart",
+      "purpose": "27,400 frozen corpus papers",
+      "produced_by": "fetch/"
+    },
+    {
+      "path": "data/event_table_python_v0_oppA.csv",
+      "bytes": 330059731,
+      "sha256": "76f5ed2b37a4f683ac4c754e195417e65352155f3bcc4349f626252e34b6a041",
+      "groups": [
+        "q3",
+        "parity",
+        "topics"
+      ],
+      "owner": "Kevin",
+      "purpose": "6,422,558 annual opportunities; topic column unfilled",
+      "produced_by": "logic/build_event_table.py"
+    },
+    {
+      "path": "data/event_table_python_v0_oppB.csv",
+      "bytes": 296383920,
+      "sha256": "d06d59a219458946fb1c841962e7c6e26e40f24b93cc99d16f51c5e96f92c568",
+      "groups": [
+        "sensitivity"
+      ],
+      "owner": "Kevin",
+      "purpose": "Alternative opportunity set B, sensitivity only",
+      "produced_by": "logic/build_event_table.py"
+    },
+    {
+      "path": "data/event_table_prolog_v0_oppA.csv",
+      "bytes": 226289203,
+      "sha256": "28d31995d63856001eac8f174f7cf0d7101ccc66d0892e5350c758e091ca1f3d",
+      "groups": [
+        "parity"
+      ],
+      "owner": "Lennart / Kevin",
+      "purpose": "Independent opportunity keys and C/F/ride",
+      "produced_by": "logic/check_event_table_parity.py"
+    },
+    {
+      "path": "data/event_table_topicmatch_v5.csv",
+      "bytes": 497765187,
+      "sha256": "8a9e8a9257f3f00ce39a71f0dcefd09cd10bc1d8200580426ee94346284b2e37",
+      "groups": [
+        "q3"
+      ],
+      "owner": "Pierre",
+      "purpose": "Official v5 annual opportunities with historical T",
+      "produced_by": "topics/embeddings_colab_eventtable_v5.ipynb"
+    },
+    {
+      "path": "data/event_table_topicmatch_local_min3.csv",
+      "bytes": 543200117,
+      "sha256": "d9ee144597e2d0176c256e7606d53c6cdf24c95458828a1351c1fb6460af4dd9",
+      "groups": [
+        "q3",
+        "historical"
+      ],
+      "owner": "Kevin",
+      "purpose": "Historical Min-3 input required by notebook step 8; not current main data",
+      "produced_by": "Historical topic run"
+    },
+    {
+      "path": "results/openalex_three_path_v1_0/journal_parent_publishers.csv",
+      "bytes": 12697,
+      "sha256": "1fc4cfcca4b3c7257fbce15d30f851b0803afa62b9792a04de371b7df6dffe82",
+      "groups": [
+        "logic",
+        "q1-q2"
+      ],
+      "owner": "Lennart",
+      "purpose": "Current parent-publisher mapping",
+      "produced_by": "logic/openalex_three_path_prolog.py"
+    },
+    {
+      "path": "results/openalex_three_path_v1_0/pathway_flags.csv",
+      "bytes": 9082209,
+      "sha256": "e1283ac6230800e0f2d93674f30e5bad17bba7f10ec20af9b2c02063fb0a034b",
+      "groups": [
+        "logic",
+        "q1-q2"
+      ],
+      "owner": "Lennart",
+      "purpose": "Published author-paper pathway flags",
+      "produced_by": "logic/openalex_three_path_prolog.py"
+    },
+    {
+      "path": "results/openalex_three_path_v1_0/pathway_evidence.csv",
+      "bytes": 10844254,
+      "sha256": "83518d1a084f2781c7021493d1c31e0b1498011505413816a08c0404ab9f386d",
+      "groups": [
+        "outputs"
+      ],
+      "owner": "Lennart",
+      "purpose": "Evidence for paper-level pathways",
+      "produced_by": "logic/openalex_three_path_prolog.py"
+    },
+    {
+      "path": "results/openalex_three_path_v1_0/pathway_results.csv",
+      "bytes": 24591697,
+      "sha256": "79db5b2422f8cbf65aa18395d2c12e10ba1bd5037252ed6bfc39478cc4e8db01",
+      "groups": [
+        "outputs"
+      ],
+      "owner": "Lennart",
+      "purpose": "Paper-level pathway results",
+      "produced_by": "logic/openalex_three_path_prolog.py"
+    },
+    {
+      "path": "topics/Results/results_q1_topic_match_v5.csv",
+      "bytes": 1433107,
+      "sha256": "777a67646eefb0a32b845bbc9e332f3ece761ac0e7bbc9473bb73186c647d2f7",
+      "groups": [
+        "outputs"
+      ],
+      "owner": "Pierre",
+      "purpose": "Observed Intra similarity; not Q3 historical T",
+      "produced_by": "topics/embeddings_colab_eventtable_v5.ipynb"
+    },
+    {
+      "path": "results/q3_v5/model_results.json",
+      "bytes": 1733,
+      "sha256": "5926ab3a6b1d60280b367a3994e581f5092000a490b7a43856aca9df92df2fb3",
+      "groups": [
+        "outputs"
+      ],
+      "owner": "Kevin",
+      "purpose": "Six verified official-v5 fits, author-cluster Delta intervals, no new bootstrap",
+      "produced_by": "refit.py in the separate local v5 demo package"
+    }
+  ]
+}

@@ -29,3 +29,7 @@ data/**
 .idea/
 .vscode/
 *.swp
+
+# Machine-specific shared-data access and regenerated Q3 results
+.shared-data.local.json
+results/q3_v5/

@@ -255,8 +255,7 @@ prüft Größe und SHA-256. Vorhandene passende Dateien werden wiederverwendet.
 Das ist kein direkter Login bei Microsoft und keine automatische Veröffentlichung
 neuer Ergebnisse. Ein Browserdownload bleibt eine feste Kopie. OneDrive muss
 separat eingerichtet sein; jeder benötigt eigenen Zugriff auf den Datenordner.
-Für Daten plus vollständigen Cache werden etwa
-{2 * sum(x['bytes'] for x in manifest['files']) / 1e9:.2f} GB benötigt.
+Für Daten plus vollständigen Cache werden etwa {2 * sum(x['bytes'] for x in manifest['files']) / 1e9:.2f} GB benötigt.
 
 A: Paperdaten, Publikationspfade und unabhängige Prolog-Gegenprüfung.
 B: Jährliche Gelegenheitentabellen und externe Q3-Referenzergebnisse.
@@ -272,7 +271,7 @@ Bei anderer Version stoppt die Prüfung; nicht einfach die Prüfsumme ändern.
 '''
     lines = ['# Dateiverzeichnis', '',
              f"Release: `{manifest['release']}`. Pfade entsprechen dem Repository.", '',
-             '| Datei | Bytes | Zweck | Erzeuger im Repository oder Herkunft |',
+             '| Datei | Bytes | Zweck (Manifest, Englisch) | Erzeuger im Repository oder Herkunft |',
              '|---|---:|---|---|']
     for item in manifest['files']:
         values = [item['path'], str(item['bytes']), item.get('purpose', ''),
@@ -304,6 +303,11 @@ def release_folder(target_root, root=ROOT, verify_only=False):
     # A dedicated folder avoids accidentally uploading private files left beside data.
     for path in target_root.rglob('*'):
         name = path.relative_to(target_root).as_posix()
+        # Browsing a downloaded folder can create these OS housekeeping files.
+        # Ignore regular files only: a same-named directory or symlink is not metadata.
+        if (path.name in {'.DS_Store', 'desktop.ini', 'Thumbs.db'} and
+                not path.is_symlink() and path.is_file()):
+            continue
         if path.is_symlink() or (name not in allowed and name not in allowed_dirs):
             raise DataError('Unexpected release content: ' + name + '. Use a dedicated release folder.')
     for item in items:

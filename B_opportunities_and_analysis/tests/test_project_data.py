@@ -157,6 +157,36 @@ class SharedDataTests(unittest.TestCase):
                 path.write_bytes(original)
         data.release_folder(target, self.root, verify_only=True)
 
+    def test_release_tolerates_regular_os_metadata_at_root_and_in_data(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = Path(self.temp.name)/'release'
+        target.mkdir()
+        (target/'.DS_Store').write_bytes(b'Finder metadata')
+        data.release_folder(target, self.root)
+        for folder in (target, target/'data'):
+            for name in ('.DS_Store', 'desktop.ini', 'Thumbs.db'):
+                (folder/name).write_bytes(b'OS metadata')
+        data.release_folder(target, self.root, verify_only=True)
+        data.release_folder(target, self.root)
+        self.assertEqual((target/'.DS_Store').read_bytes(), b'OS metadata')
+
+    def test_os_metadata_exemption_never_allows_symlinks_or_directories(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = Path(self.temp.name)/'release'
+        data.release_folder(target, self.root)
+        for name in ('.DS_Store', 'desktop.ini', 'Thumbs.db'):
+            path = target/name
+            with self.subTest(name=name, kind='symlink'):
+                path.symlink_to(self.source/'data/test.csv')
+                with self.assertRaises(data.DataError):
+                    data.release_folder(target, self.root, verify_only=True)
+                path.unlink()
+            with self.subTest(name=name, kind='directory'):
+                path.mkdir()
+                with self.assertRaises(data.DataError):
+                    data.release_folder(target, self.root, verify_only=True)
+                path.rmdir()
+
     def test_manifest_cannot_escape_its_root(self):
         for path in ['../private','/tmp/private','data/../../private','data\\private','C:/private']:
             with self.subTest(path=path),self.assertRaises(data.DataError):data.safe_path(self.root,path)

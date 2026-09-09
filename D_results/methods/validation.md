@@ -77,3 +77,24 @@ space; no source file is hardlinked or symlinked into it. Ordinary release
 preparation works by copying files and does not require APFS. Actual remote
 upload/readback, recipient-account access and automatic OneDrive synchronization
 remain separate checks after publication; this preparation does not claim them.
+
+### Release review follow-up
+
+The local integration now includes main's #60 merge (`0921ea0`); that merge
+changed no files in the integrated tree. The loader suite has **20 passing tests**.
+Regular `.DS_Store`, `desktop.ini` and `Thumbs.db` files are tolerated at the
+release root and inside data directories. Symlinks and directories with those
+names remain rejected, along with other unexpected content.
+
+The unpublished local instructions now keep the disk-space estimate on one line;
+the inventory explicitly labels its original manifest purpose text as English.
+All 13 data files and four refreshed metadata files pass `verify-release`.
+Metadata remains byte-exact by design; published metadata changes require a new
+delivery folder and the corresponding repository version.
+
+The private validation helper now normalizes only loader/timing messages and the
+exact known historical caution. It raises on any remaining comparison mismatch.
+Both saved notebook log pairs pass this stricter comparison. Deliberately altered
+seed totals, seed coverage, warnings and caution text each raise an error.
+No full notebook runs were repeated for this follow-up. Notebook files, data
+hashes and statistical decisions remain unchanged. Nothing was pushed or uploaded.

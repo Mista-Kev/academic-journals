@@ -154,10 +154,15 @@ in GitHub because it contains the combined interpretation, not another data copy
 Use a dedicated empty folder outside the repository. Repeating preparation on
 an identical release is safe. A differing existing data or metadata file, or
 unexpected content such as private notes, causes an error before copying files.
+Regular `.DS_Store`, `desktop.ini` and `Thumbs.db` files are tolerated because
+Finder and Windows can create them while browsing. They are not release artifacts,
+are not hash-checked and are never collected from the repository by the staging
+command. Same-named directories or symlinks are still rejected.
 The command never recursively collects the source checkout. A failed or
 interrupted preparation is not a completed delivery: `verify-release` must pass.
 It checks all data **and metadata** against the matching repository version.
-Changing the instructions in code requires preparing new metadata in a new folder;
+Changing the instructions in code or manifest wording (even a purpose description)
+requires preparing new metadata in a new folder for the next published delivery;
 the verifier intentionally refuses stale instructions. `stage --group q3` can
 still prepare selected data, but that is not a complete release.
 

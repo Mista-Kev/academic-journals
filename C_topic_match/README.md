@@ -11,13 +11,12 @@ der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst hab
 Dateinamen tragen die Lauf-ID. Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
 wird nicht überschrieben.
 
-**Colab-Verbindung:** Abschnitt 3 im Notebook beschreibt die einmalige persönliche
-Microsoft-Anmeldung über rclone und das Colab-Secret. Dafür zuerst ein Projektkonto
-ohne weitere Daten/Freigaben oder tatsächlich beschränkte App-Rechte klären; der
-Ordnerpfad allein schränkt den Token nicht ein. Anschließend lädt Colab die beiden
-Eingaben und prüft ihre Hashes. Die letzte Zelle lädt Ergebnisse hoch und prüft sie durch
-erneutes Herunterladen. Die Anmeldung am Hochschulkonto und der vollständige GPU-Lauf
-mit dieser Anbindung sind noch nicht getestet.
+**Colab-Verbindung noch nicht einsatzbereit:** Beim Versuch am 10.09.2026 verlangt
+Microsoft für unser Hochschulkonto Administratorfreigabe für rclone. Die Einrichtung
+steht in Abschnitt 3 des Notebooks. Der Ordnerpfad begrenzt nicht die Token-Rechte;
+Projektkonto bzw. beschränkte App-Rechte bleiben zu klären. Echter SharePoint-Transfer
+und vollständiger GPU-Lauf sind noch nicht geprüft. Die lokalen Q1/Q2- und Q3-Notebooks
+mit heruntergeladenen oder synchronisierten Daten funktionieren unabhängig davon.
 
 Der ML-Layer erzeugt **keine** der drei Endkennzahlen. Er füllt eine Spalte.
 

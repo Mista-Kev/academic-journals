@@ -30,7 +30,13 @@ Datei aus B öffnen und B als Kernel-Arbeitsverzeichnis verwenden.
 
 ## Regeln prüfen
 
-Loader- und Buildertests aus B vom Repository-Root aus starten:
+Alle Unit-Tests vom Repository-Root aus starten:
+
+```sh
+python3 -m unittest discover -s . -v
+```
+
+Nur Loader- und Buildertests aus B:
 
 ```sh
 python3 -m unittest discover -s B_opportunities_and_analysis/tests -p 'test_*.py' -v
@@ -43,7 +49,7 @@ SWI-Prolog muss installiert sein. Die kleinen Unit-Tests benötigen keine große
 Daten; einige Tests verwenden SWI-Prolog und werden ohne Installation übersprungen.
 
 ```sh
-TMPDIR=/private/tmp python3 -m unittest discover -s A_data_and_rules/logic/tests -v
+python3 -m unittest discover -s A_data_and_rules/logic/tests -v
 python3 project_data.py fetch --group parity
 python3 B_opportunities_and_analysis/diff_event_table.py
 ```

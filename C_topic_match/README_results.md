@@ -40,7 +40,7 @@ Für Q1 zusätzlich: `results_q1_topic_match_v5.csv` — 9.195 Autor-Journal-Zei
 `topic_match_intra`, der mittleren Themenähnlichkeit der Paper eines Autors
 innerhalb eines Journals.
 
-Abgelöste Fassungen liegen in `Results/archive/` mit einem `MANIFEST.md`, das für
+Abgelöste Fassungen liegen in `results/archive/` mit einem `MANIFEST.md`, das für
 jede Datei festhält, aus welchem Lauf sie stammt und warum sie abgelöst wurde.
 
 ---

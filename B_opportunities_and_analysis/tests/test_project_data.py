@@ -1,3 +1,4 @@
+import errno
 import hashlib
 import io
 import json
@@ -210,5 +211,77 @@ class SharedDataTests(unittest.TestCase):
         with mock.patch.object(data,'download',side_effect=OSError('https://example.com/?secret=private')):
             with self.assertRaises(data.DataError) as err:data.ensure_data('q3',self.root)
         self.assertNotIn('private',str(err.exception))
+
+
+    def test_stage_rejects_repo_ancestors_descendants_and_symlink_aliases(self):
+        self.root.joinpath('data').mkdir()
+        self.root.joinpath('data/test.csv').write_bytes(self.payload)
+        alias = self.source / 'repo-alias'
+        alias.symlink_to(self.root, target_is_directory=True)
+        for destination in (self.root, self.root/'bulk', self.root.parent, alias/'bulk'):
+            with self.subTest(destination=destination), self.assertRaisesRegex(data.DataError, 'outside the repository'):
+                data.stage(destination, 'q3', self.root)
+        self.assertFalse((self.root/'bulk').exists())
+
+    def test_legacy_direct_url_and_new_key_precedence(self):
+        self.item['shared_path'] = 'old/test.csv'
+        (self.root/'data-manifest.json').write_text(json.dumps(self.manifest))
+        for urls, expected in [({'old/test.csv': 'https://example.com/old'}, 'https://example.com/old'),
+                               ({'old/test.csv': 'https://example.com/old', 'data/test.csv': 'https://example.com/new'}, 'https://example.com/new')]:
+            (self.root/'.shared-data.local.json').write_text(json.dumps({'urls': urls}))
+            with mock.patch.dict('os.environ', {}, clear=True), mock.patch.object(data, 'download', return_value=io.BytesIO(self.payload)) as fetch:
+                data.ensure_data('q3', self.root)
+                fetch.assert_called_once_with(expected)
+            self.assertEqual((self.root/'data/test.csv').read_bytes(), self.payload)
+            (self.root/'data/test.csv').unlink()
+        (self.root/'.shared-data.local.json').write_text(json.dumps({'urls': {'old/test.csv': 'https://example.com/old', 'data/test.csv': ''}}))
+        with mock.patch.dict('os.environ', {}, clear=True), mock.patch.object(data, 'download') as fetch:
+            with self.assertRaises(data.DataError):
+                data.ensure_data('q3', self.root)
+            fetch.assert_not_called()
+
+    def test_unsupported_atomic_publication_is_actionable_and_leaves_no_partial_file(self):
+        target = self.root/'data/test.csv'
+        with mock.patch.object(data.os, 'link', side_effect=OSError(errno.EOPNOTSUPP, 'unsupported')):
+            with self.assertRaisesRegex(data.DataError, 'hard-link support'):
+                data.install(io.BytesIO(self.payload), target, self.item)
+        self.assertFalse(target.exists())
+        self.assertEqual(list(target.parent.iterdir()), [])
+
+    def test_concurrent_destination_is_never_overwritten(self):
+        target = self.root/'data/test.csv'
+        def competing_writer(source, destination):
+            destination.write_bytes(b'someone else wrote this')
+            raise FileExistsError()
+        with mock.patch.object(data.os, 'link', side_effect=competing_writer):
+            with self.assertRaisesRegex(data.DataError, 'Destination changed'):
+                data.install(io.BytesIO(self.payload), target, self.item)
+        self.assertEqual(target.read_bytes(), b'someone else wrote this')
+        self.assertEqual(list(target.parent.iterdir()), [target])
+
+    def test_old_receipt_requires_new_release_without_mutation(self):
+        data.ensure_data('q3', self.root, shared_root=self.source)
+        target = self.source.parent/'delivery'
+        data.stage(target, 'q3', self.root)
+        before = {p.relative_to(target): p.read_bytes() for p in target.rglob('*') if p.is_file()}
+        with self.assertRaisesRegex(data.DataError, 'new empty folder'):
+            data.release_folder(target, self.root)
+        self.assertEqual(before, {p.relative_to(target): p.read_bytes() for p in target.rglob('*') if p.is_file()})
+        fresh = self.source.parent/'complete-release'
+        data.release_folder(fresh, self.root)
+        self.item['purpose'] = 'Updated explanation'
+        (self.root/'data-manifest.json').write_text(json.dumps(self.manifest))
+        with self.assertRaisesRegex(data.DataError, 'new empty folder'):
+            data.release_folder(fresh, self.root)
+        data.release_folder(self.source.parent/'next-release', self.root)
+
+    def test_fetch_explicit_source_overrides_environment_for_this_call_only(self):
+        config = self.root/'.shared-data.local.json'
+        config.write_text(json.dumps({'shared_root': 'saved-source'}))
+        before = config.read_bytes()
+        with mock.patch.dict('os.environ', {'ACADEMIC_JOURNALS_SHARED_ROOT': str(self.root/'absent')}):
+            data.ensure_data('q3', self.root, shared_root=self.source)
+        self.assertEqual(config.read_bytes(), before)
+        self.assertEqual((self.root/'data/test.csv').read_bytes(), self.payload)
 
 if __name__=='__main__':unittest.main()

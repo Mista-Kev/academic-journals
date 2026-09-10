@@ -222,7 +222,7 @@ class DataPathResolutionTests(unittest.TestCase):
                 os.chdir(other_cwd)
                 paths.__file__ = str(script_dir / "openalex_three_path_prolog.py")
                 with mock.patch.dict(os.environ, {"OPENALEX_DATA_DIR": ""}):
-                    self.assertEqual(data_dir, paths.default_data_dir())
+                    self.assertEqual(data_dir.resolve(), paths.default_data_dir())
             finally:
                 paths.__file__ = original_file
                 os.chdir(original_cwd)
@@ -235,7 +235,7 @@ class DataPathResolutionTests(unittest.TestCase):
             try:
                 paths.__file__ = str(script_dir / "openalex_three_path_prolog.py")
                 self.assertEqual(
-                    script_dir / "openalex_three_path_output",
+                    (script_dir / "openalex_three_path_output").resolve(),
                     paths.default_output_dir(),
                 )
             finally:

@@ -1,4 +1,9 @@
 """Fetch verified research inputs or stage a mirrored SharePoint handover. Stdlib only."""
+import sys
+
+if sys.version_info < (3, 12):
+    raise SystemExit("Python 3.12 or newer is required. Run with a supported interpreter.")
+
 from pathlib import Path, PurePosixPath
 import argparse
 import hashlib
@@ -117,6 +122,11 @@ def install(stream, target, item):
         except FileExistsError:
             if not matches(target, item):
                 raise DataError('Destination changed while downloading: ' + item['path'])
+        except OSError as exc:
+            raise DataError('Could not publish verified file: ' + item['path'] +
+                            '. Atomic publication requires hard-link support and write permission. '
+                            'Use a writable local APFS/NTFS folder for the cache or release, '
+                            'then upload through SharePoint. OS error code: ' + str(exc.errno)) from None
     finally:
         if tmp is not None:
             tmp.unlink(missing_ok=True)
@@ -187,7 +197,9 @@ def ensure_data(group, root=ROOT, shared_root=None, verify_only=False):
                 with origin.open('rb') as stream:
                     install(stream, target, item)
             else:
-                url = config.get('urls', {}).get(item['path'])
+                urls = config.get('urls', {})
+                # An explicitly configured new key wins, even if invalid.
+                url = urls.get(item['path']) if item['path'] in urls else urls.get(item.get('shared_path', item['path']))
                 if not url:
                     raise DataError('Missing ' + item['path'] + '. Configure shared_root or its direct link in .shared-data.local.json; see D_results/methods/shared-data.md.')
                 with download(url) as stream:
@@ -205,8 +217,8 @@ def stage(target_root, group='all', root=ROOT):
     """Copy only declared, verified artifacts. Never walk arbitrary user folders."""
     root = Path(root).resolve()
     target_root = Path(target_root).expanduser().resolve()
-    if target_root == root:
-        raise DataError('Choose a distinct staging/shared folder')
+    if target_root == root or target_root.is_relative_to(root) or root.is_relative_to(target_root):
+        raise DataError('Choose a staging folder outside the repository, not its parent')
     manifest = load_manifest(root)
     rows = selected(manifest, group)
     # Preflight every source before writing anything to the destination.
@@ -308,6 +320,10 @@ def release_folder(target_root, root=ROOT, verify_only=False):
         if (path.name in {'.DS_Store', 'desktop.ini', 'Thumbs.db'} and
                 not path.is_symlink() and path.is_file()):
             continue
+        if (path.is_file() and not path.is_symlink() and path.parent == target_root
+                and re.fullmatch(r'delivery-[0-9a-f]{16}\.json', name) and name not in allowed):
+            raise DataError('Release contains a receipt from another manifest or staging group. '
+                            'Preserve this folder and prepare the complete release in a new empty folder.')
         if path.is_symlink() or (name not in allowed and name not in allowed_dirs):
             raise DataError('Unexpected release content: ' + name + '. Use a dedicated release folder.')
     for item in items:

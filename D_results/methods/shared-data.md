@@ -79,8 +79,11 @@ your own synced **Applied AI Group B Data** folder, the directory containing
 the release folders. The notebooks reuse that saved location.
 
 Alternatively set the `ACADEMIC_JOURNALS_SHARED_ROOT` environment variable to that
-folder. It overrides the local config. There is no workstation path in the
-notebook itself.
+folder. It overrides the local config. An explicit `fetch --shared-root` overrides
+both for that invocation without changing the saved configuration. `configure`
+refuses a conflicting environment override because its newly saved setting would
+otherwise have no effect. Unset the variable before saving a different source.
+There is no workstation path in the notebook itself.
 
 **Direct downloads:** if the shared files have permitted HTTPS download links,
 put them in the ignored local config, keyed by repository-relative file path:
@@ -92,6 +95,10 @@ put them in the ignored local config, keyed by repository-relative file path:
   }
 }
 ```
+
+The loader also accepts legacy URL keys from the manifest's `shared_path` when
+no new-path key exists. A new-path key always wins; a bad new link never silently
+falls back to an old one.
 
 That is a format example, not a working URL. A folder-view link or sign-in page
 is not a CSV. This lightweight client does not implement Microsoft Graph login;
@@ -165,6 +172,18 @@ Regular `.DS_Store`, `desktop.ini` and `Thumbs.db` files are tolerated because
 Finder and Windows can create them while browsing. They are not release artifacts,
 are not hash-checked and are never collected from the repository by the staging
 command. Same-named directories or symlinks are still rejected.
+Both `stage` and `prepare-release` reject destinations inside the repository or
+containing it. `stage --group ...` writes its own group receipt. To prepare a
+complete release afterwards, choose another empty folder; do not promote a
+subset folder by deleting its receipt. Receipts and old releases are preserved.
+
+Atomic file publication requires hard-link support and write permission in the
+cache or staging destination. If the filesystem refuses this, the command fails
+without publishing a partial file. Use a writable local APFS/NTFS directory and
+upload the completed release through SharePoint. A synced source can still be
+read into that local cache; direct staging onto every cloud or network filesystem
+is not supported.
+
 The command never recursively collects the source checkout. A failed or
 interrupted preparation is not a completed delivery: `verify-release` must pass.
 It checks all data **and metadata** against the matching repository version.
@@ -221,7 +240,9 @@ SharePoint snapshot**. It is not an automatically synchronized OneDrive folder.
 OneDrive synchronization and access as Felix or another recipient have not been
 independently tested. A different user configures their own downloaded or synced
 folder using the command above.
-The branch and its notebook loader edits are local until explicitly published.
+
+The A–D code was merged in PR #63. The separately prepared A/B/C cloud release
+still needs upload and independent readback verification.
 
 Microsoft documents [SharePoint/OneDrive synchronization](https://support.microsoft.com/en-US/sharepoint/sync/sync-sharepoint-and-teams-files-with-your-computer)
 and [Graph file downloads](https://learn.microsoft.com/en-us/graph/api/driveitem-get-content?view=graph-rest-1.0).

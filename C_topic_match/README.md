@@ -222,7 +222,7 @@ Ladewarnung isolieren diese Ursache nicht.
 
 ## Veraltete Dateien in diesem Ordner
 
-- **`Results/archive/`** — abgelöste Ergebnisdateien mit `MANIFEST.md`, das für jede
+- **`results/archive/`** — abgelöste Ergebnisdateien mit `MANIFEST.md`, das für jede
   erklärt, aus welchem Lauf sie stammt und warum sie abgelöst wurde. Bewusst im Repo
   behalten, damit die Kette nachvollziehbar bleibt. Nicht mehr verwenden.
 - **`README_results.md` ist aktuell**, kein Archiv: Ergebnisse, Dateiprüfung und

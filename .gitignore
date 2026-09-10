@@ -25,3 +25,7 @@ B_opportunities_and_analysis/results/
 A_data_and_rules/results/**/*.csv
 A_data_and_rules/results/**/*.pl
 C_topic_match/results/**/*.csv
+
+# Preserve protection for pre-migration local data and private notes.
+/data/
+/instructions/

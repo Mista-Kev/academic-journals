@@ -69,4 +69,5 @@ zusätzlicher Kontrollfaktor in den Q1/Q2-Ratios.
 
 [Methoden und Entscheidungen](D_results/methods/README.md) erklären den Weg zur aktuellen
 Auswertung. Alte Pläne und Notebooks sind als historisch eingeordnet.
-Die A–D-Umstellung ist zunächst lokal; bestehende SharePoint-Ordner bleiben lesbar.
+Die A–D-Umstellung ist in GitHub veröffentlicht; die bisherige SharePoint-Freigabe
+bleibt während der Umstellung lesbar.

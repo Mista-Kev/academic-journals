@@ -16,13 +16,14 @@ and dates; the second also uses primary topic category when assigning journals.
 | Q2 wide: same publisher, same journal allowed | 2.02 [1.99, 2.05] | 1.69 [1.67, 1.71] |
 | Q2 narrow: same publisher through another journal | 1.16 [1.11, 1.20] | 1.11 [1.07, 1.15] |
 
-Brackets are conditional 95% percentile confidence intervals from 4,000 whole-author
-bootstrap samples (seed 20260910). The denominator uses the exact expectation under
-the same null; all ratios round to the original 100-run estimates above. Journal
+Brackets are **nominal 95% intervals assuming independent authors and fixed journal
+weights**, from 4,000 whole-author bootstrap samples (seed 20260910). The denominator
+uses the exact expectation under the same null; all ratios round to the original 100-run estimates above. Journal
 weights and publisher mapping stay fixed. Dependence between coauthors and uncertainty
-in those weights are not covered. These are not the ranges of simulated null rates;
-the notebook reports those separately. Both narrow intervals exclude 1 under these
-assumptions, so being close to 1 should not be read as an absence of excess recurrence.
+in those weights are not covered. Coverage for the coauthored corpus remains
+unvalidated. Both narrow intervals exclude 1 under these assumptions; accounting for dependence could change that.
+The notebook separately reports ranges of simulated null rates, which answer
+a different question.
 
 Recurrence exceeds what these particular models predict. That does not establish
 loyalty independent of topic. Q2 narrow also overlaps with Q1: 1,468 of its 4,919
@@ -72,7 +73,8 @@ files and calculations, not causal validity.
 ## Choices and history
 
 - **10 September, Q1/Q2 uncertainty:** retained the simulation ranges and added
-  conditional author-bootstrap confidence intervals with exact null expectations.
+  nominal author-bootstrap intervals with exact null expectations, assuming
+  independent authors and fixed journal weights.
   Previously only the simulated means were reported; no methodological reason
   for omitting uncertainty had been recorded.
 - **July plan:** proposed Bayes nets/Logtalk and causal interpretation. The delivered

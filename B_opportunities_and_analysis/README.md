@@ -69,11 +69,12 @@ rate of about 0.0361 gives 3.09.
   recurrence if several slots carry the same journal. That is a different reference
   model and was not implemented.
 The notebook retains the 100 simulated rates and reports their middle 95% range.
-Separately, it calculates conditional 95% confidence intervals for the ratios using
-4,000 whole-author bootstrap samples. Observed and expected counts are resampled
-together. Exact null expectations remove simulation noise from the denominator;
-the original 100-run ratios stay alongside them. Journal weights remain fixed,
-and dependence between coauthors is not covered by these intervals.
+Separately, it calculates nominal 95% intervals assuming independent authors and
+fixed journal weights, using 4,000 whole-author bootstrap samples. Observed and
+expected counts are resampled together. Exact null expectations remove simulation noise from the denominator;
+the original 100-run ratios stay alongside them. This treats the estimated weights
+as a fixed reference, rather than re-estimating them from each resampled corpus.
+Dependence between coauthors is not covered; coverage for our corpus is unvalidated.
 
 ## Where topic information enters
 

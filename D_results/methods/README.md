@@ -1,20 +1,15 @@
-# Methods, history and decisions
+# Methods and project history
 
-Start with the [root README](../../README.md) for the workflow and
-[results in D](../README.md) for the findings.
+- [Inputs, calculations and outputs](analysis-interfaces.md): how Q1/Q2 and Q3 are calculated.
+- [Decision record](decisions.md): choices, alternatives and their status.
+- [Shared data](shared-data.md): loading the files and sharing a new version.
+- [Check record](validation.md): file checks, software tests and reproduced results.
+- [Annual event-table schema](../../B_opportunities_and_analysis/schemas/event_table.md): the 15 columns in the current v5 table.
 
-- [Decision record](decisions.md): dated decisions, with proposed team adoption kept separate from confirmed decisions.
-- [Q1–Q3 inputs, calculations and outputs](analysis-interfaces.md): the implemented analyses and their limits, including topic categories and sampling with replacement.
-- [Shared data](shared-data.md): setup and use of the SharePoint files.
-- [Data and calculation checks](validation.md): what was run and what each check establishes.
-- [Historical Q3 structure draft](q3-structure.md): the earlier causal argument, with its direct-effect and bound claims explicitly withdrawn. Use the current decision record for interpretation.
-- [Plan](plan.md), [research notes](research-notes.md) and [feedback](feedback-log.md): historical requirements and discussion, not evidence of the current implementation.
+For earlier work, see the [plan](plan.md), [research notes](research-notes.md),
+[feedback](feedback-log.md) and [historical Q3 structure draft](q3-structure.md).
+The draft's direct-effect and bound claims have been withdrawn. Current Q3 uses
+regression with standardization and reports associations; the planned full
+Bayes-net implementation was not delivered.
 
-Q3 uses regression with standardization and is reported as an association.
-A causal graph or an earlier plan for Bayes nets in Logtalk is not a runnable
-BN system. The repository reorganization does not change that scope.
-
-The current annual event-table schema has 15 columns and is documented in
-[B/schemas/event_table.md](../../B_opportunities_and_analysis/schemas/event_table.md).
-The column names were checked against the official v5 input. The earlier
-paper-level draft is no longer presented as the current schema.
+[Run the analyses](../DEMO.md) · [Results](../README.md)

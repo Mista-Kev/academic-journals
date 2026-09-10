@@ -123,3 +123,36 @@ This exercises Git CRLF conversion on the existing local Python environment;
 it is not a native Windows installation test. Q3 was not refit for these fixes.
 The input bytes and statistical code are unchanged. The separate interface
 explanation and Q1/Q2 Markdown corrections change no code cells or saved outputs.
+
+
+## A/B/C cloud delivery and readback · 10 September
+
+The `official-v5-2026-09-07-abcd-v1` subfolder in the shared **Applied AI Group B
+Data** folder now contains all 13 manifest artifacts and four metadata files.
+The earlier cloud layout was preserved. No sharing permissions were changed.
+Code and loader: `edc7641`; no notebook cells, saved outputs, data hashes or
+release metadata changed during publication.
+
+All 17 files were downloaded independently through the browser and matched their
+exact expected sizes and SHA-256 hashes, including both the manifest and delivery
+receipt. One interrupted raw-corpus download was resumed and its complete bytes
+verified. Checks were performed file by file to limit disk usage. Three large
+files not needed by the demos were removed from the temporary downloads only
+after verification; the retained local analysis-input folder is not the complete
+release. The prepared full release separately passes `verify-release`; that is
+not presented as a full-folder verification of the partial readback copy.
+
+Q1/Q2 ran in a fresh analysis cache populated by the loader from the new downloads
+and completed in **37.1 s**. Q3 completed in **71.2 s**, using independent APFS
+clones of the newly downloaded inputs to avoid another large disk allocation.
+Its loader verified the cached files against the manifest. Both full printed
+outputs match the prior validated logs after excluding loader/timing lines and
+the documented historical wording normalization. No result lines were excluded.
+
+The portability follow-up also passed **40 tests** through root discovery,
+including 12 logic tests with SWI-Prolog and without the macOS TMPDIR workaround.
+These checks establish file integrity and computational reproduction. They do not
+establish causal validity, access through another person's account, native Windows
+compatibility, or automatic OneDrive synchronization. Each recipient follows
+`START_HERE.txt` in the complete cloud release with their own downloaded or synced
+folder.

@@ -23,12 +23,14 @@ wird nur an einer Stelle geführt und von den anderen Teilen dort gelesen.
 ## Start und Vorführung
 
 Python 3.12 oder neuer und die Pakete aus `requirements.txt` installieren.
-Für Prolog zusätzlich SWI-Prolog installieren. Den freigegebenen Datenordner
-herunterladen und entpacken oder mit OneDrive synchronisieren. Dann im Repo:
+Für Prolog zusätzlich SWI-Prolog installieren. Im gemeinsamen SharePoint-Ordner
+**Applied AI Group B Data** den Unterordner **official-v5-2026-09-07-abcd-v1**
+öffnen und diesen Release herunterladen und entpacken oder lokal synchronisieren.
+Nicht den übergeordneten Ordner mit beiden Datenständen herunterladen. Dann im Repo:
 
 ```sh
 python3 -m pip install -r requirements.txt
-python3 project_data.py configure --shared-root "/Pfad/zum/gemeinsamen/Datenordner"
+python3 project_data.py configure --shared-root "/Pfad/zu/official-v5-2026-09-07-abcd-v1"
 python3 demo.py q1-q2
 python3 demo.py q3
 ```
@@ -69,5 +71,6 @@ zusätzlicher Kontrollfaktor in den Q1/Q2-Ratios.
 
 [Methoden und Entscheidungen](D_results/methods/README.md) erklären den Weg zur aktuellen
 Auswertung. Alte Pläne und Notebooks sind als historisch eingeordnet.
-Die A–D-Umstellung ist in GitHub veröffentlicht; die bisherige SharePoint-Freigabe
-bleibt während der Umstellung lesbar.
+Die frühere SharePoint-Struktur bleibt zur Nachvollziehbarkeit erhalten.
+Upload, separate Downloadprüfung und beide vollständigen Demos sind in
+[der Validierung](D_results/methods/validation.md) dokumentiert.

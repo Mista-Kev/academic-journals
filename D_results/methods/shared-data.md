@@ -26,9 +26,11 @@ interpretation. Each data artifact has one canonical path:
   B_opportunities_and_analysis/results/q3_v5/model_results.json
 ```
 
-The current cloud release still has its existing `data/`, `results/` and
-`topics/Results/` layout. It has **not** been moved remotely by this local change.
-The manifest records that location as `shared_path`. The loader first looks for
+The current cloud delivery is the **official-v5-2026-09-07-abcd-v1** subfolder
+inside **Applied AI Group B Data**. It contains the A/B/C layout above and four
+root metadata files. The earlier `data/`, `results/` and `topics/Results/` layout
+remains available in the parent shared folder. The manifest records those older
+locations as `shared_path`. The loader first looks for
 the new A/B/C path and otherwise uses that explicit old path. Either copy must
 match the same size and SHA-256; a differing new-path file is rejected rather
 than silently replaced by the old copy.
@@ -54,13 +56,15 @@ Use Python 3.12 or newer. Each person needs permission to read the shared folder
 The code does not borrow another person's browser session or change permissions.
 
 **Browser download (also works in the guest view):** open the team's shared
-folder, select **Download** with no individual file selected, and extract the
-ZIP. Keep the folder structure intact. Configure `shared_root` as the extracted
-release root containing either the existing folders or the A/B/C folders.
+folder, then open **official-v5-2026-09-07-abcd-v1**. Select **Download** with no
+individual file selected, and extract the ZIP. Do not download the parent folder,
+which also contains the previous delivery. Keep the folder structure intact.
+Configure `shared_root` as the extracted release root containing A/B/C and
+`START_HERE.txt`, not an outer ZIP wrapper or the parent shared folder.
 From the repository root, run these commands with your actual extracted path:
 
 ```sh
-python3 project_data.py configure --shared-root "/path/to/Applied AI Group B Data"
+python3 project_data.py configure --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
 python3 project_data.py fetch --group q3
 ```
 
@@ -75,8 +79,8 @@ against the corresponding repository manifest.
 
 **Synced folder:** synchronize the SharePoint folder with OneDrive and make its
 files available locally. Run the same `configure --shared-root` command with
-your own synced **Applied AI Group B Data** folder, the directory containing
-the release folders. The notebooks reuse that saved location.
+your own synced **official-v5-2026-09-07-abcd-v1** release folder, the directory
+containing A/B/C and `START_HERE.txt`. The notebooks reuse that saved location.
 
 Alternatively set the `ACADEMIC_JOURNALS_SHARED_ROOT` environment variable to that
 folder. It overrides the local config. An explicit `fetch --shared-root` overrides
@@ -241,8 +245,15 @@ OneDrive synchronization and access as Felix or another recipient have not been
 independently tested. A different user configures their own downloaded or synced
 folder using the command above.
 
-The A–D code was merged in PR #63. The separately prepared A/B/C cloud release
-still needs upload and independent readback verification.
+The A–D code was merged in PR #63; the portability follow-up is `edc7641`.
+On 10 September the A/B/C release was uploaded to the new subfolder. All 13 data
+files and four metadata files were downloaded separately and matched their exact
+sizes and SHA-256 hashes. Q1/Q2 and Q3 then ran on those downloaded inputs and
+matched the prior full output logs. Because local disk space was limited, three
+large files not required by those demos were discarded only after their downloaded
+bytes had been verified. The retained analysis-input folder is therefore a partial
+local copy, not a full release to redistribute. The cloud folder contains all 17
+files. See [validation.md](validation.md) for the checks and their limits.
 
 Microsoft documents [SharePoint/OneDrive synchronization](https://support.microsoft.com/en-US/sharepoint/sync/sync-sharepoint-and-teams-files-with-your-computer)
 and [Graph file downloads](https://learn.microsoft.com/en-us/graph/api/driveitem-get-content?view=graph-rest-1.0).

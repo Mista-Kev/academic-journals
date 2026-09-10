@@ -68,8 +68,12 @@ rate of about 0.0361 gives 3.09.
 - A permutation without replacement could preserve journal totals and still allow
   recurrence if several slots carry the same journal. That is a different reference
   model and was not implemented.
-- The 100 simulations estimate the expected rate. They do not provide confidence
-  intervals for the observed ratios.
+The notebook retains the 100 simulated rates and reports their middle 95% range.
+Separately, it calculates conditional 95% confidence intervals for the ratios using
+4,000 whole-author bootstrap samples. Observed and expected counts are resampled
+together. Exact null expectations remove simulation noise from the denominator;
+the original 100-run ratios stay alongside them. Journal weights remain fixed,
+and dependence between coauthors is not covered by these intervals.
 
 ## Where topic information enters
 

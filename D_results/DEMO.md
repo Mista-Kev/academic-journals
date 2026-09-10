@@ -1,63 +1,63 @@
-# Gemeinsam vorführen und erklären
+# Running and explaining the analyses
 
-Vom Repository-Root aus arbeiten. Einmal Pakete installieren und den eigenen
-SharePoint-Download oder synchronisierten Ordner konfigurieren, wie in der
-Root-README beschrieben. Kein OpenAlex-Abruf und kein GPU-Neulauf ist nötig,
-um die vorhandenen Ergebnisse nachzurechnen.
-
-## Zehn Minuten mit drei Verantwortlichen
-
-1. **Lennart, A:** ein Paper, seine Autoren und einen belegten historischen Pfad
-   zeigen. Autor-Paper-Pfade von jährlichen Gelegenheiten unterscheiden.
-2. **Kevin, B:** eine Gelegenheit ohne Eintritt erklären. Sie liefert den Nenner.
-   Q1/Q2 laufen lassen und sagen, was im Jahr-/Themen-Vergleich gezogen wird.
-3. **Pierre, C:** historische Profile vor Jahr t und einen fehlenden T-Wert
-   erklären. Den separaten Q1-Intra-Wert von historischem T unterscheiden.
-4. **Kevin, B:** Q3 laufen lassen. 3,34 neben 1,18 und 6,09 neben 2,27 zeigen,
-   inklusive unterschiedlicher Populationen und Ausschluss im Sensitivitätsmodell.
-5. **Gemeinsam, D:** eine Kernaussage und ihre Grenze nennen. Regelparität,
-   statistische Berechnung und kausale Gültigkeit sind verschiedene Prüfungen.
+Follow the [data setup](methods/shared-data.md#how-to-use-it) once, then run from
+the repository root:
 
 ```sh
 python3 demo.py q1-q2
 python3 demo.py q3
 ```
 
-Diese Befehle führen alle Python-Zellen der jeweiligen Notebooks frisch aus und
-geben ihre Ergebnisse im Terminal aus. Sie verändern weder die Statistikzellen
-noch die gespeicherten Notebook-Ausgaben. Für die grafische Notebookansicht die
-Datei aus B öffnen und B als Kernel-Arbeitsverzeichnis verwenden.
+These commands execute every Python cell in the corresponding notebooks and print
+fresh results in the terminal. They leave saved notebook outputs unchanged.
+No new OpenAlex download or GPU run is needed. For the notebook view, open the
+files in B and use B as the kernel's working directory.
 
-## Regeln prüfen
+## What to look at
 
-Alle Unit-Tests vom Repository-Root aus starten:
+- **Q1/Q2:** observed recurrence, expected recurrence under each reference model,
+  and their ratio. Explain what changes when the comparison includes topic category.
+- **Q3:** an author-journal-year opportunity, including rows without entry; the
+  prior co-author connection C; and historical topic fit T, where available.
+- **Results:** compare C+T with the journal/year sensitivity. For non-ride entries,
+  the comparison on identical rows is **3.30 → 1.18**. The full complete-case
+  estimate is **3.34**. [D explains the populations and interpretation](README.md).
+
+For a group walkthrough, Lennart explains the papers and publication rules,
+Pierre explains the topic profiles, and Kevin explains the comparison groups and
+calculations. Finish with what the results support and what remains uncertain.
+[The analysis description](methods/analysis-interfaces.md) provides the reasoning.
+
+## Optional: compare the Python and Prolog tables
+
+```sh
+python3 project_data.py fetch --group parity
+python3 B_opportunities_and_analysis/diff_event_table.py
+```
+
+This compares the existing annual tables. It checks whether both implementations
+produce the same rows and flags, not whether the research interpretation is causal.
+
+<details>
+<summary>Software tests and rebuilding the tables</summary>
+
+Run all tests from the repository root:
 
 ```sh
 python3 -m unittest discover -s . -v
 ```
 
-Nur Loader- und Buildertests aus B:
+Or just the loader and builder tests:
 
 ```sh
 python3 -m unittest discover -s B_opportunities_and_analysis/tests -p 'test_*.py' -v
 ```
 
-Für die Prüfung der Checkout-Zeilenenden muss Git installiert sein. Die Tests
-benötigen keinen neuen OpenAlex-Abruf oder GPU-Lauf.
+Tests use small fixtures. Git is needed for the line-ending check; SWI-Prolog is
+needed for the Prolog integration tests, which are skipped if it is absent.
 
-SWI-Prolog muss installiert sein. Die kleinen Unit-Tests benötigen keine großen
-Daten; einige Tests verwenden SWI-Prolog und werden ohne Installation übersprungen.
-
-```sh
-python3 -m unittest discover -s A_data_and_rules/logic/tests -v
-python3 project_data.py fetch --group parity
-python3 B_opportunities_and_analysis/diff_event_table.py
-```
-
-Die zweite Prüfung vergleicht alle Zeilen der freigegebenen Python-/Prolog-
-Tabellen. Eine neue Konstruktion beider Tabellen ist ein zusätzlicher Test.
-Dafür einen separaten Checkout/Arbeitsordner verwenden, weil die Builder ihre
-abgeleiteten Dateien schreiben:
+To rebuild both full tables, install SWI-Prolog and use a separate checkout
+because these commands write derived files:
 
 ```sh
 python3 project_data.py fetch --group corpus
@@ -66,17 +66,15 @@ python3 B_opportunities_and_analysis/build_event_table.py
 python3 A_data_and_rules/logic/check_event_table_parity.py --fixtures-only
 python3 A_data_and_rules/logic/check_event_table_parity.py
 python3 B_opportunities_and_analysis/diff_event_table.py
+python3 project_data.py verify --group parity
 ```
 
-Danach `python3 project_data.py verify --group parity` ausführen, um zusätzlich
-die eingefrorenen Dateihashes zu prüfen. Unterschiedliche Serialisierung kann bei
-Prolog-Ausgaben trotz semantischer Gleichheit einen anderen Hash ergeben; niemals
-den Manifest-Hash nur zum Beseitigen eines Fehlers überschreiben.
+The last command checks file hashes as well. Different Prolog serialization can
+produce different bytes even when the rows agree. Investigate a mismatch rather
+than changing the manifest hash to accept it.
 
-## Grenzen der Demo
+</details>
 
-Die Eingabeprüfung und Analysen laufen mit der festen Datenfreigabe offline,
-sobald die Dateien geladen wurden. Zugriff als Felix muss mit seinem eigenen
-Konto/Download funktionieren; unser Lauf prüft seine Berechtigung nicht.
-Der C-Neulauf braucht die im C-README beschriebene DuckDB-/Colab-/GPU-Umgebung.
-Ein ausführbares Bayes-Netz ist in dieser Demo nicht enthalten.
+Rebuilding C's embeddings requires its separate DuckDB/Colab/GPU setup. The
+current Q3 analysis is regression with standardization; it is not runnable
+Bayes-net software.

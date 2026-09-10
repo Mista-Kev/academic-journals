@@ -1,51 +1,57 @@
-# Publikationswege in KI-Journals
+# Publication patterns in AI journals
 
-Wir untersuchen beobachtete Publikationen: Wiederkehr ins gleiche Journal (Q1),
-in denselben Verlag (Q2) und den Zusammenhang zwischen früheren Koautoren und
-dem ersten Eintritt in ein Journal (Q3). Der Korpus umfasst 27.400 Paper in
-64 Journals von 2015 bis 2024. Die Auswertungen zeigen beschreibende und
-modellbereinigte Zusammenhänge, keine nachgewiesenen kausalen Wirkungen.
+We study 27,400 papers from 64 journals, published between 2015 and 2024:
 
-## Ein Repository, vier Teile
+- **Q1:** Do authors return to the same journal more often than our reference models predict?
+- **Q2:** Do they return to the same publisher more often?
+- **Q3:** Is a prior co-author connection associated with first entry into a journal, after accounting for topic fit?
 
-| Teil | Verantwortung | Einstieg und Ergebnis |
-|---|---|---|
-| [A · Daten und Regeln](A_data_and_rules/README.md) | Lennart | Paper aufbereiten, historische Pfade mit Belegen, unabhängige Prolog-Gegenprüfung |
-| [B · Gelegenheiten und Analyse](B_opportunities_and_analysis/README.md) | Kevin | Jährliche Gelegenheiten bauen; Q1/Q2-Vergleiche und Q3-Modelle rechnen |
-| [C · Themenpassung](C_topic_match/README.md) | Pierre | Historische Themenpassung T für Q3; ergänzende Intra-Ähnlichkeit für Q1 |
-| [D · Ergebnisse](D_results/README.md) | gemeinsam | Ergebnisse, Interpretation, Grenzen und Methodengeschichte aus A–C |
+Our results describe publication patterns and adjusted associations. They do not
+establish causal effects. [Read the results](D_results/README.md).
 
-Code und Erläuterungen liegen hier. Große Eingaben und Ergebnisdateien liegen
-im gemeinsamen SharePoint-Ordner; innerhalb von A/B/C bezeichnet `data/` die
-Datentabellen und `results/` die jeweiligen Ergebnisexporte. Ein Datenprodukt
-wird nur an einer Stelle geführt und von den anderen Teilen dort gelesen.
+## How to use it
 
-## Start und Vorführung
+You can rerun Q1/Q2 and Q3 from the shared data without collecting new papers or
+running the embedding model. You need Python 3.12 or newer and access to our
+SharePoint folder, **Applied AI Group B Data**.
 
-Python 3.12 oder neuer und die Pakete aus `requirements.txt` installieren.
-Für Prolog zusätzlich SWI-Prolog installieren. Im gemeinsamen SharePoint-Ordner
-**Applied AI Group B Data** den Unterordner **official-v5-2026-09-07-abcd-v1**
-öffnen und diesen Release herunterladen und entpacken oder lokal synchronisieren.
-Nicht den übergeordneten Ordner mit beiden Datenständen herunterladen. Dann im Repo:
+1. Download and extract its **official-v5-2026-09-07-abcd-v1** subfolder, or make
+   that folder available locally through OneDrive. It contains A/B/C folders and
+   `START_HERE.txt`.
+2. Open a terminal in this repository's root folder, where `requirements.txt` is.
+3. Run the commands below, replacing the example path with your downloaded folder:
 
 ```sh
 python3 -m pip install -r requirements.txt
-python3 project_data.py configure --shared-root "/Pfad/zu/official-v5-2026-09-07-abcd-v1"
+python3 project_data.py configure --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
 python3 demo.py q1-q2
 python3 demo.py q3
 ```
 
-Die Pfade werden einmal pro Rechner konfiguriert. Dateigröße und SHA-256 werden
-vor dem Einlesen geprüft. Ein Browserdownload ist eine feste Kopie, keine
-laufende OneDrive-Synchronisation. [Datenzugriff und Veröffentlichung](D_results/methods/shared-data.md)
-beschreiben beide Möglichkeiten.
+The last two commands run the notebooks and print their results in the terminal.
+They do not change the saved notebook outputs or upload anything. The loader checks
+that the input files match our shared version and keeps a local copy for later runs.
 
-Für die Präsentation folgt ihr [der Demo-Anleitung](D_results/DEMO.md).
-Die Notebooks in B können auch direkt ausgeführt werden, mit B als Arbeitsordner.
-Das Downloadpaket enthält die geprüften Analyse-Eingaben; ein neuer GPU-Lauf von
-C benötigt zusätzlich Pierres DuckDB-/Colab-Umgebung.
+To read the calculations alongside the output, open
+[Q1/Q2](B_opportunities_and_analysis/q1_q2_baselines.ipynb) or
+[Q3](B_opportunities_and_analysis/q3_baselines.ipynb).
+[Data setup](D_results/methods/shared-data.md#how-to-use-it) covers partial downloads
+and common problems. [Running and explaining the analyses](D_results/DEMO.md)
+also covers the Python/Prolog comparison.
 
-## Wie die Teile zusammenhängen
+## Where things are
+
+| Part | Who | What it contains |
+|---|---|---|
+| [A · Data and rules](A_data_and_rules/README.md) | Lennart | Paper preparation, publication paths and Prolog checks |
+| [B · Opportunities and analysis](B_opportunities_and_analysis/README.md) | Kevin | Annual entry opportunities and the Q1/Q2/Q3 calculations |
+| [C · Topic fit](C_topic_match/README.md) | Pierre | Historical topic fit for Q3 and a separate within-journal similarity summary for Q1 |
+| [D · Results](D_results/README.md) | Together | Findings, interpretation and methods |
+
+Code and explanations are in GitHub. Large data files are in SharePoint, using
+the same A/B/C paths. Each output stays with the part that produces it.
+
+## How the parts connect
 
 ```mermaid
 flowchart TD
@@ -65,12 +71,10 @@ flowchart TD
     I --> O
 ```
 
-Historische Profile und jährliche Regeln verwenden nur Paper **vor dem betrachteten
-Jahr t**. Die Q1-Intra-Auswertung hat keine historische Zeitordnung und ist kein
-zusätzlicher Kontrollfaktor in den Q1/Q2-Ratios.
+Annual rules and topic profiles use papers from years **before the year t being
+analysed**. Q1/Q2 also use year and topic-category reference models. Pierre's Q1
+Intra summary is separate: it does not add historical topic adjustment to those ratios.
 
-[Methoden und Entscheidungen](D_results/methods/README.md) erklären den Weg zur aktuellen
-Auswertung. Alte Pläne und Notebooks sind als historisch eingeordnet.
-Die frühere SharePoint-Struktur bleibt zur Nachvollziehbarkeit erhalten.
-Upload, separate Downloadprüfung und beide vollständigen Demos sind in
-[der Validierung](D_results/methods/validation.md) dokumentiert.
+For the reasoning behind the calculations, start with
+[inputs, calculations and outputs](D_results/methods/analysis-interfaces.md).
+The [methods index](D_results/methods/README.md) links the decisions and historical plans.

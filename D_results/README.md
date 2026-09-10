@@ -1,39 +1,62 @@
-# D · Ergebnisse und Interpretation aus A–C
+# Results
 
-Diese Seite führt die vorhandenen Auswertungen zusammen. Eingaben und exportierte
-Resultate bleiben beim erzeugenden Teil in A/B/C. Es gibt keine vierte Analyse D.
+We compare publication patterns in 27,400 papers from 64 AI journals, covering
+2015–2024. The results describe recurrence and associations with first journal
+entry. They do not establish causal effects.
 
-| Auswertung | Ergebnis | Zulässige Aussage |
-|---|---|---|
-| A/B: jährliche Regeln | 6.422.558 Gelegenheiten, 96.819 Eintritte, 1.784 mit Seed, davon 756 Rides | Python und Prolog prüfen dieselben Regeln unabhängig; Übereinstimmung beweist keine Kausalität |
-| Q1 | Ratio 3,09 nach Jahr; 2,22 nach Jahr + Themenkategorie | Mehr Journalwiederkehr als unter diesen Vergleichsmodellen |
-| Q2 weit | 2,02 / 1,69 | Mehr Verlagswiederkehr einschließlich Journalwiederkehr |
-| Q2 eng | 1,16 / 1,11 | 1.468 der 4.919 Fälle sind zugleich Journalwiederkehr; kein isoliertes Verlagssignal |
-| C: Q1 Intra | 9.195 Autor-Journal-Gruppen | Thematische Ähnlichkeit innerhalb beobachteter Gruppen, keine historische Rückkehr-Adjustierung |
-| Q3_all, C+T | 6,09 [5,76; 6,45] | Modellbasierter Zusammenhang auf 1.106.356 Zeilen mit messbarem T |
-| Q3_ind, C+T | 3,34 [3,12; 3,58] | Eintritt ohne qualifizierenden Seed-Koautor auf dem Eintrittspaper; keine allgemeine Unabhängigkeit |
-| Q3_all, gleiche 1.088.420 Zeilen | C+T 6,01 → mit Journal und Jahr 2,27 | Deutliche Spezifikationsabhängigkeit |
-| Q3_ind, gleiche 1.088.420 Zeilen | C+T 3,30 → mit Journal und Jahr 1,18 | Die kleinere Schätzung gehört neben das T-only-Ergebnis |
+## Q1 and Q2: observed recurrence versus expected recurrence
 
-Q3 verwendet Pierres offiziellen v5-Export (SHA-256 beginnt `8a9e8a92`). Die
-Intervalle der T-adjustierten Modelle verwenden eine nach Autor geclusterte
-Delta-Methode. Die Journal-/Jahresmodelle haben separate additive Effekte,
-keine Journal×Jahr-Interaktionen. Ein Journal ohne Eintritte wurde dort mit
-17.936 Zeilen ausgeschlossen, um Separation zu behandeln. Das ist eine am
-Outcome orientierte Einschränkung, keine neutrale Datenbereinigung.
+Each ratio divides the observed recurrence rate by the mean rate from the
+corresponding random reference model. Both models preserve authors' paper counts
+and dates; the second also uses primary topic category when assigning journals.
 
-**Festgelegter Abschluss für Kevins Teil (9. September):** Q3_ind mit C+T ist
-der ursprüngliche Hauptvergleich; Journal-/Jahressensitivität wird unmittelbar
-daneben berichtet und bestimmt die vorsichtige Gesamtaussage mit. Die Zielpopulation
-der adjustierten Modelle sind die Gelegenheiten mit messbarem T. Fehlendes T wird
-nicht ersetzt. Das ist Kevins feste lokale Berichtsposition; für den gemeinsamen Bericht
-bleibt sie ein Vorschlag bis zur Teamabstimmung. Frühere Team- oder Felix-Zustimmung
-wird nicht behauptet. [Begründungen](methods/decisions.md).
+| Question | Year reference | Year + topic-category reference |
+|---|---:|---:|
+| Q1: same journal again | 3.09 | 2.22 |
+| Q2 wide: same publisher, same journal allowed | 2.02 | 1.69 |
+| Q2 narrow: same publisher through another journal | 1.16 | 1.11 |
 
-Q1/Q2 werden als beschreibende Vergleiche abgeschlossen. Pierres Intra-Datei
-ist eine eigene Ergänzung; eine historische kontinuierliche T-Adjustierung der
-Rückkehr wird nicht behauptet. Thematisch unabhängige Treue bleibt eine stärkere,
-hier nicht beantwortete Frage. Bekannte Grenzen sind Teil des Ergebnisses und
-werden nicht als noch ausstehende Berechnungen ausgegeben.
+Recurrence exceeds what these particular models predict. That does not establish
+loyalty independent of topic. Q2 narrow also overlaps with Q1: 1,468 of its 4,919
+cases are journal returns. The remaining 3,451 cases have no separate null comparison.
 
-[Demo](DEMO.md) · [Vorgehensweise und Entscheidungen](methods/README.md) · [Start](../README.md)
+Pierre's Q1 Intra file describes topic similarity within 9,195 observed
+author-journal groups. It sits alongside these ratios; it does not adjust them.
+Historical continuous topic adjustment for return opportunities was not built.
+
+## Q3: prior co-author connection and first journal entry
+
+C indicates a qualifying prior co-author connection. T measures historical topic
+fit between author and journal. We fit logistic models and average predicted
+entry probabilities with C set to 1 and 0 over the same rows. Their ratio is the
+model-standardized risk ratio.
+
+| Outcome | C + T, all complete cases | C + T, matched rows | With journal and year, matched rows |
+|---|---:|---:|---:|
+| All entries | 6.09 [5.76, 6.45] | 6.01 | 2.27 |
+| Non-ride entries | 3.34 [3.12, 3.58] | 3.30 | 1.18 |
+
+The first column uses **1,106,356 rows with measurable T**. The last two use the
+same **1,088,420 rows**, excluding 17,936 rows from a journal with no entries to
+handle separation. That exclusion depends on the outcome. Journal and year are
+separate additive terms. The brackets give 95% author-clustered delta intervals.
+
+**The association becomes much smaller after adding journal and year.** That
+model dependence is part of the finding. Non-ride means the qualifying seed
+co-author is absent from the selected entry paper; it does not mean a direct
+network effect. Missing T remains missing, so adjusted results concern complete
+cases. Rolling T can already reflect earlier collaboration.
+
+For Kevin's part, the original C+T non-ride comparison remains the headline,
+always shown with the journal/year sensitivity. Adoption in the joint report
+remains proposed in the [decision record](methods/decisions.md).
+
+## Data and rule checks
+
+The annual table contains 6,422,558 opportunities, 96,819 entries and 1,784 entries
+with a qualifying seed, including 756 rides. Python and Prolog agree on all rows.
+Q3 uses Pierre's official v5 export. Both analyses reproduced their results after
+loading the shared files from SharePoint. These checks establish agreement of the
+files and calculations, not causal validity.
+
+[Run the analyses](DEMO.md) · [Understand the calculations](methods/analysis-interfaces.md) · [Check record](methods/validation.md)

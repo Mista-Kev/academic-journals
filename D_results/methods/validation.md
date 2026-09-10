@@ -1,4 +1,10 @@
-# A–D migration validation · 2026-09-09
+# Data and calculation checks
+
+The sections below record checks as they happened. For the completed SharePoint
+delivery, see [the 10 September checks](#sharepoint-download-and-calculation-checks--10-september).
+For setup and commands, see [How to use it](shared-data.md#how-to-use-it).
+
+## A–D migration validation · 9 September
 
 Local integration branch: `structure/abcd-handoff`. Inputs: the verified downloaded
 SharePoint snapshot, release `official-v5-2026-09-07`. Q3 code base: PR #60 head
@@ -49,7 +55,7 @@ The decision record now distinguishes Kevin’s fixed local reporting position
 from proposed adoption in the joint team report. Current notebook text refers to
 the documented August comparison without asserting verified preregistration.
 The frozen model-results JSON is explicitly external reference evidence, with its
-producer outside this repository. Project documentation contains no agent attribution.
+producer outside this repository.
 
 ## Local SharePoint release preparation · 9 September
 
@@ -125,34 +131,53 @@ The input bytes and statistical code are unchanged. The separate interface
 explanation and Q1/Q2 Markdown corrections change no code cells or saved outputs.
 
 
-## A/B/C cloud delivery and readback · 10 September
+## SharePoint download and calculation checks · 10 September
 
-The `official-v5-2026-09-07-abcd-v1` subfolder in the shared **Applied AI Group B
-Data** folder now contains all 13 manifest artifacts and four metadata files.
-The earlier cloud layout was preserved. No sharing permissions were changed.
-Code and loader: `edc7641`; no notebook cells, saved outputs, data hashes or
-release metadata changed during publication.
+We uploaded all 13 data files and four metadata files to
+**Applied AI Group B Data / official-v5-2026-09-07-abcd-v1**. The previous folder
+layout remains available. Sharing permissions were unchanged. These checks used
+code version `edc7641`; notebook cells, saved outputs, data hashes and release
+metadata were unchanged.
 
-All 17 files were downloaded independently through the browser and matched their
-exact expected sizes and SHA-256 hashes, including both the manifest and delivery
-receipt. One interrupted raw-corpus download was resumed and its complete bytes
-verified. Checks were performed file by file to limit disk usage. Three large
-files not needed by the demos were removed from the temporary downloads only
-after verification; the retained local analysis-input folder is not the complete
-release. The prepared full release separately passes `verify-release`; that is
-not presented as a full-folder verification of the partial readback copy.
+We downloaded all 17 files again and checked each file's size and SHA-256 hash.
+Every file matched, including the manifest and delivery receipt. One interrupted
+download was resumed and checked after completion. To save disk space, three
+large files not needed by the analyses were removed from the temporary downloads
+after verification. The retained local copy is therefore incomplete. The complete
+prepared release passed `verify-release` separately.
 
-Q1/Q2 ran in a fresh analysis cache populated by the loader from the new downloads
-and completed in **37.1 s**. Q3 completed in **71.2 s**, using independent APFS
-clones of the newly downloaded inputs to avoid another large disk allocation.
-Its loader verified the cached files against the manifest. Both full printed
-outputs match the prior validated logs after excluding loader/timing lines and
-the documented historical wording normalization. No result lines were excluded.
+Both notebooks ran using the new downloads. Q1/Q2 used a fresh cache populated by
+the loader and finished in 37.1 seconds. Q3 used independent APFS copies of the
+downloaded inputs to save disk space; the loader checked them against the manifest,
+and the run finished in 71.2 seconds. A script compared the full printed outputs
+with the previous logs. It ignored loading messages, timings and one documented
+wording correction. All result lines matched.
 
-The portability follow-up also passed **40 tests** through root discovery,
-including 12 logic tests with SWI-Prolog and without the macOS TMPDIR workaround.
-These checks establish file integrity and computational reproduction. They do not
-establish causal validity, access through another person's account, native Windows
-compatibility, or automatic OneDrive synchronization. Each recipient follows
-`START_HERE.txt` in the complete cloud release with their own downloaded or synced
-folder.
+The Q3 risk ratios were unchanged:
+
+| Outcome | C + T, all complete cases | C + T, matched rows | C + T + journal and year, matched rows |
+|---|---:|---:|---:|
+| All entries | 6.09 | 6.01 | 2.27 |
+| Entries without a ride | 3.34 | 3.30 | 1.18 |
+
+The last two columns use the same **1,088,420 rows**, excluding the journal with
+no entries. The first uses all **1,106,356 complete cases**. Compare the last two
+columns when discussing the change after adding journal and year.
+
+### What the saved files contain
+
+The local run records have different purposes. They are not included in GitHub:
+
+- `q1-q2.log` and `q3.log`: terminal output from the full notebook runs, including calculated results.
+- `verified-files.json`: file sizes and hashes recorded by the download-checking script.
+- `demo-comparison.json`: the script's comparison of new and previous notebook outputs.
+- `completion.json`: a summary of those checks, not another test run.
+- `release-portability-tests.log`: output from the separate software test suite. All 40 tests passed, including 12 logic tests with SWI-Prolog. Root discovery worked without the earlier macOS `TMPDIR` workaround.
+
+`pathway_evidence.csv` is a research data file: it lists earlier publications that
+support the identified publication paths. It is not a software test log.
+
+These checks show that the files arrived unchanged and the calculations reproduce
+the previous results. They do not establish causal validity, access through
+another person's account, native Windows compatibility or automatic OneDrive
+synchronization.

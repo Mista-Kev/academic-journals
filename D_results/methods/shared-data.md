@@ -44,16 +44,17 @@ until the matching code has been published and collaborators have switched.
 
 The historical Min-3 file remains necessary for Q3 step 8; it is not the main
 input. The Q1 Intra export describes observed groups and does not adjust Q1/Q2.
-The Q3 result JSON is **external reference evidence**, produced by `refit.py`
+The Q3 result JSON contains **reference calculation results**, produced by `refit.py`
 in the separate offline v5 demo package. That producer is not included in this
 repository. The loader retrieves its frozen, hash-checked output; it does not
 regenerate it. The Q3 notebook computes its own estimates and printed results;
 the JSON additionally supplies reference delta intervals for the sensitivity fits.
 
-## One-time setup for each person
+## How to use it
 
-Use Python 3.12 or newer. Each person needs permission to read the shared folder.
-The code does not borrow another person's browser session or change permissions.
+Use Python 3.12 or newer and install the packages from `requirements.txt`.
+You need access to the shared folder. The loader reads from your downloaded or
+OneDrive-synced copy; it does not sign in to Microsoft for you.
 
 **Browser download (also works in the guest view):** open the team's shared
 folder, then open **official-v5-2026-09-07-abcd-v1**. Select **Download** with no
@@ -64,14 +65,17 @@ Configure `shared_root` as the extracted release root containing A/B/C and
 From the repository root, run these commands with your actual extracted path:
 
 ```sh
+python3 -m pip install -r requirements.txt
 python3 project_data.py configure --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
-python3 project_data.py fetch --group q3
+python3 demo.py q1-q2
+python3 demo.py q3
 ```
 
 `configure` verifies the files against the repository manifest before saving
 their location in the ignored `.shared-data.local.json`. Use `--group q1-q2`
 or `--group q3` on `configure` if you downloaded only that group's files.
-Then fetch the same group, or open its notebook from `B_opportunities_and_analysis/`.
+Then run that analysis with `demo.py`, or open its notebook in
+`B_opportunities_and_analysis/`. Both routes execute the notebook calculations.
 The loader copies and verifies the required inputs; no manual per-file placement
 inside the repository is needed. This is a downloaded snapshot, not continuous
 synchronization. For updates, download the newly agreed release and verify it
@@ -223,37 +227,18 @@ explicit file list and hashes. Preserve the old release in a separately named
 folder before publishing changed values. Do not silently replace the reference
 file or update its hash merely to silence a verification failure.
 
-## Validation and deployment status
+## What we checked
 
-The loader has local tests for verified source configuration, first retrieval and offline reuse, corrupted or
-truncated transfers, existing-file preservation, staging conflicts, path escape,
-login-page rejection and avoiding secret URLs in errors. On 9 September 2026, SharePoint confirmed upload completion for all 13
-declared artifacts plus the manifest and entry-point instructions. All 13
-artifacts were downloaded again and matched their exact byte sizes and SHA-256
-hashes against the repository manifest. Root metadata files were observed in
-SharePoint but were not separately hash-checked after download.
+On 10 September 2026, we downloaded all 13 data files and four metadata files
+from **official-v5-2026-09-07-abcd-v1** and checked their sizes and SHA-256 hashes.
+All 17 matched. Both notebooks then ran on those downloads and reproduced the
+previous results. The loader, builder and rule tests also passed: 40 tests in total.
+Details and earlier checks are in [validation.md](validation.md).
 
-Both notebooks' first code cells passed in a fresh temporary repository/cache
-using only those downloaded inputs: Q1/Q2 loaded 27,400 papers across 64 journals;
-Q3 loaded 6,422,558 rows, 96,819 entries and 19,035 seeded rows. The same cache
-then worked with the source configuration removed, proving offline reuse.
-Those checks concern the original loader branch. The A–D migration and full-notebook reruns are recorded separately in [validation.md](validation.md).
-
-The current local checkout is configured to use a persistent **downloaded
-SharePoint snapshot**. It is not an automatically synchronized OneDrive folder.
-OneDrive synchronization and access as Felix or another recipient have not been
-independently tested. A different user configures their own downloaded or synced
-folder using the command above.
-
-The A–D code was merged in PR #63; the portability follow-up is `edc7641`.
-On 10 September the A/B/C release was uploaded to the new subfolder. All 13 data
-files and four metadata files were downloaded separately and matched their exact
-sizes and SHA-256 hashes. Q1/Q2 and Q3 then ran on those downloaded inputs and
-matched the prior full output logs. Because local disk space was limited, three
-large files not required by those demos were discarded only after their downloaded
-bytes had been verified. The retained analysis-input folder is therefore a partial
-local copy, not a full release to redistribute. The cloud folder contains all 17
-files. See [validation.md](validation.md) for the checks and their limits.
+These checks cover file transfer and calculation. They do not establish a causal
+interpretation of the results. Access through another person's account and
+automatic OneDrive synchronization have not been tested. Each person needs to
+configure their own downloaded or synced folder as described above.
 
 Microsoft documents [SharePoint/OneDrive synchronization](https://support.microsoft.com/en-US/sharepoint/sync/sync-sharepoint-and-teams-files-with-your-computer)
 and [Graph file downloads](https://learn.microsoft.com/en-us/graph/api/driveitem-get-content?view=graph-rest-1.0).

@@ -128,6 +128,8 @@ def emit(idx, work_authors, parent, journals, path_a, path_b, want_traces=False)
     traces = []
     kinds = set()
 
+    for path in (path_a, path_b):
+        os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
     with open(path_a, "w", encoding="utf-8", newline="") as fa, \
          open(path_b, "w", encoding="utf-8", newline="") as fb:
         wa = csv.writer(fa, lineterminator="\n")

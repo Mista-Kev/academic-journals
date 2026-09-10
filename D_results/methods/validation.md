@@ -98,3 +98,28 @@ Both saved notebook log pairs pass this stricter comparison. Deliberately altere
 seed totals, seed coverage, warnings and caution text each raise an error.
 No full notebook runs were repeated for this follow-up. Notebook files, data
 hashes and statistical decisions remain unchanged. Nothing was pushed or uploaded.
+
+## Fresh-checkout review fixes · 10 September
+
+Two regression tests first reproduced the reported failures: the event emitter
+could not write to absent output directories, and Git's `core.autocrlf=true`
+checkout conversion changed tracked CSV bytes and caused checksum rejection.
+
+The emitter now creates both output parents before opening either file. Frozen
+reference CSVs have `-text` attributes so Git preserves their stored bytes. The
+loader still rejects a real checksum mismatch. **22 tests pass**, including a
+real Git checkout test for every tracked manifest artifact and a control text
+file proving that CRLF conversion was active.
+
+A separate clean clone with `core.autocrlf=true` was configured from the prepared
+release and fetched the corpus. B/data was absent before the builder ran. The
+complete builder finished in 84.2 s, produced 6,422,558 / 5,763,341 rows, repeated
+both builds byte-identically, and matched both frozen manifest hashes. Q1/Q2 then
+ran in 37.2 s; its printed results match the saved log after excluding only loader
+and timing messages. All 13 release data files and four metadata files also verify.
+No tracked files changed in the test clone, which was removed afterward.
+
+This exercises Git CRLF conversion on the existing local Python environment;
+it is not a native Windows installation test. Q3 was not refit for these fixes.
+The input bytes and statistical code are unchanged. The separate interface
+explanation and Q1/Q2 Markdown corrections change no code cells or saved outputs.

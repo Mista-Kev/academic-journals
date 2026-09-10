@@ -114,6 +114,13 @@ fetches only missing files, and verifies both size and SHA-256 before exposing
 them to the analysis. A second run can use the verified local files offline.
 A differing local file causes an explicit error; it is not overwritten.
 
+The tracked reference CSVs are marked `-text` in `.gitattributes` so Git preserves
+their exact stored bytes, including when `core.autocrlf=true`. Checksums remain
+strict. An older checkout may already contain converted copies: preserve any
+intentional local edits before restoring the affected reference files from Git
+or retrieving the verified shared copies. Do not change manifest hashes to accept
+line-ending conversion. Fresh checkouts with these attributes need no repair.
+
 Groups:
 
 | Group | Use |

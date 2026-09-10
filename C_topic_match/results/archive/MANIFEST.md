@@ -93,8 +93,8 @@ Zeilenzahlen unterscheiden sich.
 | Entstehung und Begründung jeder Fassung | `C_topic_match/README.md`, Abschnitt Versionshistorie |
 | Ergebnisse und Übergaberegeln | `C_topic_match/README_results.md` |
 | Ausgeführte Läufe mit Ausgaben | `C_topic_match/archive/embeddings_colab_eventtable_v4.ipynb` und `C_topic_match/embeddings_colab_eventtable_v5.ipynb` |
-| Festgelegte Entscheidungen mit Datum | `D_results/methods/decisions.md` |
-| Aufbau des Q3-Modells | `D_results/methods/q3-structure.md` |
+| Festgelegte Entscheidungen mit Datum | `D_results/README.md` |
+| Aufbau des Q3-Modells | `D_results/README.md` |
 
 Die Notebooks enthalten die gespeicherten Ausgaben ihrer produktiven Läufe. Wer
 prüfen will, aus welchem Lauf eine Zahl stammt, vergleicht `MIN_PAPERS`, `sig2`,

@@ -24,7 +24,7 @@ prolog implementation matched every variant a opportunity key and the c, f and r
 # and it only ever means not a ride. the contrast to report is ride against independent within C = 1.
 
 # the local 2026-09-09 reporting decision fixes variant a as main and b as sensitivity; both get built.
-# see D_results/methods/decisions.md. variant a is all
+# see D_results/README.md (Choices and history). variant a is all
 # 64 journals minus the ones already entered. variant b keeps the journals that published one of the
 # author's earlier primary topics in year t and falls back to a when the author has no earlier paper.
 # 81.9% of author years fall back on this corpus, so b restricts much less than the rule sounds like. b

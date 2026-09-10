@@ -49,7 +49,7 @@ cases. Rolling T can already reflect earlier collaboration.
 
 For Kevin's part, the original C+T non-ride comparison remains the headline,
 always shown with the journal/year sensitivity. Adoption in the joint report
-remains proposed in the [decision record](methods/decisions.md).
+remains proposed; this is not recorded as a joint team decision.
 
 ## Data and rule checks
 
@@ -59,4 +59,42 @@ Q3 uses Pierre's official v5 export. Both analyses reproduced their results afte
 loading the shared files from SharePoint. These checks establish agreement of the
 files and calculations, not causal validity.
 
-[Run the analyses](DEMO.md) · [Understand the calculations](methods/analysis-interfaces.md) · [Check record](methods/validation.md)
+[Run the analyses](../README.md#how-to-use-it) · [Understand the calculations](../B_opportunities_and_analysis/README.md)
+
+## Choices and history
+
+- **July plan:** proposed Bayes nets/Logtalk and causal interpretation. The delivered
+  Q3 analysis uses logistic regression with standardization. No direct or total
+  causal effect, or upper/lower causal bound, has been identified.
+- **August implementation:** annual opportunities provide a common time window
+  for entries and non-entries. 28.6% of corpus dates are January 1; this raises
+  concerns about daily precision but does not prove every such date was invented.
+  Q1/Q2 retain strict date ordering. A separately aligned daily Q3 design was not built.
+- **8 August comparison:** non-ride with T was recorded as the main comparison,
+  with author bootstrap planned. The current adjusted intervals use clustered delta
+  calculations instead. The old entry's title is not proof of preregistration of
+  all present specifications.
+- **7 September v5:** removed the additional whole-period three-paper threshold
+  and built journal profiles from the full embeddable corpus. Later productivity
+  should not decide whether earlier histories are eligible. The official export
+  and local regeneration agree in non-T fields; T differs by at most about 4.7e-7.
+- **9 September reporting choice:** keep the original non-ride C+T comparison and
+  show the journal/year result beside it. This preserves the comparison's history,
+  not proof that its adjustment set is sufficient. Complete cases define the adjusted
+  population; missing T is neither zero-coded nor imputed.
+- **Scope:** Q1/Q2 remain descriptive. Historical T-adjusted return models, a daily
+  Q3 design and imputation would be additional analyses. A profile frozen at first
+  seed lacks a comparable anchor for C=0. These are limitations and alternatives,
+  not completed tests.
+- **10 September delivery:** all 13 data files and four metadata files were downloaded
+  again and matched their sizes and hashes. Full Q1/Q2 and Q3 runs matched previous
+  outputs. Three non-analysis downloads were then discarded to save local space;
+  the retained local download folder is incomplete. The complete prepared release
+  was verified separately. Recipient-account access and automatic OneDrive sync
+  were not tested.
+
+The [Python/Prolog report](../B_opportunities_and_analysis/event_table_parity.md)
+and [topic results](../C_topic_match/README_results.md) contain the detailed checks.
+Earlier plans and chronological development notes remain in
+[Git history](https://github.com/Mista-Kev/academic-journals/tree/576e93e/D_results/methods).
+The notebook in `archive/` is an old plan, not another runnable analysis.

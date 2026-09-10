@@ -201,7 +201,7 @@ def ensure_data(group, root=ROOT, shared_root=None, verify_only=False):
                 # An explicitly configured new key wins, even if invalid.
                 url = urls.get(item['path']) if item['path'] in urls else urls.get(item.get('shared_path', item['path']))
                 if not url:
-                    raise DataError('Missing ' + item['path'] + '. Configure shared_root or its direct link in .shared-data.local.json; see D_results/methods/shared-data.md.')
+                    raise DataError('Missing ' + item['path'] + '. Configure shared_root or its direct link in .shared-data.local.json; see README.md (How to use it).')
                 with download(url) as stream:
                     install(stream, target, item)
         except DataError:

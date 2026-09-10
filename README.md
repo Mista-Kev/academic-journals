@@ -35,9 +35,8 @@ that the input files match our shared version and keeps a local copy for later r
 To read the calculations alongside the output, open
 [Q1/Q2](B_opportunities_and_analysis/q1_q2_baselines.ipynb) or
 [Q3](B_opportunities_and_analysis/q3_baselines.ipynb).
-[Data setup](D_results/methods/shared-data.md#how-to-use-it) covers partial downloads
-and common problems. [Running and explaining the analyses](D_results/DEMO.md)
-also covers the Python/Prolog comparison.
+The [B README](B_opportunities_and_analysis/README.md) explains the calculations.
+Setup problems and optional checks are below.
 
 ## Where things are
 
@@ -76,5 +75,51 @@ analysed**. Q1/Q2 also use year and topic-category reference models. Pierre's Q1
 Intra summary is separate: it does not add historical topic adjustment to those ratios.
 
 For the reasoning behind the calculations, start with
-[inputs, calculations and outputs](D_results/methods/analysis-interfaces.md).
-The [methods index](D_results/methods/README.md) links the decisions and historical plans.
+[B](B_opportunities_and_analysis/README.md).
+[D](D_results/README.md#choices-and-history) records the main choices and changes.
+
+## Setup help
+
+- Configure the folder containing A/B/C and `START_HERE.txt`. For OneDrive,
+  make the files available locally. The release contains about 2.65 GB of data.
+- For partial downloads, add `--group q1-q2` or `--group q3` to `configure`.
+  `python3 project_data.py list --group q3` lists that group's inputs.
+- A checksum mismatch means the file differs from the shared version. Preserve
+  intentional edits and obtain the matching file. Do not change the manifest hash.
+- Unset `ACADEMIC_JOURNALS_SHARED_ROOT` if it conflicts with your saved folder.
+  Other options are listed by `python3 project_data.py --help`.
+- If hard links are unsupported, use a writable local cache/staging directory
+  that supports them, reading from your downloaded or synced source.
+
+<details>
+<summary>Optional checks and sharing a new version</summary>
+
+Compare the existing Python/Prolog tables and run the software tests:
+
+```sh
+python3 project_data.py fetch --group parity
+python3 B_opportunities_and_analysis/diff_event_table.py
+python3 -m unittest discover -s . -v
+```
+
+Install SWI-Prolog to include its integration tests and Git for the checkout test.
+Only loader/builder tests: `python3 -m unittest discover -s B_opportunities_and_analysis/tests -p 'test_*.py' -v`.
+For a rebuild, use [A's instructions](A_data_and_rules/logic/README.md) and
+[B's builder](B_opportunities_and_analysis/README.md#rebuild-the-opportunity-table).
+
+After reviewing a new data version and its manifest:
+
+```sh
+python3 project_data.py verify --group all
+python3 project_data.py prepare-release --target /path/to/new-release
+python3 project_data.py verify-release --target /path/to/new-release
+```
+
+Use a dedicated empty folder outside the repository; it must not contain the
+repository either. A group-only `stage` folder is not a complete release.
+The release includes the declared data plus instructions, inventory, manifest and
+receipt. Changed data or generated metadata require a new release folder.
+Publish matching code, upload, download separately and verify that download.
+Preserve the previous release. The notebooks never upload results automatically.
+
+</details>

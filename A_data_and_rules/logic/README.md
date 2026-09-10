@@ -12,7 +12,7 @@ jährliche Autor-Journal-Gelegenheiten einschließlich Nicht-Eintritten. Die Aus
 liegt in `../data/event_table_prolog_v0_oppA.csv`. Der Python-Builder und der
 Vollvergleich stehen in `../../B_opportunities_and_analysis/`.
 
-[Ausführen und prüfen](../../D_results/DEMO.md) · [Aktuelle Jahresdefinitionen](../../B_opportunities_and_analysis/schemas/event_table.md)
+[Ausführen und prüfen](../../README.md#how-to-use-it) · [Aktuelle Jahresdefinitionen](../../B_opportunities_and_analysis/schemas/event_table.md)
 
 ## Running the rules and event-table handoff
 

@@ -15,7 +15,7 @@ beiden Layer damit machen. Wie das Notebook arbeitet, steht in [README.md](READM
 
 **Für Q3:** `C_topic_match/data/event_table_topicmatch_v5.csv` im gemeinsamen
 SharePoint-Ordner **Applied AI Group B Data / official-v5-2026-09-07-abcd-v1**.
-Die [Anleitung zum Datenzugriff](../D_results/methods/shared-data.md#how-to-use-it)
+Die [Anleitung zum Datenzugriff](../README.md#how-to-use-it)
 erklärt Download oder OneDrive-Synchronisierung und die Konfiguration des Loaders.
 Er prüft Dateigröße und SHA-256 gegen das Manifest.
 
@@ -169,44 +169,14 @@ Weil der Datensatz nur KI-Paper enthält, sind die absoluten Werte generell hoch
 ## Verwendung in Q3
 
 Die Berechnung und Interpretation gehören zu Kevins Analyse in B. Die
-[Beschreibung der Schnittstellen und Rechnungen](../D_results/methods/analysis-interfaces.md)
+[Beschreibung der Schnittstellen und Rechnungen](../B_opportunities_and_analysis/README.md)
 erklärt, wie C, F und T verwendet werden, wie die Non-ride-Auswertung entsteht und
-wie die Unsicherheit berechnet wird. Die [Berichtsentscheidung](../D_results/methods/decisions.md)
+wie die Unsicherheit berechnet wird. Die [Berichtsentscheidung](../D_results/README.md#choices-and-history)
 hält die Modellvergleiche und ihre Grenzen fest. Damit steht die methodische
 Erklärung an einer Stelle; hier bleiben die Topic-Ergebnisse und die Übergabe.
 
-### Q3 auf dem offiziellen v5-Export: lokal nachgerechnet
-
-Die folgenden sechs Fits auf dem offiziellen v5-Export wurden nachgerechnet.
-Die Auswertung liegt inzwischen auf `main` im
-[Q3-Notebook](../B_opportunities_and_analysis/q3_baselines.ipynb).
-Die Tabelle fasst die Verwendung der gelieferten Themenpassung zusammen.
-
-| Outcome / Population | C + T | C + T + separate Journal-/Jahreffekte |
-|---|---:|---:|
-| Q3_all, alle 1.106.356 messbaren-T-Zeilen | 6,0929 | — |
-| Non-ride, dieselben 1.106.356 Zeilen | 3,3437 | — |
-| Q3_all, dieselben 1.088.420 Diagnostikzeilen | 6,0058 | 2,2653 |
-| Non-ride, dieselben 1.088.420 Diagnostikzeilen | 3,2967 | 1,1826 |
-
-Die Diagnostik schließt Journal `S4210228265` mit 17.936 messbaren-T-Zeilen und
-keinem Eintritt wegen Separation aus. Das ist ein **am Outcome bestimmter
-Ausschluss**, keine Routinebereinigung. Für den Spezifikationsvergleich deshalb
-die beiden Modelle auf derselben Teilpopulation gegenüberstellen. Separate
-Journal-/Jahreffekte sind keine Journal×Jahr-Interaktionen. Alle Werte sind
-modellbasierte standardisierte Assoziationen, keine identifizierten kausalen Effekte.
-
-Autoren-Delta-Intervalle (95 %) für die volle C+T-Auswertung: Q3_all
-[5,7566; 6,4489], Non-ride [3,1188; 3,5847]. Auswahl vollständiger Fälle,
-Modellspezifikation und Abhängigkeiten bleiben Einschränkungen.
-
-**77 % mehr gefüllte Zeilen** gilt gegenüber dem alten Min-3-Bestand mit 623.510
-Zeilen. Bereits der frühere schwellenfreie RR 6,09 verwendete 1.106.356 Zeilen.
-Der v5-Neulauf und die Non-ride-Kennzahl sind daher keine fehlenden Rechnungen mehr.
-
-**Übergabeobjekt ist die CSV.** Reproduktion anhand von Quelle, Konfiguration,
-Hash und Vergleichen auf denselben Schlüsseln beurteilen. Gleiche gerundete
-Laufkennwerte allein beweisen keine identische Spalte.
+Die aktuellen Q3-Zahlen und ihre Interpretation stehen unter
+[Ergebnisse](../D_results/README.md).
 
 ---
 

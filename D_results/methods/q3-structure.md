@@ -1,4 +1,32 @@
-# Q3: structure before parameters
+# Q3: historical structure draft
+
+**Superseded interpretation, labelled 10 September 2026.** This draft records
+our earlier causal argument. It is retained to explain the history, not as guidance
+for interpreting the current results. Use the [decision record](decisions.md),
+[implemented analysis](analysis-interfaces.md) and
+[Q3 notebook](../../B_opportunities_and_analysis/q3_baselines.ipynb) for the current position.
+
+The following claims in the original text are withdrawn:
+
+- A topic profile measured before year t is not necessarily measured before
+  collaboration. Rolling T can already reflect earlier collaboration; treating it
+  as a pre-treatment confounder is not justified by the year cutoff alone.
+- The reported Q3 ratios describe model-standardized associations. We have not
+  identified a direct or total causal effect, or established an upper or lower bound.
+  The draft's `do(C)` expressions do not describe an identified intervention estimate.
+- Splitting entries into ride and non-ride outcomes does not isolate a direct
+  network effect. Changing seed history can change the classification of the same
+  entry paper.
+- Regression comparisons and simulation checks do not establish the proposed
+  causal arrows or rule out omitted common causes. The current implementation is
+  logistic regression with standardization, not CPT learning or a runnable Bayes net.
+
+For reporting, show Q3_ind **3.34** alongside the journal/year sensitivity **1.18**.
+On identical rows the comparison is **3.30 → 1.18**. The populations and limits
+are documented in the decision record. Kevin's reporting position is fixed;
+adoption in the joint report remains proposed there.
+
+## Original draft (superseded)
 
 Why this document exists: the week-2 check-in feedback (see [feedback-log.md](feedback-log.md)) was to build the graph first, defend every arrow and every missing arrow, order variables by time, and state hypotheses from logic before any estimation. This is that derivation. No numbers appear here on purpose: parameters come last.
 

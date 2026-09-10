@@ -1,19 +1,20 @@
-# Vorgehensweise, Historie und Entscheidungen
+# Methods, history and decisions
 
-Der aktuelle Einstieg ist die [Root-README](../../README.md), die Ergebnisse
-stehen [in D](../README.md). Für die Begründungen:
+Start with the [root README](../../README.md) for the workflow and
+[results in D](../README.md) for the findings.
 
-- [Entscheidungslog](decisions.md): datierte Entscheidungen; ein Vorschlag ist keine bestätigte Teamentscheidung.
-- [Q3-Struktur](q3-structure.md): Variablen, zeitliche Ordnung und Annahmen.
-- [Datenzugriff](shared-data.md): verifizierte gemeinsame Eingaben.
-- [Q1–Q3: Schnittstellen und Rechnungen](analysis-interfaces.md): Inputs, Outputs, Themenkategorien, Ziehen mit Zurücklegen und Modellgrenzen.
-- [Plan](plan.md), [Research notes](research-notes.md) und [Feedback](feedback-log.md): historische Anforderungen und Diskussion, kein Beleg des aktuellen Implementierungsstands.
+- [Decision record](decisions.md): dated decisions, with proposed team adoption kept separate from confirmed decisions.
+- [Q1–Q3 inputs, calculations and outputs](analysis-interfaces.md): the implemented analyses and their limits, including topic categories and sampling with replacement.
+- [Shared data](shared-data.md): setup and use of the SharePoint files.
+- [Data and calculation checks](validation.md): what was run and what each check establishes.
+- [Historical Q3 structure draft](q3-structure.md): the earlier causal argument, with its direct-effect and bound claims explicitly withdrawn. Use the current decision record for interpretation.
+- [Plan](plan.md), [research notes](research-notes.md) and [feedback](feedback-log.md): historical requirements and discussion, not evidence of the current implementation.
 
-Die aktuelle Umsetzung von Q3 ist Regression mit Standardisierung. Ein kausaler
-Graph oder ein alter Plan für Bayes-Netze in Logtalk ist kein ausführbares BN-System.
-Die Repo-Umstellung ändert weder diese Implementierung noch den zugesagten Umfang.
+Q3 uses regression with standardization and is reported as an association.
+A causal graph or an earlier plan for Bayes nets in Logtalk is not a runnable
+BN system. The repository reorganization does not change that scope.
 
-Der aktuelle Jahresvertrag mit 15 Spalten steht unter
+The current annual event-table schema has 15 columns and is documented in
 [B/schemas/event_table.md](../../B_opportunities_and_analysis/schemas/event_table.md).
-Die 15 Spalten sind gegen die offizielle v5-Eingabedatei geprüft. Der frühere paperbezogene Entwurf wird nicht parallel
-als aktueller Vertrag geführt.
+The column names were checked against the official v5 input. The earlier
+paper-level draft is no longer presented as the current schema.

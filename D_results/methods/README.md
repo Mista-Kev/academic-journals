@@ -6,6 +6,7 @@ stehen [in D](../README.md). Für die Begründungen:
 - [Entscheidungslog](decisions.md): datierte Entscheidungen; ein Vorschlag ist keine bestätigte Teamentscheidung.
 - [Q3-Struktur](q3-structure.md): Variablen, zeitliche Ordnung und Annahmen.
 - [Datenzugriff](shared-data.md): verifizierte gemeinsame Eingaben.
+- [Q1–Q3: Schnittstellen und Rechnungen](analysis-interfaces.md): Inputs, Outputs, Themenkategorien, Ziehen mit Zurücklegen und Modellgrenzen.
 - [Plan](plan.md), [Research notes](research-notes.md) und [Feedback](feedback-log.md): historische Anforderungen und Diskussion, kein Beleg des aktuellen Implementierungsstands.
 
 Die aktuelle Umsetzung von Q3 ist Regression mit Standardisierung. Ein kausaler

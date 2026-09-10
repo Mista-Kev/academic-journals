@@ -14,6 +14,10 @@ Eine Q3-Zeile ist **Autor, bisher unbekanntes Journal, Jahr**. Nicht-Eintritte
 gehören ausdrücklich dazu. Nach dem ersten beobachteten Eintritt endet das Paar.
 Deshalb eignet sich diese Tabelle nicht für Q1-Rückkehranalysen.
 
+[Schnittstellen und Berechnungen](../D_results/methods/analysis-interfaces.md)
+erklären die Inputs und Outputs aller drei Fragen, einschließlich der gewichteten
+Q1/Q2-Ziehungen mit Zurücklegen und möglicher anderer Nullmodelle.
+
 Q1/Q2 vergleichen mit Ziehungen nach Jahr und zusätzlich nach Jahr und primärer
 Themenkategorie. Das ist keine Kontrolle der kontinuierlichen historischen
 Themenpassung T. Ein Ratio über eins bedeutet mehr Wiederholung als unter dem

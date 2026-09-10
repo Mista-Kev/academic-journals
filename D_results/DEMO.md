@@ -30,6 +30,15 @@ Datei aus B öffnen und B als Kernel-Arbeitsverzeichnis verwenden.
 
 ## Regeln prüfen
 
+Loader- und Buildertests aus B vom Repository-Root aus starten:
+
+```sh
+python3 -m unittest discover -s B_opportunities_and_analysis/tests -p 'test_*.py' -v
+```
+
+Für die Prüfung der Checkout-Zeilenenden muss Git installiert sein. Die Tests
+benötigen keinen neuen OpenAlex-Abruf oder GPU-Lauf.
+
 SWI-Prolog muss installiert sein. Die kleinen Unit-Tests benötigen keine großen
 Daten; einige Tests verwenden SWI-Prolog und werden ohne Installation übersprungen.
 

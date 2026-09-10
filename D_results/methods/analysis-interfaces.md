@@ -5,10 +5,8 @@ Die kontinuierliche historische Themenpassung T aus Pierres Event-Tabelle wird
 hingegen nur in Q3 verwendet. Die Q1/Q2-Zufallsziehungen erfolgen **mit Zurücklegen**:
 Eine Ziehung verändert die Wahrscheinlichkeiten für die nächste Ziehung nicht.
 
-Diese Beschreibung erklärt den implementierten Stand. Eine heute nachvollziehbare
-Begründung ist kein Beleg, dass die Gruppe diese Entscheidung ursprünglich gemeinsam
-getroffen hat. Die Berichtsposition für Kevins Teil und die vorgeschlagene gemeinsame
-Übernahme sind im [Entscheidungslog](decisions.md) getrennt dokumentiert.
+Die verwendeten Modelle und ihre Begründungen stehen im
+[Entscheidungslog](decisions.md).
 
 ## 1. Welche Dateien gehen hinein und was kommt heraus?
 
@@ -189,22 +187,4 @@ das Adjustierungsset nicht automatisch ausreichend. T kann zeitlich nach früher
 Zusammenarbeit liegen; vollständige Fälle sind selektiert, und unbeobachtete Faktoren
 bleiben möglich. Deshalb berichten wir Zusammenhänge, keinen nachgewiesenen kausalen Effekt.
 
-## 7. Was sollten wir gemeinsam erklären können?
-
-Jeder sollte den Weg von A über B/C nach D nachvollziehen können, auch wenn die
-Implementierungsverantwortung aufgeteilt ist. Für die gemeinsame Abstimmung:
-
-1. Welche Zeile zählt bei Q1/Q2, welche bei Q3? Warum braucht Q3 Nicht-Eintritte?
-2. Was bleibt im Nullmodell fest, was wird neu gezogen und mit welchen Gewichten?
-3. Warum erlauben die Ziehungen Wiederkehr? Welche andere Frage würde eine
-   Permutation mit exakt erhaltenen Journalzahlen stellen?
-4. Welche Themeninformation ist enthalten und welche stärkere Aussage bleibt offen?
-5. Warum verändern Journal/Jahr die Q3-Aussage erheblich?
-6. Was zeigen Gegenprüfungen, und welche wissenschaftlichen Annahmen prüfen sie nicht?
-7. Welche Berichtsentscheidungen übernehmen wir gemeinsam, und welche sind bisher
-   nur für Kevins Teil festgelegt?
-
-Diese Fragen erfordern eine gemeinsame verständliche Darstellung, nicht die
-Behauptung einer früheren Abstimmung. Die [Demo-Anleitung](../DEMO.md) enthält die
-Befehle. Für die Datenübergabe gilt [shared-data.md](shared-data.md): Dateien laden
-und prüfen, lokal rechnen, neue Ergebnisse bewusst freigeben.
+[Auswertungen starten](../DEMO.md) · [Daten laden](shared-data.md)

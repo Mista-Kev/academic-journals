@@ -1,7 +1,7 @@
 # topic_match — Ergebnisse und Übergabe
 
 Was der ML-Layer liefert, welche Zahlen dabei herauskommen und was die anderen
-beiden Layer damit machen. Wie das Notebook arbeitet, steht in `README.md`.
+beiden Layer damit machen. Wie das Notebook arbeitet, steht in [README.md](README.md).
 
 > **Achtung, diese Datei wurde vollständig ersetzt.** Die frühere Fassung
 > beschrieb einen Stand vor der Ereignis-Tabelle und enthielt Anweisungen,
@@ -13,7 +13,11 @@ beiden Layer damit machen. Wie das Notebook arbeitet, steht in `README.md`.
 
 ## Was ihr bekommt
 
-**Eine Datei:** `event_table_topicmatch_v5.csv`, geteilt über Teams.
+**Für Q3:** `C_topic_match/data/event_table_topicmatch_v5.csv` im gemeinsamen
+SharePoint-Ordner **Applied AI Group B Data / official-v5-2026-09-07-abcd-v1**.
+Die [Anleitung zum Datenzugriff](../D_results/methods/shared-data.md#how-to-use-it)
+erklärt Download oder OneDrive-Synchronisierung und die Konfiguration des Loaders.
+Er prüft Dateigröße und SHA-256 gegen das Manifest.
 
 > Das Notebook schreibt auf den unversionierten Pfad `event_table_topicmatch.csv`;
 > die geteilte Datei wird **von Hand** umbenannt. Der Name allein belegt weder
@@ -36,9 +40,9 @@ Verbindung immer über IDs, nie über Namen. Die Ereignistabelle nutzt Kurz-IDs
 (`A5060045903`); der Intra-Export enthält volle OpenAlex-URLs. Vor einem Vergleich
 auf Kurz-IDs normalisieren.
 
-Für Q1 zusätzlich: `results_q1_topic_match_v5.csv` — 9.195 Autor-Journal-Zeilen mit
+Für Q1 zusätzlich: [results/results_q1_topic_match_v5.csv](results/results_q1_topic_match_v5.csv) — 9.195 Autor-Journal-Zeilen mit
 `topic_match_intra`, der mittleren Themenähnlichkeit der Paper eines Autors
-innerhalb eines Journals.
+innerhalb eines Journals. Die aktuelle Datei liegt unter `results/`.
 
 Abgelöste Fassungen liegen in `results/archive/` mit einem `MANIFEST.md`, das für
 jede Datei festhält, aus welchem Lauf sie stammt und warum sie abgelöst wurde.
@@ -162,54 +166,21 @@ Weil der Datensatz nur KI-Paper enthält, sind die absoluten Werte generell hoch
 
 ---
 
-## Was der Probabilistic-Layer damit macht
+## Verwendung in Q3
 
-1. **`event_table_topicmatch_v5.csv` laden.** C und F stehen schon drin, T ist die
-   Spalte `topic_match`. Kein Join nötig, es ist dieselbe Tabelle.
-
-2. **`topic_match` stetig verwenden.** Keine Schwelle, keine Binarisierung.
-   Der Wert geht als reelle Zahl ins Modell.
-
-3. **Nur Zeilen mit gültigem T.** Vollständige Fälle. Zeilen mit leerem
-   `topic_match` fallen aus der Regression heraus — sie werden nicht ersetzt und
-   nicht als eigene Kategorie geführt.
-
-4. **Modell `F ~ C + T` schätzen**, dann zweimal auf **dieselben** Zeilen anwenden:
-   einmal mit C = 1, einmal mit C = 0, bei jeweils unverändertem realen T. Die
-   beiden gemittelten Risiken teilen.
-
-   ```
-              Mittelwert über T von P(F = 1 | C = 1, T)
-   RR   =   ---------------------------------------------
-              Mittelwert über T von P(F = 1 | C = 0, T)
-   ```
-
-5. **Für die engere Kennzahl das Non-ride-Outcome modellieren:**
-   `Y = first_entry * (1 - first_entry_ride)` auf denselben Gelegenheitszeilen.
-   Für dieses Modell beide Risiken bei C=1 und C=0 vorhersagen und mitteln.
-   Nicht den Zähler aus einem Non-ride-Modell durch den Nenner eines separat
-   gefitteten All-entry-Modells teilen. „Independent“ bedeutet hier non-ride,
-   nicht kausale Unabhängigkeit von Netzwerkeinflüssen.
-
-6. **Aufteilen, nicht filtern.** Zeilen mit gemeinsamem Eintritt
-   (`first_entry_ride`) bleiben im Datensatz. Ob der Wegbereiter auf dem
-   Eintrittspaper landet, ist selbst eine Folge von C — ein Filter darauf würde
-   nach der Behandlung auswählen.
-
-7. **Abhängigkeiten bei der Unsicherheit berücksichtigen.** Autoren erzeugen
-   mehrere Zeilen. Der frühere Plan sah Autoren-Bootstrap vor; der alte Export
-   hat einen 300-Refit-Bootstrap. Die nachstehenden v5-Prüfungen berechneten
-   Autoren-Cluster-Delta-Intervalle, keine neuen v5-Bootstrap-Refits. Diese
-   Abweichung offen benennen. Autoren-Clustering allein sichert gemeinsame
-   Journal-/Paperabhängigkeit nicht vollständig ab; erweiterte Zweiweg-
-   Kovarianzen waren nicht positiv semidefinit. Ein RR-Intervall ist außerdem
-   kein Bootstrap-LR-Test der früher geplanten Nullhypothese.
+Die Berechnung und Interpretation gehören zu Kevins Analyse in B. Die
+[Beschreibung der Schnittstellen und Rechnungen](../D_results/methods/analysis-interfaces.md)
+erklärt, wie C, F und T verwendet werden, wie die Non-ride-Auswertung entsteht und
+wie die Unsicherheit berechnet wird. Die [Berichtsentscheidung](../D_results/methods/decisions.md)
+hält die Modellvergleiche und ihre Grenzen fest. Damit steht die methodische
+Erklärung an einer Stelle; hier bleiben die Topic-Ergebnisse und die Übergabe.
 
 ### Q3 auf dem offiziellen v5-Export: lokal nachgerechnet
 
-Die folgenden sechs Fits sind unabhängig geprüft und im lokalen Q3-Arbeitsstand
-nachgerechnet; die Veröffentlichung dieses Notebooks bleibt separat in PR #60.
-Dieses Topic-PR liefert die Messung, nicht die vollständige statistische Abgabe.
+Die folgenden sechs Fits auf dem offiziellen v5-Export wurden nachgerechnet.
+Die Auswertung liegt inzwischen auf `main` im
+[Q3-Notebook](../B_opportunities_and_analysis/q3_baselines.ipynb).
+Die Tabelle fasst die Verwendung der gelieferten Themenpassung zusammen.
 
 | Outcome / Population | C + T | C + T + separate Journal-/Jahreffekte |
 |---|---:|---:|
@@ -273,10 +244,10 @@ Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 
 ---
 
-## Verbleibend
+## Hinweise zur Weiterverwendung
 
 - **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand passiert.
-- **Ausführungsnachweis:** Das v5-Notebook im PR enthält keine gespeicherten Outputs;
+- **Ausführungsnachweis:** Das v5-Notebook enthält keine gespeicherten Outputs;
   Laufbericht und unabhängiger Exportcheck sind davon zu unterscheiden.
 - **Adapter-Vergleich:** Pierre hat für einen früheren Robustheitsvergleich keinen
   nennenswerten Einfluss berichtet. Das wird nicht mehr pauschal als ausstehender

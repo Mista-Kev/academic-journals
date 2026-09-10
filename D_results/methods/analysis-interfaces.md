@@ -157,6 +157,12 @@ verwenden 1.106.356 vollständige Fälle, keine Imputation und keine Nullkodieru
   bei gleichem T. Die vorhergesagten Wahrscheinlichkeiten werden je Szenario gemittelt;
   ihr Quotient ist das standardisierte Risikoverhältnis. Das ist nicht einfach
   `exp(beta_C)`, denn das wäre ein Odds Ratio.
+- **Non-ride:** `Y = first_entry * (1 - first_entry_ride)` wird auf denselben
+  Gelegenheitszeilen modelliert. Beide gemittelten Risiken stammen aus diesem
+  einen Modell. Wir teilen nicht einen Non-ride-Zähler durch einen Nenner aus
+  einem separat geschätzten All-entry-Modell. Ride-Zeilen bleiben enthalten und
+  erhalten für dieses Outcome den Wert 0. „Independent“ bedeutet hier non-ride,
+  nicht Unabhängigkeit von Netzwerkeinflüssen.
 - **Journal-/Jahressensitivität:** Zusätzlich separate additive Journal- und
   Jahreseffekte. Ein Journal ohne Eintritte wird mit 17.936 Zeilen ausgeschlossen,
   um Separation zu behandeln. Auf denselben verbleibenden 1.088.420 Zeilen wird
@@ -168,6 +174,11 @@ verwenden 1.106.356 vollständige Fälle, keine Imputation und keine Nullkodieru
 | Non-ride | 3,34 | 3,30 | 1,18 |
 
 Die C+T-Intervalle verwenden eine nach Autoren geclusterte Delta-Methode.
+Das weicht vom früheren Bootstrap-Plan ab; für v5 wurden keine neuen
+Bootstrap-Refits berechnet. Autoren-Clustering deckt gemeinsame Journal- oder
+Paperabhängigkeiten nicht vollständig ab. Die geprüften erweiterten Zweiweg-
+Kovarianzen waren nicht positiv semidefinit. Die Risikoverhältnis-Intervalle sind
+auch kein Bootstrap-Likelihood-Ratio-Test der früher geplanten Nullhypothese.
 Q1/Q2s 100 Nullsimulationen sind dagegen keine Konfidenzintervalle der beobachteten
 Ratios. Ein Wert nahe eins beweist keinen fehlenden Zusammenhang.
 

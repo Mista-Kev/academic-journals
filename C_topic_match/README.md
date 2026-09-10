@@ -6,11 +6,16 @@ Ob sie ein ausreichender oder kausal zulässiger Kontrollfaktor ist, folgt nicht
 der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst haben.
 
 **Verantwortlich:** Pierre
-**Eingang:** `academic_journals.duckdb` (OpenAlex-Ausschnitt), Ereignis-Tabelle des Logic-Layers
-**Ausgang:** dieselbe Tabelle plus fünf gefüllte Spalten.
-Das Notebook schreibt nach `event_table_topicmatch.csv`. **Die geteilte Datei wird von Hand
-in `event_table_topicmatch_v5.csv` umbenannt**; der geprüfte Stand liegt im gemeinsamen SharePoint-Ordner — jeder Lauf würde
-sonst den vorigen überschreiben, ohne dass man es am Namen sieht.
+**Eingang:** OpenAlex-JSONL und Gelegenheitentabelle aus dem gemeinsamen SharePoint-Release.
+**Ausgang:** Ereignistabelle mit T und Diagnosespalten, Q1-Intra-Datei und Autor-Paper-Schlüssel.
+Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
+wird nicht überschrieben.
+
+**Colab-Verbindung:** Abschnitt 3 im Notebook beschreibt die einmalige persönliche
+Microsoft-Anmeldung über rclone und das Colab-Secret. Anschließend lädt Colab die beiden
+Eingaben und prüft ihre Hashes. Die letzte Zelle lädt Ergebnisse hoch und prüft sie durch
+erneutes Herunterladen. Die Anmeldung am Hochschulkonto und der vollständige GPU-Lauf
+mit dieser Anbindung sind noch nicht getestet.
 
 Der ML-Layer erzeugt **keine** der drei Endkennzahlen. Er füllt eine Spalte.
 
@@ -23,7 +28,7 @@ Abschnitte der Reihe nach, kein Abschnitt darf übersprungen werden.
 
 | # | Abschnitt | Was passiert |
 |---|---|---|
-| 3 | Datenbank | DuckDB aus Drive in den lokalen Colab-Speicher kopieren (~233 MB) |
+| 3 | Datenbank | JSONL und Gelegenheitentabelle aus SharePoint laden, prüfen und lokale DuckDB aufbauen |
 | 4 | Setup | Pakete installieren, Versionen ausgeben, GPU prüfen |
 | 5 | Auswahl | Autoren nach `MIN_PAPERS` auswählen; **alle** einbettbaren Paper laden |
 | 6 | Abstracts | OpenAlex speichert Abstracts als Wortpositionen — hier wieder zu Text zusammensetzen |

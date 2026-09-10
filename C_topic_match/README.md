@@ -8,11 +8,13 @@ der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst hab
 **Verantwortlich:** Pierre
 **Eingang:** OpenAlex-JSONL und Gelegenheitentabelle aus dem gemeinsamen SharePoint-Release.
 **Ausgang:** Ereignistabelle mit T und Diagnosespalten, Q1-Intra-Datei und Autor-Paper-Schlüssel.
-Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
+Dateinamen tragen die Lauf-ID. Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
 wird nicht überschrieben.
 
 **Colab-Verbindung:** Abschnitt 3 im Notebook beschreibt die einmalige persönliche
-Microsoft-Anmeldung über rclone und das Colab-Secret. Anschließend lädt Colab die beiden
+Microsoft-Anmeldung über rclone und das Colab-Secret. Dafür zuerst ein Projektkonto
+ohne weitere Daten/Freigaben oder tatsächlich beschränkte App-Rechte klären; der
+Ordnerpfad allein schränkt den Token nicht ein. Anschließend lädt Colab die beiden
 Eingaben und prüft ihre Hashes. Die letzte Zelle lädt Ergebnisse hoch und prüft sie durch
 erneutes Herunterladen. Die Anmeldung am Hochschulkonto und der vollständige GPU-Lauf
 mit dieser Anbindung sind noch nicht getestet.

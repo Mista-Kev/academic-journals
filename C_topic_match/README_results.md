@@ -218,8 +218,9 @@ Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 
 - **Neue Läufe:** Dateinamen enthalten die Lauf-ID. Ihre Ergebnisse ersetzen
   den geprüften offiziellen v5-Export nicht automatisch.
-- **Ausführungsnachweis:** Das v5-Notebook enthält keine gespeicherten Outputs;
-  Laufbericht und unabhängiger Exportcheck sind davon zu unterscheiden.
+- **Ausgeführtes Notebook:** Die Repo-Datei enthält keine gespeicherten Outputs.
+  Das vollständig ausgeführte Notebook vom 11. September liegt mit den neuen
+  CSVs unter `runs/20260911T160517Z-fdaff945/` in SharePoint.
 - **Adapter-Vergleich:** Pierre hat für einen früheren Robustheitsvergleich keinen
   nennenswerten Einfluss berichtet. Das wird nicht mehr pauschal als ausstehender
   Test geführt. Für die eindeutige Ursache einer konkreten Laufdifferenz sind

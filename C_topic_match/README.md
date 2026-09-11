@@ -219,8 +219,6 @@ Ladewarnung isolieren diese Ursache nicht.
 
 ## Verbleibende Punkte
 
-- **Colab-Lauf:** Download und Upload erfolgen im Browser. Der vollständige
-  GPU-Lauf und die Rückgabe der Ergebnisse werden noch geprüft.
 - **Adapter-Vergleich:** Ein früherer Robustheitsvergleich wurde von Pierre als
   ohne nennenswerten Einfluss berichtet. Eine einzelne Laufdifferenz damit nicht
   ohne dokumentierten gleichen Paperpool und gleiche Konfiguration kausal erklären.

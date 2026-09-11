@@ -218,8 +218,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 2
 
     started = time.monotonic()
-    temp_root = args.temp_dir or Path(tempfile.gettempdir())
+    temp_root = args.temp_dir
     try:
+        if temp_root is None:
+            temp_root = Path(tempfile.gettempdir())
         # Budget for both projections, sorted copies and sort's scratch files.
         # This is a conservative reserve, not an exact peak-space prediction.
         reserve = max(16 * 1024**2, 4 * (args.prolog.stat().st_size + args.python.stat().st_size))
@@ -244,7 +246,11 @@ def main(argv: Sequence[str] | None = None) -> int:
               "use --temp-dir for another disk. No comparison verdict is available.", file=sys.stderr)
         return 2
     except OSError as exc:
-        if exc.errno == errno.ENOSPC:
+        if temp_root is None:
+            print("Could not find a usable default temporary directory. Check free space and "
+                  "write access, or select an existing writable folder with --temp-dir. "
+                  "No comparison was run.", file=sys.stderr)
+        elif exc.errno == errno.ENOSPC:
             print(f"Disk filled during comparison in {temp_root}. Free space or use --temp-dir "
                   "on another disk, then rerun. No comparison verdict is available.", file=sys.stderr)
         else:

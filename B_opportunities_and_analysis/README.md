@@ -128,16 +128,32 @@ Dependence between coauthors is not covered; coverage for our corpus is unvalida
 
 - We add separate journal and year terms to examine how much the result depends
   on differences between journals and years.
-- One journal with no entries is excluded to handle separation, removing 17,936
-  rows. This restriction depends on the outcome.
+- We check journals with zero events separately for both outcomes and exclude their
+  union from every compared model. Here it is one journal, removing 17,936 rows.
+  This restriction depends on the outcomes. The remaining journals and years must
+  have both events and non-events for each outcome.
 - On the same remaining 1,088,420 rows, non-ride changes **3.30 → 1.18** and all
   entries **6.01 → 2.27**. The full complete-case C+T results are 3.34 and 6.09.
   We show both specifications because this difference changes the interpretation.
+  The journal/year intervals are **1.18 [1.10, 1.27]** and **2.27 [2.13, 2.41]**.
+
+### Prior paper count
+
+- Step 9 also adds `log1p(n_prior_papers)` with and without journal/year terms,
+  using the same rows. This counts earlier corpus papers, not just papers embedded
+  in the topic profile. The log form represents diminishing differences in count;
+  it is a sensitivity specification, not a proven correction for T.
+- With journal/year terms, non-ride becomes **1.21 [1.12, 1.30]** and all entries
+  **2.29 [2.16, 2.43]**. Without them, the estimates are 3.10 and 5.62.
+- Earlier productivity can already reflect collaboration. The extra variable
+  therefore does not make these causal estimates or isolate a pure topic effect.
 
 ### Uncertainty and limits
 
 - Adjusted intervals use an **author-clustered delta method** to account for
-  repeated rows from the same author. This differs from the earlier bootstrap plan.
+  repeated rows from the same author, including the Step 9 models. These nominal
+  intervals hold the included covariates fixed and assume independent author clusters.
+  This differs from the earlier bootstrap plan.
 - Author clustering does not fully cover shared journal/paper dependence. Attempted
   two-way covariance estimates were not positive semidefinite. No new v5 bootstrap
   refits or bootstrap likelihood-ratio test were run.

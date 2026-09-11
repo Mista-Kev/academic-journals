@@ -42,19 +42,39 @@ model-standardized risk ratio.
 
 | Outcome | C + T, all complete cases | C + T, matched rows | With journal and year, matched rows |
 |---|---:|---:|---:|
-| All entries | 6.09 [5.76, 6.45] | 6.01 | 2.27 |
-| Non-ride entries | 3.34 [3.12, 3.58] | 3.30 | 1.18 |
+| All entries | 6.09 [5.76, 6.45] | 6.01 [5.67, 6.36] | 2.27 [2.13, 2.41] |
+| Non-ride entries | 3.34 [3.12, 3.58] | 3.30 [3.08, 3.53] | 1.18 [1.10, 1.27] |
 
 The first column uses **1,106,356 rows with measurable T**. The last two use the
 same **1,088,420 rows**, excluding 17,936 rows from a journal with no entries to
-handle separation. That exclusion depends on the outcome. Journal and year are
-separate additive terms. The brackets give 95% author-clustered delta intervals.
+handle separation. We now check zero events for each outcome and use their union
+for a common exclusion; in these data it is the same single journal. Remaining
+journals and years must have events and non-events for both outcomes. That exclusion
+depends on the outcomes. Journal and year are separate additive terms. Brackets are
+nominal 95% author-clustered delta intervals, with the included covariates held fixed.
+They assume independent author clusters and do not cover dependence between coauthors,
+model choice or complete-case selection.
 
 **The association becomes much smaller after adding journal and year.** That
 model dependence is part of the finding. Non-ride means the qualifying seed
 co-author is absent from the selected entry paper; it does not mean a direct
 network effect. Missing T remains missing, so adjusted results concern complete
 cases. Rolling T can already reflect earlier collaboration.
+
+Adding `log1p(n_prior_papers)` gives the following sensitivity results on the same
+1,088,420 rows:
+
+| Outcome | C + T + prior paper count | Also with journal and year |
+|---|---:|---:|
+| All entries | 5.62 [5.33, 5.93] | 2.29 [2.16, 2.43] |
+| Non-ride entries | 3.10 [2.90, 3.32] | 1.21 [1.12, 1.30] |
+
+The count covers earlier corpus papers, not exactly the embedded profile papers.
+We use a log term to allow diminishing differences as counts grow; other functional
+forms were not tested. The count lowers the C+T estimates slightly but raises the
+journal/year estimates slightly. It does not establish that productivity explains
+away the association or that T now measures topic alone. Earlier paper counts can
+already reflect collaboration. No embeddings were recalculated.
 
 For Kevin's part, the original C+T non-ride comparison remains the headline,
 always shown with the journal/year sensitivity. Adoption in the joint report
@@ -71,6 +91,11 @@ files and calculations, not causal validity.
 [Run the analyses](../README.md#how-to-use-it) · [Understand the calculations](../B_opportunities_and_analysis/README.md)
 
 ## Choices and history
+
+- **11 September, Q3 sensitivity:** added clustered intervals to the matched-row
+  models, checked zero events separately for both outcomes, and added prior corpus
+  paper count as a log term. Previously the journal/year models reported only point
+  estimates. The original results and reporting choice remain alongside this extension.
 
 - **10 September, Q1/Q2 uncertainty:** retained the simulation ranges and added
   nominal author-bootstrap intervals with exact null expectations, assuming

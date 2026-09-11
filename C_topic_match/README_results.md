@@ -19,11 +19,11 @@ Die [Anleitung zum Datenzugriff](../README.md#how-to-use-it)
 erklärt Download oder OneDrive-Synchronisierung und die Konfiguration des Loaders.
 Er prüft Dateigröße und SHA-256 gegen das Manifest.
 
-> Das Notebook schreibt auf den unversionierten Pfad `event_table_topicmatch.csv`;
-> die geteilte Datei wird **von Hand** umbenannt. Der Name allein belegt weder
-> Version noch Schwellenstand: Es existieren auch lokale schwellenfreie Exporte
-> ohne `_v5`. Vier gerundete Kennwerte sind Plausibilitätschecks, kein eindeutiger
-> Dateifingerabdruck. Den offiziellen Export über den unten angegebenen SHA-256 prüfen.
+> Der offizielle v5-Export bleibt unverändert. Neue Notebook-Läufe schreiben
+> `event_table_topicmatch_run_<RUN_ID>.csv` in einen separaten Laufordner.
+> Der Name allein belegt keinen Datenstand; den offiziellen Export über den
+> unten angegebenen SHA-256 prüfen. Die vorbereitete SharePoint-Anbindung
+> braucht noch die Uni-Freigabe und wurde nicht live bestätigt.
 
 Das ist die Ereignis-Tabelle des Logic-Layers, unverändert in Zeilenzahl und
 Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spalten.
@@ -216,7 +216,8 @@ Ein Punkt aus der alten Fassung gilt weiter und ist wichtiger geworden:
 
 ## Hinweise zur Weiterverwendung
 
-- **Dateinamen im Notebook versionieren**, damit die Umbenennung nicht von Hand passiert.
+- **Neue Läufe:** Dateinamen enthalten die Lauf-ID. Ihre Ergebnisse ersetzen
+  den geprüften offiziellen v5-Export nicht automatisch.
 - **Ausführungsnachweis:** Das v5-Notebook enthält keine gespeicherten Outputs;
   Laufbericht und unabhängiger Exportcheck sind davon zu unterscheiden.
 - **Adapter-Vergleich:** Pierre hat für einen früheren Robustheitsvergleich keinen

@@ -211,8 +211,8 @@ Ladewarnung isolieren diese Ursache nicht.
 
 ## Verbleibende Punkte
 
-- **Versionierung der Ausgabedatei im Notebook:** `EVENT_OUT` schreibt weiterhin
-  auf den unversionierten Pfad; die geteilte Datei wird von Hand umbenannt.
+- **Colab-Zugriff:** Die Anbindung ist vorbereitet. Beim Universitätskonto fehlt
+  die Admin-Freigabe für rclone; der Live-Zugriff ist noch nicht bestätigt.
 - **Adapter-Vergleich:** Ein früherer Robustheitsvergleich wurde von Pierre als
   ohne nennenswerten Einfluss berichtet. Eine einzelne Laufdifferenz damit nicht
   ohne dokumentierten gleichen Paperpool und gleiche Konfiguration kausal erklären.
@@ -250,6 +250,12 @@ Der geprüfte Jahres-Export liegt unter `data/event_table_topicmatch_v5.csv`;
 B liest ihn dort. `results/results_q1_topic_match_v5.csv` ist die separate
 Intra-Auswertung und fließt nicht als Adjustierung in die Q1/Q2-Ratios ein.
 
-Das v5-Notebook verwendet weiterhin seine dokumentierte Colab-/Google-Drive-
-Umgebung. Der gemeinsame Loader stellt seine geprüften Exporte für die Analyse
-bereit; er automatisiert keinen GPU-Neulauf und baut die DuckDB nicht auf.
+Das v5-Notebook ist für SharePoint über rclone vorbereitet und baut DuckDB aus
+dem geprüften Roh-JSONL auf. Neue Exporte tragen die Lauf-ID im Dateinamen und
+liegen getrennt vom offiziellen Export unter `runs/<RUN_ID>/`. Die Universität
+blockiert die Anmeldung bis zur Admin-Freigabe. Der lokale B-Loader bleibt
+unverändert; er startet weder Colab noch einen GPU-Neulauf.
+
+`CODE_REVISION` pinnt den geprüften Loader samt Manifest. Für eine neue
+Datenfreigabe müssen Manifest und Pin gemeinsam geprüft und aktualisiert werden;
+die Manifestprüfung bleibt aktiv.

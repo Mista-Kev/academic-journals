@@ -1,167 +1,150 @@
 # B · Opportunities and analysis
 
-Kevin’s part: build the comparison population and calculate Q1, Q2 and Q3.
+This is where I calculate Q1, Q2 and Q3. Q1/Q2 look at repeat publications.
+Q3 looks at first journal entries, including opportunities where no entry happens.
 
-We use the same paper corpus for three questions: return to a journal, return to
-a publisher, and first journal entry with a prior co-author connection.
-[Setup and run commands](../README.md#how-to-use-it) · [Results](../D_results/README.md)
+[Setup and commands](../README.md#how-to-use-it) · [Results](../D_results/README.md)
 
-## Inputs and outputs
+## Files we use
 
-The folders below are relative to the repository root. Large files are supplied
-through SharePoint; [the manifest](../data-manifest.json) lists their full paths.
+Large files come from SharePoint. The paths follow the same A/B/C folders as this repo.
 
 | Step | Run | Reads → produces |
 |---|---|---|
 | Q1/Q2 | [q1_q2_baselines.ipynb](q1_q2_baselines.ipynb) | A's semiclean corpus and publisher mapping; pathway flags for comparison → observed rates, simulated expected rates and ratios |
 | Q3 opportunities | [build_event_table.py](build_event_table.py) | Same corpus, mapping and flags → `B_opportunities_and_analysis/data/event_table_python_v0_oppA.csv`, plus variant B |
 | Independent rule check | [check_event_table_parity.py](../A_data_and_rules/logic/check_event_table_parity.py) | Prolog facts from A's wrapper → `A_data_and_rules/data/event_table_prolog_v0_oppA.csv`; [diff_event_table.py](diff_event_table.py) compares it with B's table |
-| Topic fit | [embeddings_colab_eventtable_v5.ipynb](../C_topic_match/embeddings_colab_eventtable_v5.ipynb) | B's opportunities and paper histories in Pierre's DuckDB/Colab environment → `C_topic_match/data/event_table_topicmatch_v5.csv`; separate Q1 Intra output in `C_topic_match/results/` |
+| Topic fit | [embeddings_colab_eventtable_v5.ipynb](../C_topic_match/embeddings_colab_eventtable_v5.ipynb) | B's opportunities and raw paper data, uploaded to Colab → `C_topic_match/data/event_table_topicmatch_v5.csv`; separate Q1 Intra output in `C_topic_match/results/` |
 | Q3 | [q3_baselines.ipynb](q3_baselines.ipynb) | B's annual table, C's official v5 table and historical Min-3 comparison → crude and adjusted risk ratios, intervals and sensitivity results |
 
-Both analysis notebooks display results in the notebook or terminal. They do not
-upload new results to SharePoint. `B_opportunities_and_analysis/results/q3_v5/model_results.json`
-is a separate reference calculation, not an export from the notebook.
+
+The notebooks show their results when you run them. They do not upload them.
+`results/q3_v5/model_results.json` is a separate reference calculation, not a notebook export.
 
 ## Q1/Q2: what we count
 
-- **Unit:** one author-paper pair. Co-authors can have different publication
-  histories, so we evaluate each author separately.
-- **History:** strictly earlier publication dates. Papers on the same date do
-  not count as history for each other.
-- **Denominator:** all 110,654 pairs, including first papers. This measures
-  recurrence across the observed publishing activity.
-- **Q1:** earlier publication in the same journal; 12,325 cases.
-- **Q2 wide:** earlier publication with the same known parent publisher,
-  including the same journal; 15,770 cases.
-- **Q2 narrow:** earlier publication in another journal of that publisher;
-  4,919 cases. Of these, 1,468 are also Q1 returns. The remaining 3,451 have
-  no separate null comparison. Unknown publishers produce no publisher match;
-  those pairs remain in the denominator.
+We look at each author-paper pair separately. Co-authors can have different histories.
+Only papers with an earlier publication date count; papers on the same date do not
+count as history for each other. All 110,654 pairs stay in the denominator, including
+first papers.
 
-## Q1/Q2: how we calculate the comparison
+- Q1: an earlier paper in the same journal. We count 12,325 cases.
+- Q2 wide: an earlier paper with the same parent publisher, including the same
+  journal. We count 15,770 cases.
+- Q2 narrow: an earlier paper in another journal of that publisher. We count 4,919
+  cases. Of these, 1,468 are also Q1 returns. We have not calculated a separate null
+  comparison for the other 3,451.
 
-We use two reference models for both questions: **year** and **year plus primary
-topic category**. Journal frequencies account for differences in journal size;
-the second model also accounts for broad thematic concentration.
+An unknown publisher gives no publisher match, but the pair stays in the denominator.
 
-The notebook functions `build_dist` and `null_rates`:
+## How we get the expected recurrence
 
-1. Count each paper once to obtain journal weights within each year or year/topic group.
-2. Keep each author's paper count, dates and categories. Assign journals to all
-   author-paper positions, rebuilding the full journal history.
-3. Apply the same recurrence rules to the simulated history.
-4. Repeat 100 times per model, with seed 42. Calculate
-   **observed rate / mean simulated rate**, not the mean of individual ratios.
+We use two random models: year, and year plus primary topic category.
+Larger journals get more weight, based on their paper counts in each group.
 
-For example, Q1's observed rate of about 0.1114 divided by the year-model expected
-rate of about 0.0361 gives 3.09.
+1. Count each paper once to get the journal weights.
+2. Keep each author's paper count, dates and topic categories. Assign a journal
+   to each author-paper position and rebuild the publication history.
+3. Count recurrence using the same rules as for the real data.
+4. Repeat 100 times per model, with seed 42. Divide the observed rate by the mean
+   simulated rate.
 
-### Why sampling with replacement?
+For Q1, about 0.1114 / 0.0361 gives 3.09 with the year model.
 
-- We use fixed journal weights. A journal can be drawn repeatedly without changing
-  the next draw's probabilities. This gives a reference for recurrence under
-  independent assignments, without assuming a limited number of publication slots.
-- This does not mean real authors choose independently. Journal totals vary between
-  simulations, and co-authors of one paper can receive different simulated journals
-  because the draws are per author-paper pair.
-- A permutation without replacement could preserve journal totals and still allow
-  recurrence if several slots carry the same journal. That is a different reference
-  model and was not implemented.
-The notebook retains the 100 simulated rates and reports their middle 95% range.
-Separately, it calculates nominal 95% intervals assuming independent authors and
-fixed journal weights, using 4,000 whole-author bootstrap samples. Observed and
-expected counts are resampled together. Exact null expectations remove simulation noise from the denominator;
-the original 100-run ratios stay alongside them. This treats the estimated weights
-as a fixed reference, rather than re-estimating them from each resampled corpus.
-Dependence between coauthors is not covered; coverage for our corpus is unvalidated.
+We draw with replacement: the same journal can come up again and its weight stays
+unchanged. We are not modelling a fixed number of journal places. Co-authors can
+receive different simulated journals because each author-paper pair gets its own draw.
+This is our comparison model, not a claim that real authors choose independently.
+Drawing without replacement would be a different model; we have not implemented it.
 
-## Where topic information enters
+### What the intervals mean
 
-- **Q1/Q2:** primary topic category enters the second reference model for both
-  questions. Continuous historical topic fit T is not included.
-- **Q3:** T compares the author's earlier research profile with the journal's
-  earlier profile. It remains continuous; we do not introduce a match/no-match threshold.
-- **Q1 Intra:** Pierre's `topic_match_intra` describes similarity among an author's
-  papers already published in one journal. It is a separate descriptive output.
-- **What is missing for T-adjusted Q1/Q2:** historical profiles for return
-  opportunities and alternative journals. Q3 stops after first entry and cannot
-  supply return rows. The current ratios and Intra do not establish topic-independent loyalty.
+The middle 95% of the 100 simulated rates shows variation within the random model.
+It is not a confidence interval for the ratio.
 
-## Q3: what we count and why
+For the ratio intervals, we resample whole authors 4,000 times and divide their
+observed and expected totals. We calculate the expected totals directly under the
+same random model, so the denominator has no simulation noise. The original
+100-run results remain alongside these results.
 
-- **Unit:** author, journal not previously entered, and year t. The 6,422,558 rows
-  include opportunities without entry; otherwise we would have no comparison denominator.
-  Opportunity set A is the main input; B is a separate table variant.
-- **C, prior connection:** the same co-author must provide both earlier
-  collaboration and earlier publication in the target journal. Combining evidence
-  from two different people would create a connection neither person actually provides.
-- **F, entry:** derived from `entering_work_id`.
-- **T, topic fit:** profiles use papers from years strictly before t. Historical
-  profiles can be measured even when there is no entry paper. The common yearly
-  cutoff gives entries and non-entries the same information window.
-- **Input check:** B and C must have identical author/journal/year keys and row
-  order before their fields are combined.
-- **Missing T:** we use the 1,106,356 complete cases. Zero would assert low fit
-  when fit is unknown. Restricting the population avoids inventing values, but
-  does not remove selection bias.
+These are nominal 95% intervals assuming independent authors and fixed journal
+weights. We do not re-estimate the weights or publisher mapping in each sample.
+Shared papers make authors dependent, which this bootstrap does not cover.
+We have not established 95% coverage for the actual corpus.
 
-## Q3: how we calculate the result
+## Where topics enter
 
-1. Fit a logistic model with C and continuous T for the chosen outcome.
-2. Predict each included row once with C=1 and once with C=0, keeping T unchanged.
-3. Average the predicted probabilities for each setting and divide the two averages.
-   This gives a standardized risk ratio. Exponentiating the C coefficient would
-   instead give an odds ratio.
+Q1 and Q2 both use topic categories in the second random model. They do not use
+Pierre's continuous historical topic value T. His Q1 Intra file describes similarity
+among papers an author already published in one journal and is a separate result.
 
-### Non-ride outcome
+To adjust Q1/Q2 for historical T, we would need profiles for return opportunities
+and alternative journals. The Q3 table stops after first entry, so it cannot supply
+those return rows. Our current results do not establish topic-independent loyalty.
 
-- We use `first_entry * (1 - first_entry_ride)` to distinguish entries without
-  the qualifying seed co-author on the selected entry paper.
-- Both predicted risks come from this outcome's model. Ride rows remain in the
-  population with outcome zero; removing them would change the comparison population
-  based on the entry itself.
-- Non-ride does not identify a direct network effect. Its classification still
-  depends on the seed history.
+## Q3: what one row means
 
-### Journal and year comparison
+Each row is an author, a journal they have not entered before, and a year t.
+There are 6,422,558 rows, including opportunities without entry. Without these,
+we would have no denominator for the entry probability. We use opportunity set A;
+set B is a separate variant.
 
-- We add separate journal and year terms to examine how much the result depends
-  on differences between journals and years.
-- We check journals with zero events separately for both outcomes and exclude their
-  union from every compared model. Here it is one journal, removing 17,936 rows.
-  This restriction depends on the outcomes. The remaining journals and years must
-  have both events and non-events for each outcome.
-- On the same remaining 1,088,420 rows, non-ride changes **3.30 → 1.18** and all
-  entries **6.01 → 2.27**. The full complete-case C+T results are 3.34 and 6.09.
-  We show both specifications because this difference changes the interpretation.
-  The journal/year intervals are **1.18 [1.10, 1.27]** and **2.27 [2.13, 2.41]**.
+- C records a prior connection. The same co-author must have both collaborated
+  with the author and published in the target journal before t.
+- F records first entry, using `entering_work_id`.
+- T compares the author's and journal's profiles from years strictly before t.
+  We can calculate this even when there is no entry paper.
 
-### Prior paper count
+Before combining B and C, the notebook checks that their author/journal/year keys
+and row order match. We use the 1,106,356 rows with measurable T for adjusted models.
+Missing T stays missing: zero would mean low fit, not unknown fit. These complete
+cases are a selected population; excluding missing values does not remove selection bias.
 
-- Step 9 also adds `log1p(n_prior_papers)` with and without journal/year terms,
-  using the same rows. This counts earlier corpus papers, not just papers embedded
-  in the topic profile. The log form represents diminishing differences in count;
-  it is a sensitivity specification, not a proven correction for T.
-- With journal/year terms, non-ride becomes **1.21 [1.12, 1.30]** and all entries
-  **2.29 [2.16, 2.43]**. Without them, the estimates are 3.10 and 5.62.
-- Earlier productivity can already reflect collaboration. The extra variable
-  therefore does not make these causal estimates or isolate a pure topic effect.
+## How we calculate Q3
 
-### Uncertainty and limits
+1. Fit a logistic model with C and continuous T.
+2. Predict each row once with C=1 and once with C=0, keeping T unchanged.
+3. Average each set of probabilities and divide the two averages.
 
-- Adjusted intervals use an **author-clustered delta method** to account for
-  repeated rows from the same author, including the Step 9 models. These nominal
-  intervals hold the included covariates fixed and assume independent author clusters.
-  This differs from the earlier bootstrap plan.
-- Author clustering does not fully cover shared journal/paper dependence. Attempted
-  two-way covariance estimates were not positive semidefinite. No new v5 bootstrap
-  refits or bootstrap likelihood-ratio test were run.
-- Complete cases are selected, and pre-t topic profiles may already reflect
-  earlier collaboration. The results are therefore reported as associations,
-  not identified causal effects.
+This is a standardized risk ratio. Taking the exponential of the C coefficient
+would give an odds ratio instead.
 
-[Results and intervals](../D_results/README.md) · [Decision history](../D_results/README.md#choices-and-history)
+We also fit an outcome for entries without a ride:
+`first_entry * (1 - first_entry_ride)`. The qualifying earlier co-author must be
+absent from the selected entry paper. Ride rows stay in the model with outcome zero;
+removing them would select rows based on the entry itself. This distinction depends
+on the seed history and does not isolate a direct network effect.
+
+### Journal, year and prior paper count
+
+We add journal and year as separate terms to check how much differences between
+them matter. We check journals with zero entries for each outcome and exclude their
+union from all compared models. Here that removes one journal and 17,936 rows.
+The remaining journals and years must have events and non-events for both outcomes.
+This exclusion depends on the outcomes.
+
+On the same 1,088,420 rows, the non-ride ratio falls from 3.30 to 1.18 and the
+all-entry ratio from 6.01 to 2.27. The C+T results using all complete cases are
+3.34 and 6.09. We show both models because the difference matters to our conclusion.
+
+Step 9 also adds `log1p(n_prior_papers)`, with and without journal and year.
+This counts earlier corpus papers, not just papers used in the embeddings.
+The log makes differences in count matter less at higher counts. With journal and
+year, the ratios become 1.21 for non-ride and 2.29 for all entries; without them,
+3.10 and 5.62. [D lists all estimates and intervals](../D_results/README.md).
+
+Earlier paper counts and T may already reflect collaboration. Adding them does
+not prove a causal effect or turn T into a measure of topic alone.
+
+### Q3 intervals
+
+We use the delta method with clustering by author, including the Step 9 models.
+This allows repeated rows from one author, holds the included covariates fixed and
+assumes independent author clusters. It replaces the earlier bootstrap plan.
+Co-author and shared journal/paper dependence are not fully covered. An attempted
+two-way covariance calculation did not give a valid covariance matrix.
+The results remain associations, with uncertainty from model choice and missing T
+outside these intervals.
 
 ## Rebuild the opportunity table
 
@@ -172,7 +155,7 @@ python3 project_data.py fetch --group logic
 python3 B_opportunities_and_analysis/build_event_table.py
 ```
 
-The builder writes both variants in B/data. Use a separate checkout for rebuilding
-so experimental output does not replace your downloaded inputs. For columns and
-eligibility rules, see the [event-table schema](schemas/event_table.md).
-[The parity report](event_table_parity.md) records the Python/Prolog comparison.
+This writes both variants to B/data. Rebuild in a separate checkout so you keep
+your downloaded inputs. The [schema](schemas/event_table.md) explains the columns
+and eligibility rules; the [Python/Prolog report](event_table_parity.md) records
+the row comparison.

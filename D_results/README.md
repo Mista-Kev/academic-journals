@@ -4,7 +4,7 @@ We compare publication patterns in 27,400 papers from 64 AI journals, covering
 2015–2024. The results describe recurrence and associations with first journal
 entry. They do not establish causal effects.
 
-## Q1 and Q2: observed recurrence versus expected recurrence
+## Q1 and Q2: repeat publications
 
 Each ratio divides the observed recurrence rate by the expected rate under the
 corresponding random reference model. Both models preserve authors' paper counts
@@ -16,14 +16,14 @@ and dates; the second also uses primary topic category when assigning journals.
 | Q2 wide: same publisher, same journal allowed | 2.02 [1.99, 2.05] | 1.69 [1.67, 1.71] |
 | Q2 narrow: same publisher through another journal | 1.16 [1.11, 1.20] | 1.11 [1.07, 1.15] |
 
-Brackets are **nominal 95% intervals assuming independent authors and fixed journal
-weights**, from 4,000 whole-author bootstrap samples (seed 20260910). The denominator
-uses the exact expectation under the same null; all ratios round to the original 100-run estimates above. Journal
-weights and publisher mapping stay fixed. Dependence between coauthors and uncertainty
-in those weights are not covered. Coverage for the coauthored corpus remains
-unvalidated. Both narrow intervals exclude 1 under these assumptions; accounting for dependence could change that.
-The notebook separately reports ranges of simulated null rates, which answer
-a different question.
+Brackets show nominal 95% intervals assuming independent authors and fixed journal
+weights. We resample whole authors 4,000 times (seed 20260910), using exact null
+expectations. The ratios round to the same values as the original 100-run simulation.
+We keep journal weights and publisher mapping fixed. Co-author dependence and
+uncertainty in the weights are not covered, so 95% coverage for this corpus is not
+established. Q2 narrow excludes 1 under these assumptions; accounting for dependence
+could change that. The notebook also shows simulated-rate ranges, which are not
+confidence intervals for the ratios.
 
 Recurrence exceeds what these particular models predict. That does not establish
 loyalty independent of topic. Q2 narrow also overlaps with Q1: 1,468 of its 4,919
@@ -37,29 +37,27 @@ Historical continuous topic adjustment for return opportunities was not built.
 
 C indicates a qualifying prior co-author connection. T measures historical topic
 fit between author and journal. We fit logistic models and average predicted
-entry probabilities with C set to 1 and 0 over the same rows. Their ratio is the
-model-standardized risk ratio.
+entry probabilities with C set to 1 and 0 over the same rows. Dividing these averages gives the risk ratio below.
 
 | Outcome | C + T, all complete cases | C + T, matched rows | With journal and year, matched rows |
 |---|---:|---:|---:|
 | All entries | 6.09 [5.76, 6.45] | 6.01 [5.67, 6.36] | 2.27 [2.13, 2.41] |
 | Non-ride entries | 3.34 [3.12, 3.58] | 3.30 [3.08, 3.53] | 1.18 [1.10, 1.27] |
 
-The first column uses **1,106,356 rows with measurable T**. The last two use the
-same **1,088,420 rows**, excluding 17,936 rows from a journal with no entries to
-handle separation. We now check zero events for each outcome and use their union
-for a common exclusion; in these data it is the same single journal. Remaining
-journals and years must have events and non-events for both outcomes. That exclusion
-depends on the outcomes. Journal and year are separate additive terms. Brackets are
-nominal 95% author-clustered delta intervals, with the included covariates held fixed.
-They assume independent author clusters and do not cover dependence between coauthors,
-model choice or complete-case selection.
+The first column uses 1,106,356 rows with measurable T. The last two use the same
+1,088,420 rows. We check for zero events in each outcome and exclude the affected
+journals from both models. Here it is one journal with 17,936 rows. The remaining
+journals and years must contain events and non-events for both outcomes. This
+selection depends on the outcomes. Journal and year enter as separate terms.
 
-**The association becomes much smaller after adding journal and year.** That
-model dependence is part of the finding. Non-ride means the qualifying seed
-co-author is absent from the selected entry paper; it does not mean a direct
-network effect. Missing T remains missing, so adjusted results concern complete
-cases. Rolling T can already reflect earlier collaboration.
+Brackets show nominal 95% intervals from the delta method, clustered by author.
+They hold the included covariates fixed and assume independent author clusters.
+They do not cover co-author dependence, model choice or selection through missing T.
+
+Adding journal and year makes the association much smaller. That is part of the
+result. Non-ride means the qualifying earlier co-author is absent from the selected
+entry paper, not that we have isolated a direct network effect. Missing T stays
+missing, and historical T can already reflect earlier collaboration.
 
 Adding `log1p(n_prior_papers)` gives the following sensitivity results on the same
 1,088,420 rows:
@@ -69,24 +67,22 @@ Adding `log1p(n_prior_papers)` gives the following sensitivity results on the sa
 | All entries | 5.62 [5.33, 5.93] | 2.29 [2.16, 2.43] |
 | Non-ride entries | 3.10 [2.90, 3.32] | 1.21 [1.12, 1.30] |
 
-The count covers earlier corpus papers, not exactly the embedded profile papers.
-We use a log term to allow diminishing differences as counts grow; other functional
-forms were not tested. The count lowers the C+T estimates slightly but raises the
-journal/year estimates slightly. It does not establish that productivity explains
-away the association or that T now measures topic alone. Earlier paper counts can
-already reflect collaboration. No embeddings were recalculated.
+The count includes earlier corpus papers, not just those used in the topic profile.
+We use a log term so differences matter less at higher counts; we did not test other
+forms. Adding it changes the estimates only slightly. It does not explain away the
+association or make T a measure of topic alone: earlier paper counts can already
+reflect collaboration. The embeddings stay unchanged.
 
-For Kevin's part, the original C+T non-ride comparison remains the headline,
-always shown with the journal/year sensitivity. Adoption in the joint report
-remains proposed; this is not recorded as a joint team decision.
+For my part, I keep the original C+T non-ride result and show the journal/year
+result beside it. This is my proposed reporting choice, not a recorded team decision.
 
 ## Data and rule checks
 
 The annual table contains 6,422,558 opportunities, 96,819 entries and 1,784 entries
-with a qualifying seed, including 756 rides. Python and Prolog agree on all rows.
+with a qualifying seed, including 756 rides. Python and Prolog agree on the keys
+and the connection, entry, ride and non-ride indicators across all rows.
 Q3 uses Pierre's official v5 export. Both analyses reproduced their results after
-loading the shared files from SharePoint. These checks establish agreement of the
-files and calculations, not causal validity.
+loading the shared files from SharePoint. The comparison checks these indicators, not T or every column.
 
 [Run the analyses](../README.md#how-to-use-it) · [Understand the calculations](../B_opportunities_and_analysis/README.md)
 
@@ -125,12 +121,10 @@ files and calculations, not causal validity.
   Q3 design and imputation would be additional analyses. A profile frozen at first
   seed lacks a comparable anchor for C=0. These are limitations and alternatives,
   not completed tests.
-- **10 September delivery:** all 13 data files and four metadata files were downloaded
-  again and matched their sizes and hashes. Full Q1/Q2 and Q3 runs matched previous
-  outputs. Three non-analysis downloads were then discarded to save local space;
-  the retained local download folder is incomplete. The complete prepared release
-  was verified separately. Recipient-account access and automatic OneDrive sync
-  were not tested.
+- **10–11 September, shared data:** downloaded the release and checked its files,
+  then ran Q1/Q2 and Q3 locally. The full Colab run using SharePoint inputs produced
+  an event table identical to the official v5 file. New outputs are in a separate
+  SharePoint run folder; downloading them again gave identical files.
 
 The [Python/Prolog report](../B_opportunities_and_analysis/event_table_parity.md)
 and [topic results](../C_topic_match/README_results.md) contain the detailed checks.

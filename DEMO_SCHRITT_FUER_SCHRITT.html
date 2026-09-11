@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Demo Schritt für Schritt</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f6;color:#233630;font:17px/1.65 system-ui,sans-serif}main{max-width:930px;margin:auto;padding:40px 28px 80px}h1{font-size:36px;line-height:1.2;margin:14px 0 20px}h2{font-size:25px;line-height:1.3;margin-top:36px}h3{font-size:21px;line-height:1.4;margin-top:36px;padding-top:20px;border-top:1px solid #d2ddd6}a{color:#17634a;text-underline-offset:3px}p,li{overflow-wrap:anywhere}pre{background:#eaf0eb;padding:18px;border-radius:6px;overflow:auto;font-size:14px}code{font-family:ui-monospace,monospace;font-size:.88em;overflow-wrap:anywhere}pre code{white-space:pre;overflow-wrap:normal}li{margin:8px 0}.small,nav{font-size:14px;color:#53685c}.note{padding:14px 18px;border-left:4px solid #a16b19;background:#fbf1dd}details{margin:20px 0;border:1px solid #d2ddd6;padding:12px 18px;border-radius:6px}summary{cursor:pointer;font-weight:650}nav{display:flex;gap:20px;flex-wrap:wrap}a:focus-visible,summary:focus-visible{outline:3px solid #a16b19;outline-offset:4px}@media(max-width:600px){main{padding:24px 18px 50px}h1{font-size:30px}body{font-size:16px}pre{font-size:12px}}@media print{body{font-size:10pt;background:white}main{max-width:none;padding:0}nav{display:none}h1{font-size:23pt}h2,h3{break-after:avoid}pre{white-space:pre-wrap;font-size:8pt}pre code{white-space:pre-wrap}details{break-inside:avoid}a{color:inherit}}</style></head><body><main><nav><a href="FELIX_PROJEKT_DURCHGEHEN.html">Setup und Ergebnisse verstehen</a><a href="https://github.com/Mista-Kev/academic-journals">Repository</a></nav><h1>Demo Schritt für Schritt</h1><p>Ein Rechner · tatsächliche Notebooks · klare Haltepunkte. Lokale Fassung vom 11.09.2026.</p>
+<p>Du kannst alle Schritte selbst bedienen. Lennart und Pierre können ihre Teile erklären, müssen aber nicht den Rechner übernehmen. Ein Laptop und die tatsächlichen Notebooks reichen.</p>
+<p class="note">Q1/Q2, Q3 und der Abgleich vorhandener Tabellen sind ausgeführt und geprüft. Für C fehlt noch die vollständige Ausführung mit dem neuen Datenzugriff. Bis dahin ist Schritt 3 eine Erklärung am Notebook und am vorhandenen Export. Ein durchgehend ausführbarer Gesamtlauf ist damit noch nicht fertig.</p>
+<h2>Vorher vorbereiten</h2>
+<ol>
+<li>Die Einrichtung im <a href="FELIX_PROJEKT_DURCHGEHEN.html">Projektguide</a> durchführen. Daten lokal verfügbar machen, nur die drei Demo-Gruppen abrufen und den Platztest vor dem Fetch beachten.</li>
+<li>Vor dem Termin <code>python demo.py q1-q2</code> und <code>python demo.py q3</code> sowie den Tabellenvergleich einmal ausführen. Den erfolgreichen Abschluss prüfen. Die Notebookansicht ist für die Erklärung; Jupyter ist optional.</li>
+<li>Im Browser die Projektübersicht, beide B-Notebooks, Pierres v5-Notebook und <code>D_results/README.md</code> öffnen. Im Terminal im Repository-Root bleiben.</li>
+<li>Für den Termin etwa 15–20 Minuten einplanen. Dieser Ablauf verwendet die offiziellen Dateien. Korpusabruf und vollständiger GPU-Lauf sind kein Teil der Vorführung.</li>
+</ol>
+<p>Zum Rechnen verwenden wir das aktivierte Terminal im Repository-Root. Die beiden Runner starten dieselben Notebookzellen frisch und enden mit <code>Completed …</code>. Während sie rechnen, zeigen wir den Code im Notebook. Nur für interaktives Durchgehen ist die Jupyter-Anleitung nötig.</p>
+<p>Umgebung, Kernelwahl, zweites Terminal und Fehlerhilfe: <a href="FELIX_PROJEKT_DURCHGEHEN.html#jupyter">Bedienung</a> · <a href="FELIX_PROJEKT_DURCHGEHEN.html#probleme">Fehler beheben</a>. Getestet ist der macOS-Ablauf; für andere Systeme wird hier keine Funktionszusage gemacht.</p>
+<h2>1 · A: Was bedeutet eine Datenzeile? · 2 Minuten</h2>
+<p><strong>Öffnen:</strong> <code>A_data_and_rules/data/openalex_ai_semiclean_v1_0.csv</code> und <code>A_data_and_rules/results/openalex_three_path_v1_0/pathway_evidence.csv</code>.</p>
+<p><strong>Zeigen:</strong> Autor <code>A5014662947</code> hat die Paper <code>W2145809663</code> vom 23.02.2015 und <code>W2119408773</code> vom 30.04.2015 im selben Journal <code>S155526855</code>. Beim späteren Paper sind <code>journal_path=True</code> und <code>coauthor_path=True</code>; <code>publisher_path=False</code>. Die Flags schließen sich nicht gegenseitig aus. Hier erklären wir den Journalpfad.</p>
+<p><strong>Erklären:</strong> Eine Korpuszeile ist ein Paper, eine Pfadzeile ein Autor–Paper-Paar. Der frühere Beleg macht die Regel nachvollziehbar. Das ist noch kein Beleg für Bevorzugung. Q1/Q2 verwenden die Pfadflags zur Gegenprüfung.</p>
+<details><summary>Genau diese Paper und das Flag anzeigen</summary><p>Den gesamten Block im aktivierten Terminal im Repository-Root einfügen. Er liest nur die Beispieldaten und ändert keine Dateien.</p><pre><code>python - &lt;&lt;'PY'
+from pathlib import Path
+import pandas as pd
+
+ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+            if (p / &quot;data-manifest.json&quot;).is_file())
+
+folder = ROOT / &quot;A_data_and_rules/results/openalex_three_path_v1_0&quot;
+papers = pd.read_csv(ROOT / &quot;A_data_and_rules/data/openalex_ai_semiclean_v1_0.csv&quot;,
+                     usecols=[&quot;work_id&quot;, &quot;title&quot;, &quot;publication_date&quot;, &quot;journal_id&quot;])
+print(papers.loc[papers.work_id.isin([&quot;W2145809663&quot;, &quot;W2119408773&quot;])].to_string(index=False))
+flags = pd.read_csv(folder / &quot;pathway_flags.csv&quot;, usecols=[
+    &quot;focal_author_id&quot;, &quot;focal_work_id&quot;, &quot;journal_path&quot;, &quot;publisher_path&quot;, &quot;coauthor_path&quot;])
+print(flags.loc[(flags.focal_author_id == &quot;A5014662947&quot;) &amp;
+                (flags.focal_work_id == &quot;W2119408773&quot;)].to_string(index=False))
+PY
+</code></pre><p>Erwartet: zwei Paper im selben Journal; beim späteren Paper Journalpfad und Koautorpfad True, Verlagspfad False.</p></details>
+<h2>2 · Q1/Q2: Wie viel Wiederkehr erwarten wir? · 4 Minuten</h2>
+<pre><code>python demo.py q1-q2</code></pre><p><strong>Daneben öffnen:</strong> <code>B_opportunities_and_analysis/q1_q2_baselines.ipynb</code>. Der Lauf ist erst mit <code>Completed q1-q2</code> ohne Fehler fertig.</p>
+<ul>
+<li>Bei <strong>Step 5</strong> erklären: Wir ziehen Journale mit Zurücklegen, gewichtet nach Jahr bzw. Jahr und Themenkategorie. Die Paperzahl und Termine je Autor bleiben erhalten.</li>
+<li>Bei <strong>Steps 6–7</strong> auf die Ergebnistabellen gehen: Q1 <strong>3,09 / 2,22</strong>, Q2 weit <strong>2,02 / 1,69</strong>, Q2 eng <strong>1,16 / 1,11</strong>.</li>
+<li>2,22 bedeutet mehr Journal-Wiederkehr als im Jahr-und-Kategorie-Vergleich erwartet. Historisches T ist hier nicht berücksichtigt. Q2 eng überschneidet sich teilweise mit Q1.</li>
+<li>Die nominalen Intervalle setzen unabhängige Autoren und feste Journalgewichte voraus. Die Streuung der Nullsimulationen ist etwas anderes. Keine themenunabhängige Bindung behaupten.</li>
+</ul>
+<p><strong>Danach:</strong> Diese Auswertung ist abgeschlossen; sie erzeugt keine Eingabedatei für Q3. Die letzte Zahl <code>0.683 (not Q3)</code> ist ein Gegenbeispiel für einen ungeeigneten Nenner, kein Q3-Ergebnis.</p>
+<h2>3 · B → C: Woher kommt T? · 3 Minuten</h2>
+<p><strong>Öffnen:</strong> <code>C_topic_match/embeddings_colab_eventtable_v5.ipynb</code>, Abschnitte zur Einbettung und zum Füllen der Event-Tabelle. Dazu den offiziellen <code>C_topic_match/data/event_table_topicmatch_v5.csv</code>-Export.</p>
+<p><strong>Erklären:</strong> Q3 braucht auch Gelegenheiten ohne Eintritt. Für jede Autor–Journal–Jahr-Zeile vergleichen wir Profile aus früheren Papern. Titel und Abstract werden zu Vektoren, je Profil gemittelt und über ihren Abstand verglichen. Ein fehlendes Profil ergibt fehlendes T, nicht 0.</p>
+<p><strong>Zeigen:</strong> <code>A5000005424 / S101949793 / 2020</code> hat T ≈ 0,7272 ohne Eintritt. <code>A5000000364 / S101949793 / 2020</code> hat kein Autorenprofil und deshalb kein T. Beide sind Gelegenheiten. Der offizielle Export geht in Q3 ein.</p>
+<p><strong>Vor dem Termin noch klären:</strong> Den manuellen Dateiimport in Pierres bestehendem Notebook vorbereiten und testen, wenn dieser Schritt ebenfalls live rechnen soll. Keinen gespeicherten Export als neue Berechnung ausgeben. Seine Q1-Intra-Datei ist eine separate Beschreibung und kein Input der Q1/Q2-Ratios.</p>
+<details><summary>Die zwei T-Beispiele direkt anzeigen</summary><p>Den gesamten Block im aktivierten Terminal im Repository-Root einfügen. Die CSV wird in Blöcken gelesen und beendet, sobald beide Beispielschlüssel gefunden sind.</p><pre><code>python - &lt;&lt;'PY'
+from pathlib import Path
+import pandas as pd
+
+ROOT = next(p for p in [Path.cwd(), *Path.cwd().parents]
+            if (p / &quot;data-manifest.json&quot;).is_file())
+
+keys = [(&quot;A5000005424&quot;, &quot;S101949793&quot;, 2020),
+        (&quot;A5000000364&quot;, &quot;S101949793&quot;, 2020)]
+cols = [&quot;author_id&quot;, &quot;journal_id&quot;, &quot;t&quot;, &quot;coauthor_seed&quot;, &quot;entering_work_id&quot;,
+        &quot;first_entry_ride&quot;, &quot;topic_match&quot;, &quot;n_profile_papers&quot;, &quot;tm_status&quot;]
+parts = []
+for chunk in pd.read_csv(ROOT / &quot;C_topic_match/data/event_table_topicmatch_v5.csv&quot;,
+                         usecols=cols, chunksize=100_000):
+    index = pd.MultiIndex.from_frame(chunk[[&quot;author_id&quot;, &quot;journal_id&quot;, &quot;t&quot;]])
+    selected = chunk.loc[index.isin(keys)]
+    if len(selected):
+        parts.append(selected)
+    if sum(len(part) for part in parts) == len(keys):
+        break
+assert parts, &quot;No example rows found&quot;
+rows = pd.concat(parts).set_index([&quot;author_id&quot;, &quot;journal_id&quot;, &quot;t&quot;])
+assert len(rows) == len(keys) and rows.index.is_unique, &quot;Example keys differ&quot;
+print(rows.loc[keys].to_string())
+PY
+</code></pre><p>Erwartet: erste Zeile T ≈ 0,727169 und <code>ok</code>, zweite Zeile T als <code>NaN</code> und <code>no_author_history</code>. Beide haben C=0, keinen Eintritt und Ride=0. <code>NaN</code> bedeutet fehlend, nicht null.</p></details>
+<h2>4 · Q3: Was verändert die Modellwahl? · 4 Minuten</h2>
+<pre><code>python demo.py q3</code></pre><p><strong>Daneben öffnen:</strong> <code>B_opportunities_and_analysis/q3_baselines.ipynb</code>. Auf <code>Completed q3</code> ohne Fehler warten.</p>
+<ul>
+<li><strong>Step 6:</strong> T ist auf 1.106.356 von 6.422.558 Zeilen messbar. Für diese ausgewählte Population werden die adjustierten Modelle gerechnet.</li>
+<li><strong>Step 7:</strong> Dieselben Zeilen mit C=1 und C=0 vorhersagen und die mittleren Wahrscheinlichkeiten teilen. Non-ride: <strong>3,34 [3,12; 3,58]</strong>; alle Eintritte: <strong>6,09 [5,76; 6,45]</strong>. Das sind Risikoverhältnisse, nicht die daneben ausgegebene Odds Ratio.</li>
+<li><strong>Step 9:</strong> Auf gleichen Zeilen mit Journal und Jahr: Non-ride <strong>3,30 → 1,18 [1,10; 1,27]</strong>, alle Eintritte <strong>6,01 → 2,27 [2,13; 2,41]</strong>. Der Ausschluss wird für beide Outcomes geprüft; hier betrifft er dasselbe Journal.</li>
+<li>Die neue Paperzahl-Variante verwendet <code>log1p(n_prior_papers)</code>. Mit Journal und Jahr ergibt sie <strong>1,21 [1,12; 1,30]</strong> und <strong>2,29 [2,16; 2,43]</strong>. Alle Modelle verwenden dieselben Zeilen. Die nominalen 95%-Intervalle setzen unabhängige Autorengruppen voraus; die Modellsensitivität bleibt Teil des Ergebnisses.</li>
+</ul>
+<p><strong>Erklären:</strong> Der Zusammenhang wird im erweiterten Modell deutlich kleiner. Deshalb gehört dieser Vergleich zum Ergebnis. Non-ride heißt ohne den qualifizierenden früheren Koautor auf dem Eintrittspaper, nicht unabhängig vom Netzwerk. Keine kausale Wirkung behaupten.</p>
+<h2>5 · Gegenprüfung · 2 Minuten</h2><p>Der Vergleich braucht temporären Speicher und Unix-<code>sort -T</code>. macOS ist getestet; native Windows-Ausführung funktioniert so nicht, WSL ist nicht getestet. Die neue Platzprüfung stoppt vorab bei zu wenig Reserve. Einen Platzfehler beheben oder mit <code>--temp-dir</code> einen Ordner auf einem anderen Datenträger wählen; er ist kein Beleg für abweichende Daten.</p>
+<p><strong>Im Terminal ausführen:</strong></p>
+<pre><code>python B_opportunities_and_analysis/diff_event_table.py</code></pre>
+<p><strong>Erwartet:</strong> 6.422.558 gemeinsame Schlüssel, keine fehlenden oder doppelten Schlüssel, null Abweichungen bei C, F und Ride sowie passende Non-ride-Aufteilung.</p>
+<p><strong>Erklären:</strong> Wir gleichen die gewählten Kernindikatoren zeilenweise ab. Dieser Befehl liest vorhandene Tabellen. Er führt weder die Prolog-Regeln neu aus noch bestätigt er die wissenschaftlichen Annahmen. Eine vollständige Neuerzeugung ist nicht Bestandteil dieser Anleitung.</p>
+<h2>6 · Ergebnis · 1 Minute</h2>
+<p><code>D_results/README.md</code> öffnen. Q1 zeigt mehr Wiederkehr als unsere Referenzen erwarten. Q2 hängt von Definition und Überschneidung mit Q1 ab. Q3 zeigt einen deutlich modellabhängigen Zusammenhang. Die Ergebnisse sind Tabellen, Kennzahlen, Intervalle und Diagnosen in den Notebooks; D hält ihre Interpretation fest.</p>
+<p>Falls ein Lauf scheitert: Fehler benennen und gegebenenfalls die gespeicherten Ausgaben zeigen. Klar sagen, dass das der vorhandene Stand ist. Nach der Demo kann Felix denselben Ablauf mit dem Projektguide selbst wiederholen.</p>
+</main></body></html>

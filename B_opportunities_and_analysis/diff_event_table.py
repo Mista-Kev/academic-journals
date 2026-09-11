@@ -12,6 +12,8 @@ from __future__ import annotations
 
 import argparse
 import csv
+import errno
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -107,6 +109,8 @@ def sort_file(path: Path, target: Path, tmp_dir: Path) -> None:
         subprocess.run(
             ["sort", "-T", str(tmp_dir), str(path)],
             stdout=out,
+            stderr=subprocess.PIPE,
+            text=True,
             env={"LC_ALL": "C", "PATH": "/usr/bin:/bin"},
             check=True,
         )
@@ -204,16 +208,49 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prolog", type=Path, default=PROLOG_PATH)
     parser.add_argument("--python", type=Path, default=PYTHON_PATH)
+    parser.add_argument("--temp-dir", type=Path,
+                        help="Existing directory with space for projections and external sorting")
     args = parser.parse_args(argv)
 
+    if sys.platform == "win32":
+        print("This comparison requires Unix sort with -T; native Windows sort is incompatible. "
+              "Use the documented macOS environment. WSL is not tested.", file=sys.stderr)
+        return 2
+
     started = time.monotonic()
-    with tempfile.TemporaryDirectory(prefix="event-table-diff-") as tmp_name:
-        tmp_dir = Path(tmp_name)
-        prolog_totals = project_prolog(args.prolog, tmp_dir / "prolog.tsv")
-        python_totals = project_python(args.python, tmp_dir / "python.tsv")
-        sort_file(tmp_dir / "prolog.tsv", tmp_dir / "prolog.sorted", tmp_dir)
-        sort_file(tmp_dir / "python.tsv", tmp_dir / "python.sorted", tmp_dir)
-        result = compare(tmp_dir / "prolog.sorted", tmp_dir / "python.sorted")
+    temp_root = args.temp_dir or Path(tempfile.gettempdir())
+    try:
+        # Budget for both projections, sorted copies and sort's scratch files.
+        # This is a conservative reserve, not an exact peak-space prediction.
+        reserve = max(16 * 1024**2, 4 * (args.prolog.stat().st_size + args.python.stat().st_size))
+        free = shutil.disk_usage(temp_root).free
+        if free < reserve:
+            print(f"Not enough temporary disk space in {temp_root}: {free / 1024**3:.2f} GiB free; "
+                  f"reserve {reserve / 1024**3:.2f} GiB for this comparison. "
+                  "Free space or select an existing folder on another disk with --temp-dir. "
+                  "No comparison was run.", file=sys.stderr)
+            return 2
+        with tempfile.TemporaryDirectory(prefix="event-table-diff-", dir=temp_root) as tmp_name:
+            tmp_dir = Path(tmp_name)
+            prolog_totals = project_prolog(args.prolog, tmp_dir / "prolog.tsv")
+            python_totals = project_python(args.python, tmp_dir / "python.tsv")
+            sort_file(tmp_dir / "prolog.tsv", tmp_dir / "prolog.sorted", tmp_dir)
+            sort_file(tmp_dir / "python.tsv", tmp_dir / "python.sorted", tmp_dir)
+            result = compare(tmp_dir / "prolog.sorted", tmp_dir / "python.sorted")
+    except subprocess.CalledProcessError as exc:
+        detail = (exc.stderr or "").strip()
+        print(f"External sort failed (exit {exc.returncode}). {detail}\n"
+              f"Check free space and write access in {temp_root}; "
+              "use --temp-dir for another disk. No comparison verdict is available.", file=sys.stderr)
+        return 2
+    except OSError as exc:
+        if exc.errno == errno.ENOSPC:
+            print(f"Disk filled during comparison in {temp_root}. Free space or use --temp-dir "
+                  "on another disk, then rerun. No comparison verdict is available.", file=sys.stderr)
+        else:
+            print(f"Could not compare the tables: {exc}. Check the input paths and temporary "
+                  "directory permissions. No comparison verdict is available.", file=sys.stderr)
+        return 2
 
     clean = report(prolog_totals, python_totals, result)
     print(f"comparison runtime {time.monotonic() - started:.1f}s")

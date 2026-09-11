@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Offizielle Analysen ausführen und Ergebnisse verstehen</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#faf9f6;color:#233630;font:17px/1.65 system-ui,sans-serif}main{max-width:930px;margin:auto;padding:40px 28px 80px}h1{font-size:36px;line-height:1.2;margin:14px 0 20px}h2{font-size:25px;line-height:1.3;margin-top:36px}h3{font-size:21px;line-height:1.4;margin-top:36px;padding-top:20px;border-top:1px solid #d2ddd6}a{color:#17634a;text-underline-offset:3px}p,li{overflow-wrap:anywhere}pre{background:#eaf0eb;padding:18px;border-radius:6px;overflow:auto;font-size:14px}code{font-family:ui-monospace,monospace;font-size:.88em;overflow-wrap:anywhere}pre code{white-space:pre;overflow-wrap:normal}li{margin:8px 0}.small,nav{font-size:14px;color:#53685c}.note{padding:14px 18px;border-left:4px solid #a16b19;background:#fbf1dd}details{margin:20px 0;border:1px solid #d2ddd6;padding:12px 18px;border-radius:6px}summary{cursor:pointer;font-weight:650}nav{display:flex;gap:20px;flex-wrap:wrap}a:focus-visible,summary:focus-visible{outline:3px solid #a16b19;outline-offset:4px}@media(max-width:600px){main{padding:24px 18px 50px}h1{font-size:30px}body{font-size:16px}pre{font-size:12px}}@media print{body{font-size:10pt;background:white}main{max-width:none;padding:0}nav{display:none}h1{font-size:23pt}h2,h3{break-after:avoid}pre{white-space:pre-wrap;font-size:8pt}pre code{white-space:pre-wrap}details{break-inside:avoid}a{color:inherit}}</style></head><body><main><nav><a href="DEMO_SCHRITT_FUER_SCHRITT.html">Demo Schritt für Schritt</a><a href="https://github.com/Mista-Kev/academic-journals">Repository</a></nav><h1>Offizielle Analysen ausführen und Ergebnisse verstehen</h1><p>27.400 Paper · 64 Journals · 2015–2024. <a href="https://github.com/Mista-Kev/academic-journals">Repository öffnen</a>. Die großen Dateien liegen im <a href="https://buds365-my.sharepoint.com/personal/s-001070_student_german-uds_de/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fs-001070_student_german-uds_de%2FDocuments%2FApplied%20AI%20Group%20B%20Data%2Fofficial-v5-2026-09-07-abcd-v1">SharePoint-Datenordner</a>. Fassung vom 11.09.2026; zur Veröffentlichung vorbereitet.</p><section id="ablauf"><h2>Von den Daten zum Ergebnis</h2>
+<p>Dieser Guide erklärt den gemeinsamen Datenstand, die einzelnen Berechnungen und ihre Ergebnisse. Die Analysen lassen sich aus den geteilten Dateien wiederholen. Diese Anleitung verwendet die offiziellen Dateien. Sie ist keine vollständige Anleitung zum Neubau von A bis C.</p>
+<p>Zu jedem Schritt stehen Eingabe, Zweck, Ausführung, Ergebnis und Weiterverwendung. Die Auswertungen beschreiben Zusammenhänge innerhalb unseres Korpus; sie weisen keine Ursachen nach.</p>
+
+<h3 id="setup">1 · Den gemeinsamen Datenstand laden</h3>
+<p><strong>Getestete Umgebung:</strong> macOS auf Apple Silicon, Python 3.12; JupyterLab 4.6.3 nur für die optionale Notebookbedienung; Referenzrechner mit 32 GB RAM. Ein RAM-Minimum wurde nicht bestimmt. Die Vergleichsfunktion verwendet Unix-<code>sort</code>. Native Windows-Ausführung und WSL sind hier nicht getestet.</p>
+<p><strong>Speicher:</strong> Die vollständige heruntergeladene Freigabe belegt 2,65 GB. Wir kopieren nur die 7 Dateien der Gruppen <code>q1-q2</code>, <code>q3</code> und <code>parity</code> ins Repo, zusammen 1,76 GB. Das sind etwa 4,4 GB für Quelle und Kopie; dazu kommen Pakete, ZIP und Sortierdateien. Vor der gesamten Einrichtung 10 GB freien Platz einplanen. Nach dem Download prüft der folgende Befehl nochmals mindestens 6 GiB freien Platz vor dem Kopieren. Bei weniger Platz stoppt der zusammenhängende Prüf-/Fetch-Befehl vor dem Kopieren. Gleichzeitige andere Schreibvorgänge können den Platz später trotzdem verbrauchen.</p>
+<p>Im macOS-Terminal prüfen:</p><pre><code>python3.12 --version
+git --version
+df -h .</code></pre>
+<p>Fehlen Python 3.12 oder Git, erst installieren. Die Befehle unten setzen beides voraus. SWI-Prolog, GPU und rclone werden für diesen Weg nicht benötigt.</p>
+<p><strong>Warum:</strong> Alle sollen dieselben 27.400 Paper und dieselben Ergebnisdateien verwenden. Ein neuer OpenAlex-Abruf könnte einen anderen Datenstand liefern.</p>
+<p>Den <a href="https://buds365-my.sharepoint.com/personal/s-001070_student_german-uds_de/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fs-001070_student_german-uds_de%2FDocuments%2FApplied%20AI%20Group%20B%20Data%2Fofficial-v5-2026-09-07-abcd-v1">SharePoint-Ordner <code>official-v5-2026-09-07-abcd-v1</code></a> mit dem berechtigten Uni-Konto öffnen und herunterladen und entpacken oder über OneDrive vollständig lokal verfügbar machen. Darin liegen A/B/C und <code>START_HERE.txt</code>. Die Freigabe muss mit dem eigenen Konto funktionieren. Bei „Zugriff verweigert“ beim Team Zugriff anfordern; die rclone-Freigabe löst diesen Schritt nicht. Dann im Terminal:</p>
+<pre><code>git clone https://github.com/Mista-Kev/academic-journals.git academic-journals-demo
+cd academic-journals-demo
+python3.12 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -c "import shutil,sys; free=shutil.disk_usage('.').free; print(f'{free/1024**3:.1f} GiB frei'); sys.exit(0 if free &gt;= 6*1024**3 else 'Vor dem Fetch mindestens 6 GiB freimachen oder einen anderen Arbeitsdatentraeger verwenden.')" &amp;&amp; \
+python project_data.py configure --group q1-q2 --shared-root "/Pfad/zu/official-v5-2026-09-07-abcd-v1" &amp;&amp; \
+python project_data.py fetch --group q1-q2 &amp;&amp; \
+python project_data.py fetch --group q3 &amp;&amp; \
+python project_data.py fetch --group parity</code></pre>
+<p>Die Q3-Erweiterung mit Intervallen und Paperzahl-Sensitivität ist lokal in <code>ea595d4</code> ausgeführt und geprüft. Die bisherigen Ergebnisse bleiben erhalten. Diese Erweiterung, die Guides und die Platzprüfung im Tabellenvergleich müssen noch veröffentlicht werden, bevor ein neuer GitHub-Clone diesen Stand enthält. Einen neuen Ordner verwenden, damit bestehende Änderungen erhalten bleiben.</p>
+<p><strong>Ergebnis:</strong> 7 unterschiedliche Datendateien werden geladen und geprüft. Die Gelegenheitentabelle gehört zu zwei Gruppen und wird beim zweiten Aufruf nur erneut geprüft. Roh-JSONL und oppB werden nicht kopiert. <code>verified</code> bedeutet passende Dateigröße und Hash, nicht wissenschaftliche Richtigkeit. Erst nach fehlerfreiem Abschluss weitergehen. Der Link verweist auf den vorgesehenen Ordner; Felix’ Zugriff wurde nicht getestet. Die unabhängigen Analyseläufe verwendeten eine bereits lokal verfügbare Kopie.</p>
+
+<h3 id="rechnen">Die Zahlen neu berechnen</h3>
+<p>Im aktivierten Terminal, weiterhin im Repository-Root:</p>
+<pre><code>python demo.py q1-q2
+python demo.py q3</code></pre>
+<p>Der vorhandene Runner führt die Codezellen der tatsächlichen Notebooks der Reihe nach aus. Er ist keine zweite Berechnung. Erfolgreiche Läufe enden mit <code>Completed q1-q2</code> bzw. <code>Completed q3</code> und der Laufzeit. Ein Traceback oder ein fehlender Abschluss ist ein abgebrochener Lauf. Die gespeicherten Notebook-Ausgaben werden nicht überschrieben. Beide Befehle liefen in der unabhängigen Prüfung in etwa 35 bzw. 56 Sekunden; andere Rechner brauchen länger.</p>
+<p>Die folgenden Abschnitte erklären die Rechenschritte. Dafür reicht die Notebookvorschau auf GitHub. Zum interaktiven Durchgehen kann Jupyter zusätzlich installiert werden.</p>
+<details id="jupyter"><summary>Optional: Notebookzellen in Jupyter durchgehen</summary>
+<pre><code>python -m pip install jupyterlab==4.6.3
+python -m ipykernel install --sys-prefix --name academic-journals --display-name "Academic Journals (.venv)"
+python -m jupyter lab</code></pre>
+<ol>
+<li>JupyterLab öffnet sich im Browser. Falls nicht, die lokale URL aus dem Terminal öffnen. Dieses Terminal läuft als Server weiter.</li>
+<li>Links <code>B_opportunities_and_analysis</code> öffnen und <code>q1_q2_baselines.ipynb</code> doppelklicken. Über <strong>Kernel → Change Kernel…</strong> <strong>Academic Journals (.venv)</strong> auswählen.</li>
+<li>Vor dem Lauf <strong>Kernel → Restart Kernel and Clear Outputs of All Cells…</strong> wählen und bestätigen. Damit sind alte Zahlen nicht mit neuen Ausgaben zu verwechseln.</li>
+<li>Die erste Zelle anklicken und mit <strong>Shift+Enter</strong> von oben nach unten arbeiten. <code>[*]</code> neben einer Codezelle bedeutet laufend. Eine Nummer statt des Sterns bedeutet beendet, auch bei einem Fehler. Deshalb zusätzlich auf einen roten Traceback prüfen.</li>
+<li>Fertig ist der Lauf erst, wenn alle Codezellen ohne Fehler beendet sind und die erwarteten Ergebnisblöcke sichtbar sind. Die letzte Q1/Q2-Zelle druckt <code>0.683 (not Q3)</code>; bei Q3 erscheint der Journal-/Jahresvergleich aus Step 9. Beim interaktiven Notebooklauf erscheint kein zusätzliches <code>Completed</code>; das gibt nur der Terminal-Runner aus.</li>
+<li>Für Q3 dessen Notebook öffnen und den Vorgang mit eigenem neu gestarteten Kernel wiederholen. Die Reihenfolge Q1/Q2 vor Q3 ist zum Erklären sinnvoll, technisch aber nicht erforderlich.</li>
+</ol>
+<p>Zur Kontrolle eine Codezelle auswählen, <strong>Esc</strong> und dann <strong>B</strong> drücken. In die neue Zelle den folgenden Ausschnitt einfügen und ausführen. Danach nur diese zusätzliche Zelle auswählen und mit <strong>Esc, D, D</strong> wieder entfernen:</p>
+<pre><code>import sys
+from pathlib import Path
+print(sys.executable)
+print(Path.cwd())</code></pre>
+<p>Erwartet: Python aus <code>academic-journals-demo/.venv/bin/python</code> und der Notebookordner <code>B_opportunities_and_analysis</code>. Bei einer anderen Umgebung den Kernel wechseln, nicht dort weitere Pakete installieren.</p>
+<p>Für Befehle während der Notebook geöffnet bleibt: <strong>File → New Launcher → Terminal</strong>. Im neuen Terminal zum Repository-Root wechseln und die Umgebung erneut aktivieren:</p>
+<pre><code>cd "/vollständiger/Pfad/zu/academic-journals-demo"
+source .venv/bin/activate
+python -c "import sys; print(sys.executable)"</code></pre>
+<p>Speichern schreibt neue Ausgaben in die lokale Notebookdatei. Es verändert weder die Datenfreigabe noch GitHub.</p>
+</details>
+
+<h3>2 · A verstehen: Paper und frühere Publikationswege</h3>
+<p><strong>Eingang:</strong> <code>A_data_and_rules/data/openalex_ai_semiclean_v1_0.csv</code> hat eine Zeile je Paper. <code>A_data_and_rules/results/openalex_three_path_v1_0/pathway_flags.csv</code> hat eine Zeile je Autor–Paper-Paar.</p>
+<p><strong>Rechnung:</strong> Die Regeln suchen frühere Publikationen im Journal, beim Verlag oder über einen Koautor. In <code>pathway_evidence.csv</code> stehen die früheren Paper hinter den Flags. Beispiel: Autor <code>A5014662947</code>, Paper <code>W2145809663</code> vom 23.02.2015 und <code>W2119408773</code> vom 30.04.2015, beide im Journal <code>S155526855</code>. Für das spätere Paper sind <code>journal_path=True</code> und <code>coauthor_path=True</code>, während <code>publisher_path=False</code> ist. Mehrere Pfade können gleichzeitig zutreffen; hier zeigen wir den Beleg für den Journalpfad.</p>
+<p><strong>Lesen und weitergeben:</strong> Das Flag belegt eine Regel innerhalb unseres Korpus. Es belegt keine Bevorzugung durch ein Journal. Q1/Q2 nutzen die Flags zur Gegenprüfung; die Journal-Verlags-Zuordnung wird für Q2 gebraucht. Für die Analyse können wir die vorhandenen Dateien verwenden.</p>
+<p>Die Erzeugung liegt im A-Wrapper. Für diesen Ablauf wird er nicht gestartet: neue CSVs können trotz gleicher Daten andere Zeilenenden haben und deshalb am Hashvergleich scheitern. Die offiziellen Dateien nicht mit einem Neubau überschreiben.</p>
+
+<h3>3 · Q1/Q2: Beobachtet gegen erwartet</h3>
+<p><strong>Rechnen:</strong> <code>python demo.py q1-q2</code>. Zum Lesen <code>B_opportunities_and_analysis/q1_q2_baselines.ipynb</code> öffnen. Der Terminal-Runner liefert die neuen Zahlen; die Vorschau zeigt die gespeicherten Ausgaben und den Code.</p>
+<ul>
+<li><strong>Steps 1–4:</strong> Paper, Verlagsmapping und Pfadflags laden; Autorenhistorien bilden und tatsächliche Wiederkehr zählen. Die Gegenprüfung muss ohne Fehler enden.</li>
+<li><strong>Step 5:</strong> Journale mit Zurücklegen ziehen, nach ihren Paperanteilen im Jahr bzw. Jahr und Themenkategorie. Paperzahl und Termine je Autor bleiben erhalten. So entsteht die Vergleichsgröße aus 100 simulierten Historien.</li>
+<li><strong>Steps 6–7:</strong> Beobachtet durch erwartet teilen und die Unsicherheit getrennt ansehen. Q1: <strong>3,09 / 2,22</strong>; Q2 weit: <strong>2,02 / 1,69</strong>; Q2 eng: <strong>1,16 / 1,11</strong>. Zahlenpaare bedeuten Jahr / Jahr plus Kategorie.</li>
+</ul>
+<p><strong>Lesen:</strong> 2,22 heißt ungefähr 2,22-mal so viel Journal-Wiederkehr wie im Jahr-und-Kategorie-Modell erwartet. Es beweist keine themenunabhängige Bindung. Q2 eng überschneidet sich mit Q1. Die nominalen 95%-Intervalle setzen unabhängige Autoren und feste Journalgewichte voraus; Abhängigkeiten zwischen Koautoren sind nicht erfasst. Nullsimulationsbereiche sind keine Konfidenzintervalle der Ratios.</p>
+<p><strong>Weiter:</strong> Die Ergebnisse stehen im Notebook und werden in D interpretiert. Q3 benötigt sie nicht als Eingabe. Der letzte Block <code>0.683 (not Q3)</code> erklärt eine ungeeignete Q3-Vergleichsgröße; er ist kein Q3-Ergebnis.</p>
+
+<h3>4 · B: Warum Q3 eine andere Tabelle braucht</h3>
+<p><strong>Eingang und Zweck:</strong> Aus Publikationshistorien entstehen Autor–Journal–Jahr-Gelegenheiten, einschließlich Jahren ohne Eintritt. Nur veröffentlichte Paper würden den Nenner dieser Frage nicht liefern.</p>
+<p><strong>Ausgang:</strong> <code>B_opportunities_and_analysis/data/event_table_python_v0_oppA.csv</code>: 6.422.558 Gelegenheiten, 96.819 Eintritte. C steht für eine qualifizierende frühere Koautor-Verbindung, F für ersten Eintritt. Nach Eintritt endet das Paar. T ist zunächst leer.</p>
+<p><strong>Weiter:</strong> Diese Tabelle geht an C. Q3 verwendet zusätzlich die angereicherte Rückgabe aus C. Hier verwenden wir die vorhandene Tabelle. Ihre Erzeugung liegt in <code>B_opportunities_and_analysis/build_event_table.py</code>; sie ist kein Schritt dieses Ablaufs.</p>
+<p>oppA ist die Datengrundlage, noch keine Antwort auf Q3. oppB ist eine separate Sensitivitätsvariante.</p>
+
+<h3>5 · C: Aus Texten wird Themenpassung</h3>
+<p><strong>Öffnen:</strong> <code>C_topic_match/embeddings_colab_eventtable_v5.ipynb</code>. Eingang sind Papertexte und die Gelegenheitentabelle. SPECTER2 mit Proximity-Adapter erzeugt Papervektoren; frühere Paper des Autors und des Journals werden jeweils gemittelt. Die RBF-Funktion übersetzt den Abstand der Profile in T.</p>
+<p><strong>Warum so:</strong> Auch für eine Gelegenheit ohne Eintritt brauchen wir ein Thema. Deshalb verwenden wir Profile aus Jahren strikt vor t und nicht das spätere Eintrittspaper. Ohne eines der Profile bleibt T fehlend.</p>
+<p><strong>Ausgang:</strong> <code>C_topic_match/data/event_table_topicmatch_v5.csv</code> enthält dieselben 6.422.558 Gelegenheiten. T ist auf 1.106.356 Zeilen messbar. T nahe 1 heißt ähnliche Profile unter diesem Maß, nicht hohe Eintrittswahrscheinlichkeit. Q3 braucht diesen Export. Die separate <code>results_q1_topic_match_v5.csv</code> beschreibt Ähnlichkeit innerhalb beobachteter Autor–Journal-Gruppen; sie fließt nicht in unsere Q1/Q2-Ratios ein.</p>
+<p class="note"><strong>C wird hier nicht neu gerechnet.</strong> Der geprüfte GitHub-Stand <code>ae87c4d</code> enthält die Google-Drive-/DuckDB-Fassung des Notebooks. Die SharePoint-Änderungen sind lokal und nicht Teil dieses Checkouts; ihre rclone-Anmeldung benötigt Uni-Freigabe. Eine veröffentlichte Notebookversion mit geprüftem Import, GPU-Lauf, Export und Anschluss an Q3 fehlt noch. Für die Analyse verwenden wir den offiziellen v5-Export.</p>
+
+<h3>6 · Q3: Verbindung, Themenpassung und erster Eintritt</h3>
+<p><strong>Rechnen:</strong> <code>python demo.py q3</code>. Zum Lesen <code>B_opportunities_and_analysis/q3_baselines.ipynb</code> öffnen. Es lädt die offiziellen Dateien selbst; Q1/Q2 müssen vorher nicht gelaufen sein.</p>
+<ul>
+<li><strong>Steps 1–6:</strong> Tabellen zuordnen, Zählwerte prüfen und sichtbar machen, für wen T vorhanden ist. Fehlendes T wird nicht 0. Die adjustierte Auswertung umfasst 1.106.356 Zeilen.</li>
+<li><strong>Step 7:</strong> Modell mit C und T schätzen. Jede eingeschlossene Zeile einmal mit C=1 und einmal mit C=0 vorhersagen; die Mittelwerte der Wahrscheinlichkeiten teilen. Non-ride: <strong>3,34 [3,12; 3,58]</strong>; alle Eintritte: <strong>6,09 [5,76; 6,45]</strong>.</li>
+<li><strong>Steps 8–9:</strong> Datenvarianten und Modellwahl auseinanderhalten. Mit Journal und Jahr sinkt Non-ride auf gleichen Zeilen von <strong>3,30 auf 1,18 [1,10; 1,27]</strong>, alle Eintritte von <strong>6,01 auf 2,27 [2,13; 2,41]</strong>. Ein Journal hat bei beiden Outcomes keine Ereignisse und wird für alle verglichenen Modelle ausgeschlossen.</li>
+<li>Zusätzlich mit <code>log1p(n_prior_papers)</code>: Non-ride <strong>1,21 [1,12; 1,30]</strong>, alle Eintritte <strong>2,29 [2,16; 2,43]</strong>. Die frühere Paperzahl erklärt den Zusammenhang damit nicht einfach weg. Sie kann selbst bereits durch Zusammenarbeit beeinflusst sein. Die nominalen 95%-Intervalle gruppieren nach Autor, erfassen aber keine Abhängigkeiten zwischen Koautoren oder Unsicherheit über die Modellwahl.</li>
+</ul>
+<p><strong>Lesen:</strong> 3,34 ist das Verhältnis modellierter mittlerer Eintrittswahrscheinlichkeiten, keine Odds Ratio und kein nachgewiesener kausaler Effekt. Non-ride bedeutet ohne qualifizierenden früheren Koautor auf dem Eintrittspaper. Die deutliche Modellabhängigkeit gehört zur Aussage. Die Intervalle werden mit Gruppierung nach Autor über die Delta-Methode berechnet.</p>
+<p><strong>Weiter:</strong> Zahlen, Diagnosen und Interpretationen stehen im Notebook. Es schreibt keine neue Eingabedatei für einen weiteren Analyseschritt. D fasst die Aussagen zusammen.</p>
+
+<h3>7 · Prüfen und abschließen</h3>
+<p>Die vorhandenen Python- und Prolog-Tabellen vergleichen:</p>
+<pre><code>python B_opportunities_and_analysis/diff_event_table.py</code></pre>
+<p><strong>Erwartet:</strong> 6.422.558 gemeinsame Schlüssel, keine einseitigen oder doppelten Schlüssel, null Abweichungen bei C, F und Ride; die Non-ride-Aufteilung stimmt. Das prüft diese Kernindikatoren, weder alle Spalten noch kausale Gültigkeit. Der Bericht ist kein Input für Q3. Der Vergleich prüft vorab seinen temporären Speicher: für diese beiden Dateien reserviert er konservativ etwa 2,07 GiB. Bei Platzmangel endet er mit einer verständlichen Meldung ohne Vergleichsurteil. Mit <code>--temp-dir "/Pfad/auf/anderem/Datentraeger"</code> lässt sich ein vorhandener temporärer Ordner wählen.</p>
+
+<p>Zum Schluss <code>D_results/README.md</code> lesen: Welche Aussage trägt jeder Vergleich, welche nicht? Die Anleitung setzt keine Bedienung durch die ursprünglichen Autoren voraus.</p>
+<details id="probleme"><summary>Wenn etwas nicht funktioniert</summary>
+<ul>
+<li><strong>Pfad oder Datei fehlt:</strong> Im aktivierten Terminal zum Repository-Root wechseln. Den vollständigen entpackten Datenordner wählen, nicht dessen Elternordner oder ZIP. <code>configure --group q1-q2 --shared-root</code> mit dem korrekten Pfad und anschließend die drei obigen Fetch-Befehle wiederholen. Bei OneDrive erst den Download der Dateien abschließen lassen.</li>
+<li><strong>Anderer konfigurierter Ordner:</strong> Wenn die Fehlermeldung <code>ACADEMIC_JOURNALS_SHARED_ROOT</code> nennt, im Terminal <code>unset ACADEMIC_JOURNALS_SHARED_ROOT</code> ausführen, erneut konfigurieren und den Runner neu starten. Bei optionalem Jupyter dessen Server ebenfalls neu starten.</li>
+<li><strong>Hash stimmt nicht:</strong> Nicht die Prüfsumme ändern oder die Prüfung ausschalten. Die in der Fehlermeldung genannte Datei außerhalb des Checkouts sichern. Die unveränderte offizielle Datei neu beziehen und nochmals die drei Fetch-Befehle ausführen. Scheitert schon <code>configure</code>, ist die Quelle unvollständig oder anders. Neubauten gehören nicht in diesen Replay-Datenstand.</li>
+<li><strong>Importfehler:</strong> <code>sys.executable</code> prüfen. In der richtigen aktivierten Umgebung <code>python -m pip install -r requirements.txt</code> wiederholen und den Notebookkernel neu starten.</li>
+<li><strong>Runner unterbrochen:</strong> Mit Ctrl+C beenden und denselben Befehl nach Beheben des Problems neu starten; jeder Aufruf startet die Analyse von vorn. <strong>Bei Jupyter:</strong> Über <strong>Kernel → Interrupt Kernel</strong> stoppen; dann Kernel neu starten, Ausgaben leeren und von oben beginnen. Einzelne Modellzellen nicht mit einem unbekannten Zwischenstand fortsetzen.</li>
+<li><strong>Platzmangel oder Abbruch beim Kopieren oder Sortieren:</strong> Mit <code>df -h .</code> prüfen, ausreichend Platz schaffen oder einen anderen lokalen Arbeitsordner wählen. Anschließend Fetch wiederholen. Bei einem Fehler zur Hard-Link-Unterstützung einen beschreibbaren lokalen APFS-Ordner für den Checkout verwenden.</li>
+<li><strong>Vergleich meldet Unterschiede:</strong> Mit <code>python project_data.py verify --group parity</code> zuerst die offiziellen Eingaben prüfen. Ein echter Unterschied wird untersucht, nicht als erfolgreicher Abgleich präsentiert.</li>
+</ul></details>
+<details><summary>Was für eine vollständige Neuerzeugung noch fehlt</summary>
+<p>A muss seine neu erzeugten Daten mit einer ausdrücklich geprüften Übergabe an die Analyse liefern: derzeit sind gleiche Daten mit anderen Zeilenenden nicht dieselben Release-Dateien. Für C fehlen die veröffentlichte und komplett getestete Ein-/Ausgabe sowie der GPU-Lauf. Eine Regenerierung der Regeln benötigt zusätzlich SWI-Prolog; <code>swipl --version</code> muss funktionieren. Die Installation gehört nicht zum hier beschriebenen Replay. Danach müssen die neu erzeugten Dateien bis zu Q1/Q2 und Q3 durchlaufen. Ein separater Checkout allein löst diese Übergaben nicht.</p>
+</details>
+<p class="small">Prüfstand 11.09.2026: unabhängige Ausführung mit frischen Jupyter-Kernels, Q1/Q2 50 s, Q3 69 s; vorhandene Tabellen ohne Abweichungen verglichen. Kernelwahl, Neustart mit geleerten Ausgaben und Shift+Enter wurden zusätzlich in JupyterLab im Browser geprüft; die Analysen wurden dafür nicht nochmals vollständig gerechnet. Windows, Felix’ Kontozugriff und vollständiger C-Neulauf sind nicht bestätigt. <a href="https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html">JupyterLab installieren</a>.</p>
+</section>
+
+</main></body></html>

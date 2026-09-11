@@ -1,147 +1,93 @@
 # Publication patterns in AI journals
 
-We study 27,400 papers from 64 journals, published between 2015 and 2024:
+This is our student project on 27,400 papers from 64 AI journals, published between 2015 and 2024. We look at three questions:
 
-- **Q1:** Do authors return to the same journal more often than our reference models predict?
-- **Q2:** Do they return to the same publisher more often?
-- **Q3:** Is a prior co-author connection associated with first entry into a journal, after accounting for topic fit?
+- Q1: Do authors return to the same journal more often than expected?
+- Q2: Do they return to the same publisher more often?
+- Q3: Is a previous co-author connection associated with entering a new journal, also when we account for topic fit?
 
-Our results describe publication patterns and adjusted associations. They do not
-establish causal effects. [Read the results](D_results/README.md).
+## What each part does
+
+- [A · Lennart](A_data_and_rules/README.md): collects the papers and uses Prolog to find earlier publication paths.
+- [B · Kevin](B_opportunities_and_analysis/README.md): builds the entry opportunities and calculates Q1, Q2 and Q3.
+- [C · Pierre](C_topic_match/README.md): turns paper texts into vectors and compares authors' and journals' earlier topics.
+- [D · Results](D_results/README.md): brings together the results, our decisions and how we interpret them.
+
+The code is here. The large data files are in our shared SharePoint folder, with the same A/B/C structure.
 
 <a id="how-to-use-it"></a>
 
 ## How to run the project
 
-This reruns Q1/Q2 and Q3 from the official data and checks the saved Python/Prolog
-outputs. Use the same steps for the presentation or an independent run.
+These steps use the shared data and calculate the results again. You need Git and Python 3.12 or newer. The terminal commands below are the ones we use on macOS.
 
-### 1. Set up
-
-Requires Git and Python **3.12 or newer**; tested on macOS with Python 3.12. Allow **10 GB
-free disk space** for the download, working copies, packages and temporary sorting.
-The test machine had 32 GB RAM; a minimum RAM requirement has not been established.
-No GPU, rclone or SWI-Prolog is needed for these steps. Native Windows is not a
-tested route; the table comparison requires Unix `sort` (WSL is also untested).
+### 1. Get the code
 
 ```sh
-git clone https://github.com/Mista-Kev/academic-journals.git academic-journals-demo
-cd academic-journals-demo
-python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 12) else 'Python 3.12 or newer is required.')" && \
-python3 -m venv .venv && \
-source .venv/bin/activate && \
+git clone https://github.com/Mista-Kev/academic-journals.git
+cd academic-journals
+python3 -m venv .venv
+source .venv/bin/activate
 python -m pip install -r requirements.txt
 ```
 
-Run all following commands from this folder, with `.venv` active.
+When you come back later, open this folder and run `source .venv/bin/activate` again.
 
-### 2. Load the shared data
+### 2. Get the data
 
-Open the SharePoint link shared by the team, then **Applied AI Group B Data →
-official-v5-2026-09-07-abcd-v1**. Download and extract the release. You can also use
-a fully synced OneDrive copy. If the link is missing or access is denied, ask the
-team before continuing.
+Open the SharePoint link from our team chat. In **Applied AI Group B Data**, download and unzip **official-v5-2026-09-07-abcd-v1**. A synced OneDrive copy also works.
 
-Replace the example path below with the folder containing **A/B/C and
-`START_HERE.txt`**. The release is about 2.65 GB; the files copied into your project folder add
-1.76 GB. The first command stops copying if less than 6 GiB remains on the working disk.
+Replace the path below with your downloaded folder. Choose the folder containing A/B/C and `START_HERE.txt`.
 
 ```sh
-python -c "import shutil,sys; free=shutil.disk_usage('.').free; print(f'{free/1024**3:.1f} GiB free'); sys.exit(0 if free >= 6*1024**3 else 'At least 6 GiB free is needed before fetching data.')" && \
-python project_data.py configure --group q1-q2 --shared-root "/path/to/official-v5-2026-09-07-abcd-v1" && \
-python project_data.py fetch --group q1-q2 && \
-python project_data.py fetch --group q3 && \
+python project_data.py configure --group q1-q2 --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
+python project_data.py fetch --group q1-q2
+python project_data.py fetch --group q3
 python project_data.py fetch --group parity
 ```
 
-Expected: `fetched and verified` or `verified` for each input, with no error.
-This checks file sizes and hashes against the manifest. The notebook reads the
-verified local copies; it does not mount or log into SharePoint itself.
+This copies the needed files into the project and checks that they match our shared version. You should see `verified` for each file. If a file is missing or different, check the download before continuing.
 
-### 3. Run and read the results
+### 3. Calculate Q1 and Q2
 
-| Step | Command | What you should see |
-|---|---|---|
-| Q1/Q2: compare recurrence with the reference models | `python demo.py q1-q2` | Q1: **3.09 / 2.22**. Q2 wide: **2.02 / 1.69**. Q2 narrow: **1.16 / 1.11**. Each pair is year / year plus topic category. Intervals are printed separately. |
-| Q3: compare first-entry probabilities with and without a prior connection | `python demo.py q3` | C + T: **6.09** for all entries, **3.34** for non-ride entries. On matched rows, adding journal and year gives **2.27 / 1.18**; also adding prior paper count gives **2.29 / 1.21**. Intervals are printed with each model. |
-| Compare the Python and Prolog tables | `python B_opportunities_and_analysis/diff_event_table.py` | **6,422,558 rows**, zero key/flag disagreements and **`VERDICT: identical`**. Compares opportunity keys, connection, entry and ride indicators, not every column or T. |
+```sh
+python demo.py q1-q2
+```
 
-Allow roughly one minute per command on the tested machine; other machines may
-take longer. Each analysis ends with `Completed q1-q2` or `Completed q3`.
-`demo.py` executes the actual notebook cells and prints newly calculated results;
-it does not change saved notebook outputs or upload files.
+This runs [q1_q2_baselines.ipynb](B_opportunities_and_analysis/q1_q2_baselines.ipynb). It compares observed recurrence with simulated publication histories.
 
-The comparison uses temporary disk space. If needed, add
-`--temp-dir "/path/to/folder/on/another/disk"` to its command.
+You should get Q1 **3.09 / 2.22**, Q2 wide **2.02 / 1.69**, and Q2 narrow **1.16 / 1.11**. The first number uses the year; the second also uses the topic category. The intervals are printed separately.
 
-Read [D · Results](D_results/README.md) alongside the output. Q1/Q2 ratios describe
-recurrence relative to specific reference models. Q3 reports associations, not
-causal effects; its sensitivity to journal/year adjustment belongs in the conclusion.
-The intervals have sampling and dependence assumptions described there.
+### 4. Calculate Q3
 
-### If a step fails
+```sh
+python demo.py q3
+```
 
-- Stop at the error; an earlier result is not evidence that the remaining steps ran.
-- **Missing data or wrong folder:** repeat step 2 with the extracted release root.
-  Unset `ACADEMIC_JOURNALS_SHARED_ROOT` if it overrides your saved folder incorrectly.
-- **Hash mismatch:** preserve any intentional edits and restore the matching official
-  file. Do not edit the manifest or bypass verification.
-- **Missing package:** activate `.venv` and rerun the requirements installation.
-- **Disk full or interrupted run:** free space or use another disk, then rerun the
-  failed command. Each analysis command starts a fresh calculation.
-- **Nonzero comparison differences:** stop and check the input versions; do not
-  report the tables as matching.
+This runs [q3_baselines.ipynb](B_opportunities_and_analysis/q3_baselines.ipynb). It compares predicted first-entry probabilities with and without a previous co-author connection.
 
-These steps reuse the official A outputs and Pierre's v5 topic values. They do
-not fetch new OpenAlex data, regenerate Prolog outputs or rerun SPECTER2.
-To rebuild C, open `C_topic_match/embeddings_colab_eventtable_v5.ipynb` in Colab
-with a T4 GPU. Sections 3 and 15 explain the SharePoint download, Colab upload and
-result download. This manual route was tested on 11 September 2026: embeddings
-took about 16 minutes, plus file transfers and the remaining calculations. The
-new event table matched the official file byte for byte and reproduced Q3.
-New runs go under `runs/` in SharePoint; the analyses above use the official release.
-Rebuilding A requires additional steps and a tested handover of its regenerated files.
+With topic fit, the ratios are **6.09** for all entries and **3.34** for entries without a ride. Adding journal and year on matched rows gives **2.27 / 1.18**. Also adding previous paper count gives **2.29 / 1.21**. Each model prints its interval.
 
-Optional German walkthroughs: [project and results](FELIX_PROJEKT_DURCHGEHEN.html)
-and [step-by-step demo](DEMO_SCHRITT_FUER_SCHRITT.html). Open the downloaded HTML
-files in a browser; GitHub displays their source. They use the same commands.
+Both commands take about a minute on our machine and finish with `Completed q1-q2` or `Completed q3`. They run the notebook code; they do not just print its saved results.
 
-## Where things are
+Read [D · Results](D_results/README.md) alongside the numbers. Q1/Q2 depend on the comparison model we chose. Q3 changes substantially with journal and year. These are associations, not proof of causation; D also explains the interval assumptions.
 
-| Part | Who | What it contains |
-|---|---|---|
-| [A · Data and rules](A_data_and_rules/README.md) | Lennart | Paper preparation, publication paths and Prolog checks |
-| [B · Opportunities and analysis](B_opportunities_and_analysis/README.md) | Kevin | Annual entry opportunities and the Q1/Q2/Q3 calculations |
-| [C · Topic fit](C_topic_match/README.md) | Pierre | Historical topic fit for Q3 and a separate within-journal similarity summary for Q1 |
-| [D · Results](D_results/README.md) | Together | Findings, interpretation and methods |
+### 5. Compare the Python and Prolog tables
 
-Code and explanations are in GitHub. Large data files are in SharePoint, using
-the same A/B/C paths. Each output stays with the part that produces it.
+```sh
+python B_opportunities_and_analysis/diff_event_table.py
+```
+
+Expected: **6,422,558 matching rows**, zero disagreements and `VERDICT: identical`. This compares the keys and connection, entry and ride indicators, not every column or the topic values.
+
+## Run Pierre's topic calculation
+
+[Open the C notebook in Colab](https://colab.research.google.com/github/Mista-Kev/academic-journals/blob/main/C_topic_match/embeddings_colab_eventtable_v5.ipynb) and select a T4 GPU.
+
+Section 3 lists the three files to download from SharePoint and upload into Colab. Run the cells in order. The embeddings take about 16 minutes, plus file transfers and the remaining calculations. Section 15 downloads the new results as a ZIP. Unzip it and put the new run folder under `runs/` in SharePoint.
+
+The commands above use the official release. New Colab runs stay separate so we keep the same inputs for our reported results.
 
 ## How the parts connect
 
-```mermaid
-flowchart TD
-    P["A: OpenAlex paper corpus"] --> Q["B: Q1/Q2 · year / year + topic category"]
-    P --> L["A: Prolog publication paths"]
-    L -. "check 110,654 author-paper rows" .-> Q
-    P --> E["B: author + journal not previously entered + year t"]
-    P --> V["C: SPECTER2 → historical topic profiles"]
-    E --> T["C: event table + T where available"]
-    V --> T
-    P --> R["A: independent annual Prolog rules"]
-    R -. "check keys and selected flags on 6,422,558 rows" .-> E
-    T --> M["B: Q3 · C + T; journal, year and paper-count sensitivities"]
-    V --> I["C: Q1 intra similarity · separate descriptive result"]
-    Q --> O["D: results and limitations"]
-    M --> O
-    I --> O
-```
-
-Annual rules and topic profiles use papers from years **before the year t being
-analysed**. Q1/Q2 also use year and topic-category reference models. Pierre's Q1
-Intra summary is separate: it does not add historical topic adjustment to those ratios.
-
-For the reasoning behind the calculations, start with
-[B](B_opportunities_and_analysis/README.md).
-[D](D_results/README.md#choices-and-history) records the main choices and changes.
+![Data flow between A, B, C and D](D_results/project-flow.png)

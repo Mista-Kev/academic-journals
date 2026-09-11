@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1940" height="1580" viewBox="0 0 1940 1580">
+<rect width="100%" height="100%" fill="white"/>
+<style>a{cursor:pointer}a:hover text{fill:#165dbe;text-decoration:underline}</style>
+<defs><marker id="tip" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M1 1 L8 4.5 L1 8" fill="none" stroke="#63788e"/></marker></defs>
+<rect x="35" y="185" width="1870" height="315" rx="12" stroke="#3677be" fill="#ffffff" stroke-width="1.5"/>
+<rect x="36" y="186" width="1868" height="44" rx="0" stroke="transparent" fill="#eaf3ff" stroke-width="1.5"/>
+<rect x="35" y="525" width="1870" height="480" rx="12" stroke="#318457" fill="#ffffff" stroke-width="1.5"/>
+<rect x="36" y="526" width="1868" height="44" rx="0" stroke="transparent" fill="#eaf7ef" stroke-width="1.5"/>
+<rect x="35" y="1030" width="1870" height="370" rx="12" stroke="#8260b8" fill="#ffffff" stroke-width="1.5"/>
+<rect x="36" y="1031" width="1868" height="44" rx="0" stroke="transparent" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="50" y="100" width="600" height="60" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<rect x="60" y="265" width="300" height="192" rx="12" stroke="#3677be" fill="#eaf3ff" stroke-width="1.5"/>
+<rect x="430" y="265" width="300" height="192" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<rect x="800" y="265" width="300" height="192" rx="12" stroke="#3677be" fill="#eaf3ff" stroke-width="1.5"/>
+<rect x="1170" y="265" width="300" height="192" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<rect x="1540" y="590" width="300" height="192" rx="12" stroke="#318457" fill="#eaf7ef" stroke-width="1.5"/>
+<rect x="430" y="790" width="300" height="192" rx="12" stroke="#318457" fill="#eaf7ef" stroke-width="1.5"/>
+<rect x="800" y="790" width="300" height="192" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<rect x="1170" y="590" width="300" height="192" rx="12" stroke="#318457" fill="#eaf7ef" stroke-width="1.5"/>
+<rect x="1540" y="815" width="300" height="192" rx="12" stroke="#b67a17" fill="#fff4df" stroke-width="1.5"/>
+<rect x="60" y="1130" width="300" height="214" rx="12" stroke="#8260b8" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="430" y="1130" width="300" height="214" rx="12" stroke="#8260b8" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="800" y="1130" width="300" height="214" rx="12" stroke="#8260b8" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="1170" y="1130" width="300" height="214" rx="12" stroke="#8260b8" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="1540" y="1130" width="300" height="214" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<rect x="60" y="1440" width="700" height="126" rx="12" stroke="#8260b8" fill="#f2ecff" stroke-width="1.5"/>
+<rect x="800" y="1440" width="1040" height="126" rx="12" stroke="#7a8da3" fill="#f8fafc" stroke-width="1.5"/>
+<polyline points="210,160 210,265" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="360,355 430,355" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="730,355 800,355" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="1100,355 1170,355" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="1470,355 1690,355 1690,590" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="1516.15" y="464" width="157.70000000000002" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="580,457 580,790" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="587.5" y="634" width="55" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="655,457 655,515 1865,515 1865,680 1840,680" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="1623.6" y="484" width="132.8" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="1220,457 1220,480 765,480 765,770 710,770 710,790" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="856.9" y="450" width="116.20000000000002" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="730,877 800,877" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="950,457 950,560 1320,560 1320,590" stroke="#63788e" data-fill="transparent" stroke-width="2" stroke-dasharray="7 5" fill="none" marker-end="url(#tip)"/>
+<rect x="1022.5" y="534" width="55" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="1100,835 1135,835 1135,680 1170,680" stroke="#63788e" data-fill="transparent" stroke-width="2" stroke-dasharray="7 5" fill="none" marker-end="url(#tip)"/>
+<rect x="1107.5" y="769" width="55" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="430,400 390,400 390,1090 210,1090 210,1130" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="112.1" y="1098" width="215.8" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="360,1230 430,1230" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="730,1230 800,1230" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="1100,1230 1170,1230" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="950,982 950,1015 1320,1015 1320,1130" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="1237.0" y="1074" width="166.0" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="1470,1230 1540,1230" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<polyline points="1690,1130 1690,1007" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="1742.65" y="1059" width="74.7" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<polyline points="500,1344 500,1440" stroke="#63788e" data-fill="transparent" stroke-width="2" fill="none" marker-end="url(#tip)"/>
+<rect x="517.75" y="1364" width="124.50000000000001" height="23" rx="0" stroke="transparent" fill="#ffffff" stroke-width="1.5"/>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/README.md#how-to-run-the-project" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="45" y="48.0" font-family="Arial,sans-serif" font-size="30" font-weight="600" text-anchor="start" fill="#183047">01  Wer gibt was an wen weiter?</text>
+</a>
+<text x="45" y="77.0" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">Stand main 4784131 · L = Lennart · K = Kevin · P = Pierre · Pfeile: Datenübergaben · gestrichelt: Gegenprüfung</text>
+<a href="https://github.com/Mista-Kev/academic-journals/tree/main/A_data_and_rules/" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="55" y="216.0" font-family="Arial,sans-serif" font-size="19" font-weight="400" text-anchor="start" fill="#3677be">A · Lennart · A_data_and_rules/ · Daten und Regeln</text>
+</a>
+<a href="https://github.com/Mista-Kev/academic-journals/tree/main/B_opportunities_and_analysis/" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="55" y="556.0" font-family="Arial,sans-serif" font-size="19" font-weight="400" text-anchor="start" fill="#318457">B · Kevin · B_opportunities_and_analysis/ · Wiederkehr, Gelegenheiten und Eintritt</text>
+</a>
+<a href="https://github.com/Mista-Kev/academic-journals/tree/main/C_topic_match/" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="55" y="1061.0" font-family="Arial,sans-serif" font-size="19" font-weight="400" text-anchor="start" fill="#8260b8">C · Pierre · C_topic_match/ · Texte und Themenpassung T</text>
+</a>
+<text x="65" y="126.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">START: OpenAlex</text>
+<text x="65" y="147.0" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">Eingefrorener Ausschnitt: 27.400 Paper · 64 Journals · 2015–2024</text>
+<text x="75" y="289.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">FETCH-NOTEBOOK</text>
+<text x="75" y="320.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">1  L lädt und bereinigt</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/A_data_and_rules/OpenAlex_AI_Dataset_v1_0.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="75" y="346.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">OpenAlex-API abfragen;</text>
+<text x="75" y="368.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Paper, Autoren, Journal und</text>
+<text x="75" y="390.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Abstract-Metadaten speichern.</text>
+<text x="75" y="412.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="75" y="434.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">OpenAlex_AI_Dataset_v1_0.ipynb</text>
+</a>
+<text x="445" y="289.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">ZWEI DATEIEN</text>
+<a href="https://buds365-my.sharepoint.com/:f:/g/personal/s-001070_student_german-uds_de/IgDPFD918K_XQalhANQxJbbuAXrdIJQYCHV-CflM9B2iUrs?e=6lJwu1" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="445" y="320.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">2  Gemeinsamer Korpus</text>
+</a>
+<text x="445" y="346.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">RAW JSONL: OpenAlex-Objekte</text>
+<text x="445" y="368.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">SEMICLEAN CSV: 1 Zeile / Paper</text>
+<text x="445" y="390.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="445" y="412.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">IDs, Datum, Autorenschaften,</text>
+<text x="445" y="434.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Topics und Text</text>
+<text x="815" y="289.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">WRAPPER + REGELN</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/A_data_and_rules/logic/openalex_three_path_prolog.py" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="815" y="320.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">3  L: Python → Prolog</text>
+</a>
+<text x="815" y="346.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Python liest Korpus und Verlage,</text>
+<text x="815" y="368.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">schreibt Fakten, startet Prolog.</text>
+<text x="815" y="390.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Prolog wendet frühere Pfade an.</text>
+<text x="815" y="412.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Python schreibt Antworten als CSV.</text>
+<text x="815" y="434.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Details auf Seite 02.</text>
+<text x="1185" y="289.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">L → K</text>
+<a href="https://buds365-my.sharepoint.com/:f:/g/personal/s-001070_student_german-uds_de/IgDPFD918K_XQalhANQxJbbuAXrdIJQYCHV-CflM9B2iUrs?e=6lJwu1" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1185" y="320.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">4  Pfade + Belege</text>
+</a>
+<text x="1185" y="346.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">pathway_flags.csv</text>
+<text x="1185" y="368.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">pathway_evidence.csv</text>
+<text x="1185" y="390.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">journal_parent_publishers.csv</text>
+<text x="1185" y="412.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="1185" y="434.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">1 Zeile / Autor-Paper-Paar</text>
+<text x="1555" y="614.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">ANALYSE-NOTEBOOK</text>
+<text x="1555" y="645.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">5  K beantwortet Q1/Q2</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/B_opportunities_and_analysis/q1_q2_baselines.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1555" y="669.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">q1_q2_baselines.ipynb</text>
+<text x="1555" y="688.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Wiederkehr: beobachtet / erwartet.</text>
+<text x="1555" y="707.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Null: Jahr / Jahr + Themenkategorie.</text>
+<text x="1555" y="726.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">100 Simulationen mit Zurücklegen.</text>
+<text x="1555" y="746.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Exakte Erwartung + 4.000 Autoren-</text>
+<text x="1555" y="765.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Stichproben → nominale Intervalle.</text>
+</a>
+<text x="445" y="814.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">PYTHON-BUILD</text>
+<text x="445" y="845.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">6  K baut Gelegenheiten</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/B_opportunities_and_analysis/build_event_table.py" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="445" y="871.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">build_event_table.py</text>
+<text x="445" y="893.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Aus Publikationshistorien werden</text>
+<text x="445" y="915.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Autor–Journal–Jahr-Zeilen.</text>
+<text x="445" y="937.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Auch kein Eintritt ist eine Zeile!</text>
+<text x="445" y="959.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Q3 braucht diesen Nenner.</text>
+</a>
+<text x="815" y="814.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">K → P</text>
+<a href="https://buds365-my.sharepoint.com/:f:/g/personal/s-001070_student_german-uds_de/IgDPFD918K_XQalhANQxJbbuAXrdIJQYCHV-CflM9B2iUrs?e=6lJwu1" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="815" y="845.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">7  Event Table A</text>
+</a>
+<text x="815" y="869.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">event_table_python_v0_oppA.csv</text>
+<text x="815" y="888.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">6.422.558 Gelegenheiten</text>
+<text x="815" y="907.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">C = frühere Verbindung</text>
+<text x="815" y="926.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">F = erster Eintritt; Ride / Non-ride</text>
+<text x="815" y="946.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">T wird erst in C ergänzt.</text>
+<text x="1185" y="614.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">QA-SEITENPFAD</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/B_opportunities_and_analysis/diff_event_table.py" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1185" y="644.0" font-family="Arial,sans-serif" font-size="19" font-weight="600" text-anchor="start" fill="#183047">L + K: Zeilenweiser Abgleich</text>
+</a>
+<text x="1185" y="669.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">L: jährliche Prolog-Umsetzung.</text>
+<text x="1185" y="688.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">K: Abgleich der Keys, C, F und Ride.</text>
+<text x="1185" y="707.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Non-ride = F ohne Ride prüfen.</text>
+<text x="1185" y="726.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">diff_event_table.py (B)</text>
+<text x="1185" y="746.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">6.422.558 Zeilen, 0 Abweichungen.</text>
+<text x="1185" y="765.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Kein Abgleich sämtlicher Spalten.</text>
+<text x="1555" y="839.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">RÜCKGABE P → K</text>
+<text x="1555" y="870.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">11  K wertet Q3 aus</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/B_opportunities_and_analysis/q3_baselines.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1555" y="894.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">q3_baselines.ipynb · offizielles v5</text>
+<text x="1555" y="913.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Regression → gemittelte Risiken.</text>
+<text x="1555" y="932.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Gleiche Zeilen: 3,30 → 1,18 Non-ride;</text>
+<text x="1555" y="951.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">6,01 → 2,27 alle, mit Journal/Jahr.</text>
+<text x="1555" y="971.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Plus Paperzahl: 1,21 bzw. 2,29.</text>
+<text x="1555" y="990.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Alle Modelle mit Intervallen.</text>
+</a>
+<text x="75" y="1154.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">TEXTQUELLE / HANDOFF</text>
+<a href="https://colab.research.google.com/github/Mista-Kev/academic-journals/blob/main/C_topic_match/embeddings_colab_eventtable_v5.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="75" y="1184.0" font-family="Arial,sans-serif" font-size="19" font-weight="600" text-anchor="start" fill="#183047">Korpus für Pierres Colab</text>
+</a>
+<text x="75" y="1209.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">SharePoint → JSONL + Event Table</text>
+<text x="75" y="1228.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">+ Manifest in Colab hochladen.</text>
+<text x="75" y="1247.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Notebook baut DuckDB aus JSONL.</text>
+<text x="75" y="1266.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Titel + Abstracts → SPECTER2.</text>
+<text x="445" y="1154.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">COLAB-NOTEBOOK v5</text>
+<a href="https://colab.research.google.com/github/Mista-Kev/academic-journals/blob/main/C_topic_match/embeddings_colab_eventtable_v5.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="445" y="1185.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">8  P macht Text zu Vektoren</text>
+</a>
+<text x="445" y="1211.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Titel + rekonstruierte Abstracts</text>
+<text x="445" y="1233.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">→ SPECTER2 + Proximity-Adapter</text>
+<text x="445" y="1255.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">→ ein Vektor pro Paper.</text>
+<text x="445" y="1277.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="445" y="1299.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">v5: MIN_PAPERS = 1;</text>
+<text x="445" y="1321.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Journalpool unabhängig davon.</text>
+<text x="815" y="1154.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">AUTORPROFIL ↔ JOURNALPROFIL</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/C_topic_match/embeddings_colab_eventtable_v5.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="815" y="1185.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">9  P vergleicht Profile</text>
+</a>
+<text x="815" y="1211.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Für Autor und Journal:</text>
+<text x="815" y="1233.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Paper aus Jahren strikt vor t</text>
+<text x="815" y="1255.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">→ mittlere Vektoren / Profile</text>
+<text x="815" y="1277.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">→ kontinuierliche RBF-Ähnlichkeit.</text>
+<text x="815" y="1299.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="815" y="1321.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Das ist T = topic_match.</text>
+<text x="1185" y="1154.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">EVENT TABLE ANREICHERN</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/C_topic_match/embeddings_colab_eventtable_v5.ipynb" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1185" y="1185.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">10  P füllt unsere Tabelle</text>
+</a>
+<text x="1185" y="1211.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Für jede (Autor, Journal, t)-Zeile:</text>
+<text x="1185" y="1233.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">topic_match füllen;</text>
+<text x="1185" y="1255.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Grund für fehlendes T festhalten;</text>
+<text x="1185" y="1277.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">Profilgrößen und Cutoff ergänzen.</text>
+<text x="1185" y="1299.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047"></text>
+<text x="1185" y="1321.0" font-family="Arial,sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#183047">C, F, ride und Keys bleiben dabei.</text>
+<text x="1555" y="1154.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">P → K</text>
+<a href="https://buds365-my.sharepoint.com/:f:/g/personal/s-001070_student_german-uds_de/IgDPFD918K_XQalhANQxJbbuAXrdIJQYCHV-CflM9B2iUrs?e=6lJwu1" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="1555" y="1185.0" font-family="Arial,sans-serif" font-size="20" font-weight="600" text-anchor="start" fill="#183047">Event Table + T zurück</text>
+</a>
+<text x="1555" y="1209.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">event_table_topicmatch_v5.csv</text>
+<text x="1555" y="1228.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Offizielle Datei jetzt auf SharePoint.</text>
+<text x="1555" y="1247.5" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">Dieselben 6.422.558 Zeilen;</text>
+<text x="1555" y="1266.75" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">T + vier Diagnosespalten.</text>
+<text x="1555" y="1286.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">B liest sie über project_data.py</text>
+<text x="1555" y="1305.25" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#183047">aus Download / OneDrive-Ordner.</text>
+<text x="75" y="1464.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">SEPARATER AUSGANG</text>
+<text x="75" y="1494.0" font-family="Arial,sans-serif" font-size="19" font-weight="600" text-anchor="start" fill="#183047">Separat: Ähnlichkeit innerhalb einer Autor–Journal-Gruppe</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/C_topic_match/results/results_q1_topic_match_v5.csv" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="75" y="1520.0" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">results/results_q1_topic_match_v5.csv · 9.195 beobachtete Gruppen</text>
+<text x="75" y="1540.625" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">Intra-Ähnlichkeit, nicht historisch. Keine T-Adjustierung der Q1/Q2-Ratios.</text>
+</a>
+<text x="815" y="1464.0" font-family="Arial,sans-serif" font-size="11" font-weight="400" text-anchor="start" fill="#566579">DURCHGÄNGIGER DATENFLUSS</text>
+<a href="https://github.com/Mista-Kev/academic-journals/blob/main/D_results/README.md" target="_blank" rel="noopener noreferrer"><title>Link öffnen</title>
+<text x="815" y="1494.0" font-family="Arial,sans-serif" font-size="19" font-weight="600" text-anchor="start" fill="#183047">D_results/README.md · Ergebnisse und Grenzen</text>
+</a>
+<text x="815" y="1520.0" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">Q1/Q2-Intervalle: Autoren unabhängig, Journalgewichte fest; Koautor-Abhängigkeit nicht erfasst.</text>
+<text x="815" y="1540.625" font-family="Arial,sans-serif" font-size="15" font-weight="400" text-anchor="start" fill="#183047">Q3: nur messbares T; Journal/Jahr-Sensitivität daneben. Wir berichten Zusammenhänge, keine Ursachen.</text>
+<text x="1516.15" y="480.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Pfadflags + Mapping</text>
+<text x="587.5" y="650.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Korpus</text>
+<text x="1623.6" y="500.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Semiclean-Korpus</text>
+<text x="856.9" y="466.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Verlagsmapping</text>
+<text x="1022.5" y="550.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Fakten</text>
+<text x="1107.5" y="785.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">QA</text>
+<text x="112.1" y="1114.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">Papertexte für DuckDB</text>
+<text x="1237.0" y="1090.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">K → P: Zeilen + Keys</text>
+<text x="1742.65" y="1075.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">CSV mit T</text>
+<text x="517.75" y="1380.0" font-family="Arial,sans-serif" font-size="14" font-weight="400" text-anchor="start" fill="#52657a">weiterer Export</text>
+</svg>

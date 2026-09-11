@@ -90,4 +90,4 @@ The commands above use the official release. New Colab runs stay separate so we 
 
 ## How the parts connect
 
-![Data flow between A, B, C and D](D_results/project-flow.png)
+[![Wer gibt was an wen weiter?](D_results/project-flow.png)](D_results/project-flow.svg)

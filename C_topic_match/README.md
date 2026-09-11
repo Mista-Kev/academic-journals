@@ -11,12 +11,20 @@ der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst hab
 Dateinamen tragen die Lauf-ID. Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
 wird nicht überschrieben.
 
-**Colab-Verbindung noch nicht einsatzbereit:** Beim Versuch am 10.09.2026 verlangt
-Microsoft für unser Hochschulkonto Administratorfreigabe für rclone. Die Einrichtung
-steht in Abschnitt 3 des Notebooks. Der Ordnerpfad begrenzt nicht die Token-Rechte;
-Projektkonto bzw. beschränkte App-Rechte bleiben zu klären. Echter SharePoint-Transfer
-und vollständiger GPU-Lauf sind noch nicht geprüft. Die lokalen Q1/Q2- und Q3-Notebooks
-mit heruntergeladenen oder synchronisierten Daten funktionieren unabhängig davon.
+**Datenzugriff in Colab:** Die drei Eingabedateien im Browser aus SharePoint
+herunterladen und über Colabs Dateibereich hochladen. Das Notebook prüft die
+Dateien und baut DuckDB daraus auf. Die letzte Zelle lädt die Ergebnisse als ZIP
+herunter; den entpackten Laufordner anschließend in SharePoint unter `runs/`
+ablegen. Keine rclone-Anmeldung oder Microsoft-Zugangsdaten im Notebook.
+Die einzelnen Schritte stehen in Abschnitt 3 und 15 des Notebooks.
+Am 11. September 2026 mit einer Colab-T4 ausgeführt: 27.400 Paper, 26.962
+Embeddings, 1.106.356 gefüllte Themenwerte. Die Embeddings dauerten etwa 16 Minuten;
+Dateiübertragungen kommen dazu. Der neue Event-Export stimmt bytegenau mit dem
+offiziellen v5-Export überein; alle Q3-Schätzungen und Intervalle wurden darauf
+reproduziert. Die Q1-Gruppen, Paperzuordnungen und Ähnlichkeitswerte stimmen ebenfalls
+überein, ihre Reihenfolge kann sich ändern. Die drei CSVs, das Laufprotokoll und
+das ausgeführte Notebook wurden nach dem SharePoint-Upload erneut heruntergeladen;
+alle fünf Dateien stimmen bytegenau mit den lokalen Ausgaben überein.
 
 Der ML-Layer erzeugt **keine** der drei Endkennzahlen. Er füllt eine Spalte.
 
@@ -211,8 +219,8 @@ Ladewarnung isolieren diese Ursache nicht.
 
 ## Verbleibende Punkte
 
-- **Colab-Zugriff:** Die Anbindung ist vorbereitet. Beim Universitätskonto fehlt
-  die Admin-Freigabe für rclone; der Live-Zugriff ist noch nicht bestätigt.
+- **Colab-Lauf:** Download und Upload erfolgen im Browser. Der vollständige
+  GPU-Lauf und die Rückgabe der Ergebnisse werden noch geprüft.
 - **Adapter-Vergleich:** Ein früherer Robustheitsvergleich wurde von Pierre als
   ohne nennenswerten Einfluss berichtet. Eine einzelne Laufdifferenz damit nicht
   ohne dokumentierten gleichen Paperpool und gleiche Konfiguration kausal erklären.
@@ -250,11 +258,11 @@ Der geprüfte Jahres-Export liegt unter `data/event_table_topicmatch_v5.csv`;
 B liest ihn dort. `results/results_q1_topic_match_v5.csv` ist die separate
 Intra-Auswertung und fließt nicht als Adjustierung in die Q1/Q2-Ratios ein.
 
-Das v5-Notebook ist für SharePoint über rclone vorbereitet und baut DuckDB aus
-dem geprüften Roh-JSONL auf. Neue Exporte tragen die Lauf-ID im Dateinamen und
-liegen getrennt vom offiziellen Export unter `runs/<RUN_ID>/`. Die Universität
-blockiert die Anmeldung bis zur Admin-Freigabe. Der lokale B-Loader bleibt
-unverändert; er startet weder Colab noch einen GPU-Neulauf.
+Das v5-Notebook liest die manuell hochgeladenen Dateien und baut DuckDB aus
+dem geprüften Roh-JSONL auf. Neue Exporte tragen die Lauf-ID im Dateinamen.
+Die letzte Zelle packt sie als ZIP zum Download. Den entpackten Laufordner unter
+`runs/<RUN_ID>/` in SharePoint ablegen; der offizielle Export bleibt erhalten.
+Der lokale B-Loader startet weder Colab noch einen GPU-Neulauf.
 
 `CODE_REVISION` pinnt den geprüften Loader samt Manifest. Für eine neue
 Datenfreigabe müssen Manifest und Pin gemeinsam geprüft und aktualisiert werden;

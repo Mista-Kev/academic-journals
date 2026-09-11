@@ -22,8 +22,8 @@ Er prüft Dateigröße und SHA-256 gegen das Manifest.
 > Der offizielle v5-Export bleibt unverändert. Neue Notebook-Läufe schreiben
 > `event_table_topicmatch_run_<RUN_ID>.csv` in einen separaten Laufordner.
 > Der Name allein belegt keinen Datenstand; den offiziellen Export über den
-> unten angegebenen SHA-256 prüfen. Die vorbereitete SharePoint-Anbindung
-> braucht noch die Uni-Freigabe und wurde nicht live bestätigt.
+> unten angegebenen SHA-256 prüfen. Neue Ergebnisse werden als ZIP aus Colab
+> heruntergeladen und im Browser unter `runs/` nach SharePoint hochgeladen.
 
 Das ist die Ereignis-Tabelle des Logic-Layers, unverändert in Zeilenzahl und
 Reihenfolge, mit fünf zusätzlich gefüllten Spalten. 6.422.558 Zeilen, 15 Spalten.

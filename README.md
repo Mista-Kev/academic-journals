@@ -42,7 +42,7 @@ fully available offline. If access is denied, ask the team to share it with your
 account before continuing. The link alone does not grant access.
 
 Replace the example path below with the folder containing **A/B/C and
-`START_HERE.txt`**. The release is about 2.65 GB; the selected working copies add
+`START_HERE.txt`**. The release is about 2.65 GB; the files copied into your project folder add
 1.76 GB. The first command stops copying if less than 6 GiB remains on the working disk.
 
 ```sh
@@ -63,7 +63,7 @@ verified local copies; it does not mount or log into SharePoint itself.
 |---|---|---|
 | Q1/Q2: compare recurrence with the reference models | `python demo.py q1-q2` | Q1: **3.09 / 2.22**. Q2 wide: **2.02 / 1.69**. Q2 narrow: **1.16 / 1.11**. Each pair is year / year plus topic category. Intervals are printed separately. |
 | Q3: compare first-entry probabilities with and without a prior connection | `python demo.py q3` | C + T: **6.09** for all entries, **3.34** for non-ride entries. On matched rows, adding journal and year gives **2.27 / 1.18**; also adding prior paper count gives **2.29 / 1.21**. Intervals are printed with each model. |
-| Check the selected indicators row by row | `python B_opportunities_and_analysis/diff_event_table.py` | **6,422,558 rows**, zero key/flag disagreements and **`VERDICT: identical`**. Compares opportunity keys, connection, entry and ride indicators, not every column or T. |
+| Compare the Python and Prolog tables | `python B_opportunities_and_analysis/diff_event_table.py` | **6,422,558 rows**, zero key/flag disagreements and **`VERDICT: identical`**. Compares opportunity keys, connection, entry and ride indicators, not every column or T. |
 
 Allow roughly one minute per command on the tested machine; other machines may
 take longer. Each analysis ends with `Completed q1-q2` or `Completed q3`.
@@ -93,7 +93,8 @@ The intervals have sampling and dependence assumptions described there.
 
 These steps reuse the official A outputs and Pierre's v5 topic values. They do
 not fetch new OpenAlex data, regenerate Prolog outputs or rerun SPECTER2.
-Rebuilding A and C is a separate route, not yet verified end to end with this handoff.
+Rebuilding the A and C outputs requires additional steps. That full workflow has
+not yet been tested end to end.
 
 Optional German walkthroughs: [project and results](FELIX_PROJEKT_DURCHGEHEN.html)
 and [step-by-step demo](DEMO_SCHRITT_FUER_SCHRITT.html). Open the downloaded HTML

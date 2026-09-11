@@ -11,26 +11,44 @@ establish causal effects. [Read the results](D_results/README.md).
 
 ## How to use it
 
-You can rerun Q1/Q2 and Q3 from the shared data without collecting new papers or
-running the embedding model. You need Python 3.12 or newer and access to our
-SharePoint folder, **Applied AI Group B Data**.
+You can rerun Q1/Q2 and Q3 with Python 3.12 or newer and the shared data.
+No GPU, Colab, rclone, Prolog or OpenAlex API key is needed for these two analyses.
 
-1. Download and extract its **official-v5-2026-09-07-abcd-v1** subfolder, or make
-   that folder available locally through OneDrive. It contains A/B/C folders and
-   `START_HERE.txt`.
-2. Open a terminal in this repository's root folder, where `requirements.txt` is.
-3. Run the commands below, replacing the example path with your downloaded folder:
+1. Obtain access to **Applied AI Group B Data** from the team. Download and extract
+   **official-v5-2026-09-07-abcd-v1**, or make that folder available locally through
+   OneDrive. Select the folder containing A/B/C and `START_HERE.txt`.
+2. Get the repository from GitHub. The commands below use Git; downloading the
+   repository ZIP and opening a terminal in its extracted root also works.
+3. Install the dependencies in a virtual environment, configure your data folder,
+   and run both analyses. Replace the example data path with your own.
 
 ```sh
-python3 -m pip install -r requirements.txt
-python3 project_data.py configure --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
-python3 demo.py q1-q2
-python3 demo.py q3
+git clone https://github.com/Mista-Kev/academic-journals.git academic-journals-demo
+cd academic-journals-demo
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python project_data.py configure --shared-root "/path/to/official-v5-2026-09-07-abcd-v1"
+python demo.py q1-q2
+python demo.py q3
 ```
 
-The last two commands run the notebooks and print their results in the terminal.
-They do not change the saved notebook outputs or upload anything. The loader checks
-that the input files match our shared version and keeps a local copy for later runs.
+On Windows, create the environment with `py -3 -m venv .venv` using Python 3.12
+or newer. Skip `source`; use `.\.venv\Scripts\python.exe` instead of `python`
+in the remaining commands. If you downloaded the repository ZIP, skip the clone
+and `cd` commands and start in its extracted root.
+
+The loader checks the shared inputs and copies them locally on first use. Later
+runs can use these copies offline. Each analysis ends with `Completed q1-q2` or
+`Completed q3` and its runtime. Allow a few minutes per analysis depending on the
+machine. The terminal results are newly calculated; saved notebook outputs are
+not overwritten and nothing is uploaded.
+
+Look for Q1 **3.09 / 2.22**, Q2 wide **2.02 / 1.69** and narrow **1.16 / 1.11**
+(year / year + topic), plus their nominal intervals. Q3 reports non-ride **3.34**;
+its journal/year comparison on matched rows is **3.30 → 1.18**. The final
+`0.683 (not Q3)` in the Q1/Q2 notebook is a contrasting example, not the Q3 result.
+[Results and interpretation](D_results/README.md).
 
 To read the calculations alongside the output, open
 [Q1/Q2](B_opportunities_and_analysis/q1_q2_baselines.ipynb) or

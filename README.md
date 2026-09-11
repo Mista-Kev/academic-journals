@@ -18,7 +18,7 @@ outputs. Use the same steps for the presentation or an independent run.
 
 ### 1. Set up
 
-Tested on macOS with Python 3.12. Install Git and Python 3.12 first. Allow **10 GB
+Requires Git and Python **3.12 or newer**; tested on macOS with Python 3.12. Allow **10 GB
 free disk space** for the download, working copies, packages and temporary sorting.
 The test machine had 32 GB RAM; a minimum RAM requirement has not been established.
 No GPU, rclone or SWI-Prolog is needed for these steps. Native Windows is not a
@@ -27,8 +27,9 @@ tested route; the table comparison requires Unix `sort` (WSL is also untested).
 ```sh
 git clone https://github.com/Mista-Kev/academic-journals.git academic-journals-demo
 cd academic-journals-demo
-python3.12 -m venv .venv
-source .venv/bin/activate
+python3 -c "import sys; sys.exit(0 if sys.version_info >= (3, 12) else 'Python 3.12 or newer is required.')" && \
+python3 -m venv .venv && \
+source .venv/bin/activate && \
 python -m pip install -r requirements.txt
 ```
 
@@ -36,10 +37,10 @@ Run all following commands from this folder, with `.venv` active.
 
 ### 2. Load the shared data
 
-Open [the SharePoint release](https://buds365-my.sharepoint.com/personal/s-001070_student_german-uds_de/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Fs-001070_student_german-uds_de%2FDocuments%2FApplied%20AI%20Group%20B%20Data%2Fofficial-v5-2026-09-07-abcd-v1),
-using an account with access. Download and extract it, or make the OneDrive folder
-fully available offline. If access is denied, ask the team to share it with your
-account before continuing. The link alone does not grant access.
+In OneDrive/SharePoint, open the team folder **Applied AI Group B Data**, then
+**official-v5-2026-09-07-abcd-v1**, using an account with access. Download and extract it, or make the OneDrive folder
+fully available offline. If the folder is missing or access is denied, ask the team for access and the
+folder link before continuing.
 
 Replace the example path below with the folder containing **A/B/C and
 `START_HERE.txt`**. The release is about 2.65 GB; the files copied into your project folder add

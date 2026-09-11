@@ -24,7 +24,7 @@ python project_data.py fetch --group q1-q2 &amp;&amp; \
 python project_data.py fetch --group q3 &amp;&amp; \
 python project_data.py fetch --group parity</code></pre>
 <p>Einen neuen Ordner verwenden, damit bestehende Änderungen erhalten bleiben.</p>
-<p><strong>Ergebnis:</strong> 7 unterschiedliche Datendateien werden geladen und geprüft. Die Gelegenheitentabelle gehört zu zwei Gruppen und wird beim zweiten Aufruf nur erneut geprüft. Roh-JSONL und oppB werden nicht kopiert. <code>verified</code> bedeutet passende Dateigröße und Hash, nicht wissenschaftliche Richtigkeit. Erst nach fehlerfreiem Abschluss weitergehen. Der Link verweist auf den vorgesehenen Ordner; Felix’ Zugriff wurde nicht getestet. </p>
+<p><strong>Ergebnis:</strong> 7 unterschiedliche Datendateien werden geladen und geprüft. Die Gelegenheitentabelle gehört zu zwei Gruppen und wird beim zweiten Aufruf nur erneut geprüft. Roh-JSONL und oppB werden nicht kopiert. <code>verified</code> bedeutet passende Dateigröße und Hash, nicht wissenschaftliche Richtigkeit. Erst nach fehlerfreiem Abschluss weitergehen. Der geteilte Link wurde zum Herunterladen und Hochladen geprüft; Felix’ eigenes Gerät wurde nicht getestet. </p>
 
 <h3 id="rechnen">Die Zahlen neu berechnen</h3>
 <p>Im aktivierten Terminal, weiterhin im Repository-Root:</p>
@@ -115,7 +115,7 @@ python -c "import sys; print(sys.executable)"</code></pre>
 <details><summary>Was für eine vollständige Neuerzeugung noch fehlt</summary>
 <p>Neu erzeugte A-Dateien müssen sich auch in die Analyse laden lassen. Derzeit scheitert das an anderen Zeilenenden, obwohl die Daten inhaltlich übereinstimmen. Der manuelle C-Lauf wurde einschließlich GPU, Export und anschließender Q3-Auswertung geprüft. Eine Regenerierung der Regeln benötigt zusätzlich SWI-Prolog; <code>swipl --version</code> muss funktionieren. Für die hier beschriebenen Analysen ist die Installation nicht nötig. Danach müssen die neu erzeugten Dateien bis zu Q1/Q2 und Q3 durchlaufen. Ein separater Checkout allein löst diese Übergaben nicht.</p>
 </details>
-<p class="small">Getestet am 11.09.2026: Q1/Q2 und Q3 vollständig ausgeführt, die Python- und Prolog-Tabellen ohne Abweichungen verglichen. Auch Kernelwahl, Neustart und einzelne Zellen wurden in JupyterLab ausprobiert. Windows, Felix’ Kontozugriff und ein vollständiger C-Neulauf sind noch nicht getestet. Die Q3-Erweiterung und diese Anleitung sind bisher nur lokal gespeichert und müssen noch veröffentlicht werden. <a href="https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html">JupyterLab installieren</a>.</p>
+<p class="small">Getestet am 11.09.2026: Q1/Q2 und Q3 vollständig ausgeführt, die Python- und Prolog-Tabellen ohne Abweichungen verglichen. Auch Kernelwahl, Neustart und einzelne Zellen wurden in JupyterLab ausprobiert. Der vollständige manuelle C-Lauf und der SharePoint-Upload mit erneutem Download sind ebenfalls geprüft. Windows und Felix’ eigenes Gerät sind nicht getestet. Die Q3-Erweiterung und diese Anleitung sind bisher nur lokal gespeichert und müssen noch veröffentlicht werden. <a href="https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html">JupyterLab installieren</a>.</p>
 </section>
 
 </main></body></html>

@@ -99,7 +99,7 @@ python -c "import sys; print(sys.executable)"</code></pre>
 <h3>7 · Prüfen und abschließen</h3>
 <p>Die vorhandenen Python- und Prolog-Tabellen vergleichen:</p>
 <pre><code>python B_opportunities_and_analysis/diff_event_table.py</code></pre>
-<p><strong>Erwartet:</strong> 6.422.558 gemeinsame Schlüssel, keine einseitigen oder doppelten Schlüssel, null Abweichungen bei C, F und Ride; die Non-ride-Aufteilung stimmt. Das prüft diese Kernindikatoren, weder alle Spalten noch kausale Gültigkeit. Der Bericht ist kein Input für Q3. Der Vergleich prüft vorab seinen temporären Speicher: für diese beiden Dateien reserviert er konservativ etwa 2,07 GiB. Bei Platzmangel endet er mit einer verständlichen Meldung ohne Vergleichsurteil. Mit <code>--temp-dir "/Pfad/auf/anderem/Datentraeger"</code> lässt sich ein vorhandener temporärer Ordner wählen.</p>
+<p><strong>Erwartet:</strong> 6.422.558 gemeinsame Schlüssel, keine einseitigen oder doppelten Schlüssel, null Abweichungen bei C, F und Ride; die Non-ride-Aufteilung stimmt. Das prüft diese Kernindikatoren, weder alle Spalten noch kausale Gültigkeit. Der Bericht ist kein Input für Q3. Der Vergleich braucht vorübergehend zusätzlichen Speicherplatz. Reicht der Platz nicht, zeigt er eine Fehlermeldung statt eines Vergleichsergebnisses. Mit <code>--temp-dir "/Pfad/auf/anderem/Datentraeger"</code> lässt sich ein vorhandener temporärer Ordner wählen.</p>
 
 <p>Zum Schluss <code>D_results/README.md</code> lesen: Welche Aussage trägt jeder Vergleich, welche nicht? Die Anleitung setzt keine Bedienung durch die ursprünglichen Autoren voraus.</p>
 <details id="probleme"><summary>Wenn etwas nicht funktioniert</summary>

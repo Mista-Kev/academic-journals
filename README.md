@@ -37,10 +37,10 @@ Run all following commands from this folder, with `.venv` active.
 
 ### 2. Load the shared data
 
-In OneDrive/SharePoint, open the team folder **Applied AI Group B Data**, then
-**official-v5-2026-09-07-abcd-v1**, using an account with access. Download and extract it, or make the OneDrive folder
-fully available offline. If the folder is missing or access is denied, ask the team for access and the
-folder link before continuing.
+Open the SharePoint link shared by the team, then **Applied AI Group B Data →
+official-v5-2026-09-07-abcd-v1**. Download and extract the release. You can also use
+a fully synced OneDrive copy. If the link is missing or access is denied, ask the
+team before continuing.
 
 Replace the example path below with the folder containing **A/B/C and
 `START_HERE.txt`**. The release is about 2.65 GB; the files copied into your project folder add
@@ -94,8 +94,13 @@ The intervals have sampling and dependence assumptions described there.
 
 These steps reuse the official A outputs and Pierre's v5 topic values. They do
 not fetch new OpenAlex data, regenerate Prolog outputs or rerun SPECTER2.
-Rebuilding the A and C outputs requires additional steps. That full workflow has
-not yet been tested end to end.
+To rebuild C, open `C_topic_match/embeddings_colab_eventtable_v5.ipynb` in Colab
+with a T4 GPU. Sections 3 and 15 explain the SharePoint download, Colab upload and
+result download. This manual route was tested on 11 September 2026: embeddings
+took about 16 minutes, plus file transfers and the remaining calculations. The
+new event table matched the official file byte for byte and reproduced Q3.
+New runs go under `runs/` in SharePoint; the analyses above use the official release.
+Rebuilding A requires additional steps and a tested handover of its regenerated files.
 
 Optional German walkthroughs: [project and results](FELIX_PROJEKT_DURCHGEHEN.html)
 and [step-by-step demo](DEMO_SCHRITT_FUER_SCHRITT.html). Open the downloaded HTML

@@ -6,11 +6,25 @@ Ob sie ein ausreichender oder kausal zulässiger Kontrollfaktor ist, folgt nicht
 der Messung allein; frühere Zusammenarbeit kann spätere Themen beeinflusst haben.
 
 **Verantwortlich:** Pierre
-**Eingang:** `academic_journals.duckdb` (OpenAlex-Ausschnitt), Ereignis-Tabelle des Logic-Layers
-**Ausgang:** dieselbe Tabelle plus fünf gefüllte Spalten.
-Das Notebook schreibt nach `event_table_topicmatch.csv`. **Die geteilte Datei wird von Hand
-in `event_table_topicmatch_v5.csv` umbenannt**; der geprüfte Stand liegt im gemeinsamen SharePoint-Ordner — jeder Lauf würde
-sonst den vorigen überschreiben, ohne dass man es am Namen sieht.
+**Eingang:** OpenAlex-JSONL und Gelegenheitentabelle aus dem gemeinsamen SharePoint-Release.
+**Ausgang:** Ereignistabelle mit T und Diagnosespalten, Q1-Intra-Datei und Autor-Paper-Schlüssel.
+Dateinamen tragen die Lauf-ID. Neue Läufe werden unter `runs/<Lauf-ID>/C_topic_match/` gespeichert; der offizielle v5-Release
+wird nicht überschrieben.
+
+**Datenzugriff in Colab:** Die drei Eingabedateien im Browser aus SharePoint
+herunterladen und über Colabs Dateibereich hochladen. Das Notebook prüft die
+Dateien und baut DuckDB daraus auf. Die letzte Zelle lädt die Ergebnisse als ZIP
+herunter; den entpackten Laufordner anschließend in SharePoint unter `runs/`
+ablegen. Keine rclone-Anmeldung oder Microsoft-Zugangsdaten im Notebook.
+Die einzelnen Schritte stehen in Abschnitt 3 und 15 des Notebooks.
+Am 11. September 2026 mit einer Colab-T4 ausgeführt: 27.400 Paper, 26.962
+Embeddings, 1.106.356 gefüllte Themenwerte. Die Embeddings dauerten etwa 16 Minuten;
+Dateiübertragungen kommen dazu. Der neue Event-Export stimmt bytegenau mit dem
+offiziellen v5-Export überein; alle Q3-Schätzungen und Intervalle wurden darauf
+reproduziert. Die Q1-Gruppen, Paperzuordnungen und Ähnlichkeitswerte stimmen ebenfalls
+überein, ihre Reihenfolge kann sich ändern. Die drei CSVs, das Laufprotokoll und
+das ausgeführte Notebook wurden nach dem SharePoint-Upload erneut heruntergeladen;
+alle fünf Dateien stimmen bytegenau mit den lokalen Ausgaben überein.
 
 Der ML-Layer erzeugt **keine** der drei Endkennzahlen. Er füllt eine Spalte.
 
@@ -23,7 +37,7 @@ Abschnitte der Reihe nach, kein Abschnitt darf übersprungen werden.
 
 | # | Abschnitt | Was passiert |
 |---|---|---|
-| 3 | Datenbank | DuckDB aus Drive in den lokalen Colab-Speicher kopieren (~233 MB) |
+| 3 | Datenbank | JSONL und Gelegenheitentabelle aus SharePoint laden, prüfen und lokale DuckDB aufbauen |
 | 4 | Setup | Pakete installieren, Versionen ausgeben, GPU prüfen |
 | 5 | Auswahl | Autoren nach `MIN_PAPERS` auswählen; **alle** einbettbaren Paper laden |
 | 6 | Abstracts | OpenAlex speichert Abstracts als Wortpositionen — hier wieder zu Text zusammensetzen |
@@ -205,8 +219,6 @@ Ladewarnung isolieren diese Ursache nicht.
 
 ## Verbleibende Punkte
 
-- **Versionierung der Ausgabedatei im Notebook:** `EVENT_OUT` schreibt weiterhin
-  auf den unversionierten Pfad; die geteilte Datei wird von Hand umbenannt.
 - **Adapter-Vergleich:** Ein früherer Robustheitsvergleich wurde von Pierre als
   ohne nennenswerten Einfluss berichtet. Eine einzelne Laufdifferenz damit nicht
   ohne dokumentierten gleichen Paperpool und gleiche Konfiguration kausal erklären.
@@ -244,6 +256,12 @@ Der geprüfte Jahres-Export liegt unter `data/event_table_topicmatch_v5.csv`;
 B liest ihn dort. `results/results_q1_topic_match_v5.csv` ist die separate
 Intra-Auswertung und fließt nicht als Adjustierung in die Q1/Q2-Ratios ein.
 
-Das v5-Notebook verwendet weiterhin seine dokumentierte Colab-/Google-Drive-
-Umgebung. Der gemeinsame Loader stellt seine geprüften Exporte für die Analyse
-bereit; er automatisiert keinen GPU-Neulauf und baut die DuckDB nicht auf.
+Das v5-Notebook liest die manuell hochgeladenen Dateien und baut DuckDB aus
+dem geprüften Roh-JSONL auf. Neue Exporte tragen die Lauf-ID im Dateinamen.
+Die letzte Zelle packt sie als ZIP zum Download. Den entpackten Laufordner unter
+`runs/<RUN_ID>/` in SharePoint ablegen; der offizielle Export bleibt erhalten.
+Der lokale B-Loader startet weder Colab noch einen GPU-Neulauf.
+
+`CODE_REVISION` pinnt den geprüften Loader samt Manifest. Für eine neue
+Datenfreigabe müssen Manifest und Pin gemeinsam geprüft und aktualisiert werden;
+die Manifestprüfung bleibt aktiv.
